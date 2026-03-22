@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { BottomNav } from '@/components/shared/BottomNav'
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { Onboarding } from '@/components/shared/Onboarding'
 import { BattlePage } from '@/pages/BattlePage'
 import { FeedPage } from '@/pages/FeedPage'
@@ -25,6 +26,7 @@ function App() {
   }
 
   return (
+    <ErrorBoundary>
     <div className="app">
       {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
       <main className="app-content">
@@ -38,6 +40,7 @@ function App() {
       </main>
       <BottomNav />
     </div>
+    </ErrorBoundary>
   )
 }
 
