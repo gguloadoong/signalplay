@@ -15,16 +15,33 @@
 }
 
 .streak {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--color-warning);
   background: #fff8e1;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 20px;
 }
 
-.deadline {
-  margin-top: 4px;
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
   font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.countdown {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.divider {
+  color: var(--color-text-tertiary);
+}
+
+.resultInfo {
   color: var(--color-text-secondary);
 }
