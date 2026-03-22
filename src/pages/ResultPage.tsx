@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '@/components/shared/Disclaimer'
-import { MOCK_YESTERDAY_RESULTS, MOCK_YESTERDAY_SIGNALS, MOCK_USER_STATS } from '@/lib/mockData'
+import { EmptyState } from '@/components/shared/EmptyState'
+import { useGameStore } from '@/stores/gameStore'
+import { MOCK_YESTERDAY_RESULTS, MOCK_YESTERDAY_SIGNALS } from '@/lib/mockData'
 import { SCORE_TABLE } from '@/types/signal'
+import { formatScore } from '@/lib/utils/format'
 import styles from './ResultPage.module.css'
 
 const LABELS = { bullish: '호재', bearish: '악재', neutral: '영향없음' } as const
@@ -14,6 +17,7 @@ const COLORS = {
 
 export function ResultPage() {
   const navigate = useNavigate()
+  const { stats } = useGameStore()
   const [revealed, setRevealed] = useState<Set<number>>(new Set())
   const results = MOCK_YESTERDAY_RESULTS
 
@@ -22,11 +26,30 @@ export function ResultPage() {
   }
 
   const allRevealed = revealed.size === results.length
-  const totalScore = results.reduce((acc, r) => acc + r.score, 0)
-  const correctCount = results.filter((r) => r.isCorrect).length
-  const isPerfect = correctCount === results.length
-  const perfectBonus = isPerfect ? SCORE_TABLE.perfectBonus : 0
-  const finalScore = totalScore + perfectBonus
+
+  const { correctCount, isPerfect, finalScore } = useMemo(() => {
+    const total = results.reduce((acc, r) => acc + r.score, 0)
+    const correct = results.filter((r) => r.isCorrect).length
+    const perfect = correct === results.length
+    return {
+      correctCount: correct,
+      isPerfect: perfect,
+      finalScore: total + (perfect ? SCORE_TABLE.perfectBonus : 0),
+    }
+  }, [results])
+
+  if (results.length === 0) {
+    return (
+      <div className={styles.page}>
+        <EmptyState
+          emoji="🔮"
+          title="아직 결과가 없어요"
+          description="오늘의 배틀에 참여하면 내일 결과를 확인할 수 있어요"
+          action={{ label: '배틀 참여하기', onClick: () => navigate('/') }}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className={styles.page}>
@@ -49,24 +72,33 @@ export function ResultPage() {
               <div className={styles.revealedContent}>
                 <div
                   className={styles.resultBadge}
-                  style={{ background: result.isCorrect ? '#e8f5e9' : '#ffebee', color: result.isCorrect ? '#2e7d32' : '#c62828' }}
+                  style={{
+                    background: result.isCorrect ? '#e8f5e9' : '#ffebee',
+                    color: result.isCorrect ? '#2e7d32' : '#c62828',
+                  }}
                 >
                   {result.isCorrect ? '✅ 정답!' : '❌ 오답'}
                 </div>
                 <h3 className={styles.resultTitle}>{MOCK_YESTERDAY_SIGNALS[i]}</h3>
                 <div className={styles.resultDetail}>
                   <span>
-                    내 예측: <b style={{ color: COLORS[result.myPrediction] }}>{LABELS[result.myPrediction]}</b>{' '}
+                    내 예측:{' '}
+                    <b style={{ color: COLORS[result.myPrediction] }}>
+                      {LABELS[result.myPrediction]}
+                    </b>{' '}
                     <span className={styles.conf}>x{result.myConfidence}</span>
                   </span>
                   <span>
-                    실제: <b style={{ color: COLORS[result.actualResult] }}>{LABELS[result.actualResult]}</b>
+                    실제:{' '}
+                    <b style={{ color: COLORS[result.actualResult] }}>
+                      {LABELS[result.actualResult]}
+                    </b>
                   </span>
                 </div>
                 <p className={styles.comment}>{result.resultComment}</p>
                 <div className={styles.scoreRow}>
                   <span className={result.score >= 0 ? styles.plus : styles.minus}>
-                    {result.score > 0 ? '+' : ''}{result.score}점
+                    {formatScore(result.score)}점
                   </span>
                 </div>
               </div>
@@ -81,12 +113,14 @@ export function ResultPage() {
           <div className={styles.summaryScore}>
             적중 {correctCount}/{results.length} · 총점{' '}
             <b className={finalScore >= 0 ? styles.plus : styles.minus}>
-              {finalScore > 0 ? '+' : ''}{finalScore}점
+              {formatScore(finalScore)}점
             </b>
-            {isPerfect && <span className={styles.bonusTag}>+{SCORE_TABLE.perfectBonus} 보너스</span>}
+            {isPerfect && (
+              <span className={styles.bonusTag}>+{SCORE_TABLE.perfectBonus} 보너스</span>
+            )}
           </div>
           <div className={styles.summaryStreak}>
-            🔥 {MOCK_USER_STATS.currentStreak}일 연속 참여 · 주간 랭킹 {MOCK_USER_STATS.weeklyRank}위
+            🔥 {stats.currentStreak || 7}일 연속 참여 · 주간 랭킹 {stats.weeklyRank || 8}위
           </div>
           <div className={styles.actions}>
             <button className={styles.shareBtn}>결과 공유하기</button>
