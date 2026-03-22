@@ -1,73 +1,89 @@
-# React + TypeScript + Vite
+# ⚡ 시그널플레이 (SignalPlay)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**매일 경제 시그널을 예측하고, 추이를 추적하고, AI 인사이트를 소비하는 습관형 투자 게임**
 
-Currently, two official plugins are available:
+> 앱인토스(토스 미니앱) 플랫폼용 WebView SPA
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[![Deploy](https://img.shields.io/badge/Vercel-배포중-black?logo=vercel)](https://signalplay.vercel.app)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev/)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 서비스 소개
 
-## Expanding the ESLint configuration
+| 기능 | 설명 |
+|------|------|
+| **마켓 배틀** | 오전/플래시/나이트 배틀 — 하루 종일 예측할 거리 |
+| **확신도 시스템** | x1~x3 배수로 리스크/리워드 조절 |
+| **AI 피드** | 강세 AI vs 약세 AI 토론, 엄선 뉴스 해석 |
+| **카드 플립 결과** | 탭하여 결과 확인 + PERFECT 보너스 |
+| **주간 토너먼트** | 매주 리셋 리더보드로 경쟁 |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 기술 스택
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| 레이어 | 기술 |
+|--------|------|
+| Frontend | Vite + React 18 + TypeScript |
+| UI | TDS Mobile (토스 디자인 시스템) + CSS Modules |
+| State | Zustand (persist) |
+| Backend | Vercel Serverless Functions |
+| AI | Google Gemini API (gemini-2.0-flash) |
+| DB | Supabase PostgreSQL |
+| Deploy | Vercel (GitHub 연동 자동 배포) |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 시작하기
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# 의존성 설치
+pnpm install
+
+# 환경변수 설정
+cp .env.example .env.local
+# .env.local에 GEMINI_API_KEY 등 입력
+
+# 개발 서버
+pnpm dev
+
+# 빌드
+pnpm build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 프로젝트 구조
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── pages/           # 4개 탭 페이지 (Battle, Feed, Result, Ranking)
+├── components/
+│   ├── battle/      # SignalCard, BattleHeader
+│   └── shared/      # BottomNav, Disclaimer, Onboarding, Skeleton, ErrorBoundary
+├── stores/          # Zustand (gameStore)
+├── lib/
+│   ├── api/         # API 클라이언트
+│   ├── utils/       # score, format, share
+│   └── mockData.ts  # 목데이터
+└── types/           # TypeScript 타입 정의
+
+api/                 # Vercel Serverless Functions
+supabase/            # DB 스키마
+.project/            # 프로젝트 문서 (PRD, 디자인 스펙, ADR 등)
+```
+
+## 팀
+
+| 역할 | 이름 | 담당 |
+|------|------|------|
+| PM | 제이크 (Jake) | 기획, 스프린트 관리 |
+| 전략 | 노바 (Nova) | 게임 경제, 성장 전략 |
+| 디자인 | 피카 (Pika) | TDS 기반 UI/UX |
+| FE | 블레이즈 (Blaze) | React SPA, 성능 |
+| BE | 볼트 (Bolt) | API, Gemini, Supabase |
+| QA | 호크 (Hawk) | 테스트, 품질 검증 |
+
+## 라이선스
+
+MIT
+
+---
+
+🤖 Built with AI-powered autonomous team
