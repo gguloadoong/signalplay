@@ -1,3 +1,4 @@
+import { Badge } from '@toss/tds-mobile'
 import { MOCK_RANKING, MOCK_USER_STATS } from '@/lib/mockData'
 import styles from './RankingPage.module.css'
 
@@ -23,7 +24,9 @@ export function RankingPage() {
             <div className={styles.info}>
               <span className={styles.name}>
                 {user.name}
-                {user.isMe && <span className={styles.meBadge}>나</span>}
+                {user.isMe && (
+                  <Badge size="xsmall" variant="fill" color="blue">나</Badge>
+                )}
               </span>
               <span className={styles.meta}>
                 적중률 {user.accuracy}% · 🔥{user.streak}일

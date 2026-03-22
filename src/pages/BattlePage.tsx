@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button, Badge } from '@toss/tds-mobile'
 import { SignalCard } from '@/components/battle/SignalCard'
 import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'
@@ -54,7 +55,7 @@ function BattleSection({ battle }: { battle: Battle }) {
 
       {battle.type === 'morning' && (
         <button className={styles.resultBanner} onClick={() => navigate('/result')}>
-          <span className={styles.resultDot} />
+          <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
           <span className={styles.resultText}>어제 배틀 결과가 나왔어요!</span>
           <span>→</span>
         </button>
@@ -79,15 +80,18 @@ function BattleSection({ battle }: { battle: Battle }) {
 
       {!submitted ? (
         <div className={styles.submitArea}>
-          <button
-            className={`${styles.submitBtn} ${allPredicted ? styles.ready : ''}`}
+          <Button
+            size="large"
+            variant="fill"
+            color={allPredicted ? 'primary' : 'light'}
+            display="full"
             onClick={handleSubmit}
             disabled={!allPredicted}
           >
             {allPredicted
               ? `예측 제출하기 (${predictions.size}/${battle.signals.length})`
               : `시그널을 예측해주세요 (${predictions.size}/${battle.signals.length})`}
-          </button>
+          </Button>
         </div>
       ) : (
         <div className={styles.submittedBanner}>

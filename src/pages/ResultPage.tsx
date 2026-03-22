@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button, Badge } from '@toss/tds-mobile'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { useGameStore } from '@/stores/gameStore'
@@ -25,8 +26,6 @@ export function ResultPage() {
   const handleReveal = (index: number) => {
     setRevealed((prev) => new Set([...prev, index]))
   }
-
-  const allRevealed = revealed.size === results.length
 
   const { correctCount, isPerfect, finalScore } = useMemo(() => {
     const total = results.reduce((acc, r) => acc + r.score, 0)
@@ -58,6 +57,8 @@ export function ResultPage() {
       setTimeout(() => setShareMsg(''), 2000)
     }
   }, [correctCount, results.length, finalScore, isPerfect, stats])
+
+  const allRevealed = revealed.size === results.length
 
   if (results.length === 0) {
     return (
@@ -91,15 +92,13 @@ export function ResultPage() {
               </div>
             ) : (
               <div className={styles.revealedContent}>
-                <div
-                  className={styles.resultBadge}
-                  style={{
-                    background: result.isCorrect ? '#e8f5e9' : '#ffebee',
-                    color: result.isCorrect ? '#2e7d32' : '#c62828',
-                  }}
+                <Badge
+                  size="small"
+                  variant="fill"
+                  color={result.isCorrect ? 'green' : 'red'}
                 >
                   {result.isCorrect ? '✅ 정답!' : '❌ 오답'}
-                </div>
+                </Badge>
                 <h3 className={styles.resultTitle}>{MOCK_YESTERDAY_SIGNALS[i]}</h3>
                 <div className={styles.resultDetail}>
                   <span>
@@ -107,7 +106,7 @@ export function ResultPage() {
                     <b style={{ color: COLORS[result.myPrediction] }}>
                       {LABELS[result.myPrediction]}
                     </b>{' '}
-                    <span className={styles.conf}>x{result.myConfidence}</span>
+                    <Badge size="xsmall" variant="weak" color="blue">x{result.myConfidence}</Badge>
                   </span>
                   <span>
                     실제:{' '}
@@ -137,17 +136,19 @@ export function ResultPage() {
               {formatScore(finalScore)}점
             </b>
             {isPerfect && (
-              <span className={styles.bonusTag}>+{SCORE_TABLE.perfectBonus} 보너스</span>
+              <Badge size="xsmall" variant="fill" color="blue">+{SCORE_TABLE.perfectBonus} 보너스</Badge>
             )}
           </div>
           <div className={styles.summaryStreak}>
             🔥 {stats.currentStreak || 7}일 연속 참여 · 주간 랭킹 {stats.weeklyRank || 8}위
           </div>
           <div className={styles.actions}>
-            <button className={styles.shareBtn} onClick={handleShare}>결과 공유하기</button>
-            <button className={styles.battleBtn} onClick={() => navigate('/')}>
+            <Button size="medium" variant="weak" color="primary" onClick={handleShare}>
+              결과 공유하기
+            </Button>
+            <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
               오늘의 배틀 →
-            </button>
+            </Button>
           </div>
         </div>
       )}
