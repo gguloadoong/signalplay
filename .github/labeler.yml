@@ -1,0 +1,23 @@
+frontend:
+  - changed-files:
+    - any-glob-to-any-file: ['src/app/**', 'src/components/**', 'src/hooks/**']
+
+backend:
+  - changed-files:
+    - any-glob-to-any-file: ['supabase/**', 'src/lib/api/**', 'src/lib/supabase/**']
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file: ['*.md', 'docs/**', '.project/**']
+
+config:
+  - changed-files:
+    - any-glob-to-any-file: ['*.config.*', '.github/**', '.env.example']
+
+styles:
+  - changed-files:
+    - any-glob-to-any-file: ['src/**/*.css', 'tailwind.config.*']
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file: ['**/*.test.*', '**/*.spec.*', 'e2e/**', 'playwright.config.*']

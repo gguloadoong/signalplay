@@ -1,0 +1,11 @@
+[pr_description]
+publish_labels = true
+add_original_user_description = true
+
+[pr_reviewer]
+extra_instructions = "리뷰는 한국어로 작성해주세요. 보안 취약점을 최우선으로 검토하세요. 금융 데이터 처리와 사용자 개인정보 보호에 특히 주의하세요."
+enable_review_labels_security = true
+enable_review_labels_effort = true
+
+[pr_code_suggestions]
+num_code_suggestions = 3
