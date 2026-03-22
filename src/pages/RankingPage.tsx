@@ -1,4 +1,5 @@
 import { Badge } from '@toss/tds-mobile'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { MOCK_RANKING, MOCK_USER_STATS } from '@/lib/mockData'
 import styles from './RankingPage.module.css'
 
@@ -12,6 +13,13 @@ export function RankingPage() {
       <h1 className={styles.title}>🏆 주간 랭킹</h1>
       <p className={styles.subtitle}>이번 주 예측왕은 누구? · 매주 월요일 리셋</p>
 
+      {MOCK_RANKING.length === 0 ? (
+        <EmptyState
+          emoji="🏆"
+          title="아직 랭킹이 없어요"
+          description="이번 주 배틀에 참여하면 랭킹에 올라갑니다"
+        />
+      ) : (
       <div className={styles.list}>
         {MOCK_RANKING.map((user) => (
           <div
@@ -36,6 +44,7 @@ export function RankingPage() {
           </div>
         ))}
       </div>
+      )}
 
       <div className={styles.myRank}>
         <div className={styles.myRankLeft}>
