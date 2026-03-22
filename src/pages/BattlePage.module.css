@@ -9,6 +9,41 @@
   margin-top: 12px;
 }
 
+.resultBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: #f0f7ff;
+  border: none;
+  border-radius: 10px;
+  margin-top: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-align: left;
+}
+
+.resultDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: pulse 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.resultText {
+  flex: 1;
+}
+
 .submitArea {
   position: sticky;
   bottom: calc(56px + var(--safe-area-bottom) + 8px);
@@ -41,7 +76,7 @@
 .submittedBanner {
   text-align: center;
   padding: 16px;
-  margin-top: 12px;
+  margin: 12px 0;
   border-radius: 12px;
   background: #e8f4fd;
   color: var(--color-primary);
