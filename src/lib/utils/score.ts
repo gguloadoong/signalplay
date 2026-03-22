@@ -21,7 +21,6 @@ export function calculateScore(
 export function calculateBattleResults(
   predictions: UserPrediction[],
   actualResults: Prediction[],
-  _signalTitles: string[],
   resultComments: string[],
 ): { results: BattleResult[]; totalScore: number; isPerfect: boolean } {
   const results: BattleResult[] = predictions.map((pred, i) => {

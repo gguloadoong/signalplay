@@ -2,6 +2,15 @@ import type { Battle, BattleResult, CrowdSentiment, UserStats } from '@/types/si
 
 const today = new Date().toISOString().split('T')[0]
 
+/** 오늘 15:30 KST를 UTC로 (마감 시간) */
+function todayDeadline(hour: number, min: number): string {
+  const d = new Date()
+  d.setHours(hour, min, 0, 0)
+  // 마감이 이미 지났으면 내일로
+  if (d.getTime() < Date.now()) d.setDate(d.getDate() + 1)
+  return d.toISOString()
+}
+
 export const MOCK_BATTLES: Battle[] = [
   {
     id: `morning-${today}`,
@@ -27,8 +36,8 @@ export const MOCK_BATTLES: Battle[] = [
         category: 'global',
       },
     ],
-    deadline: `${today}T06:30:00Z`,
-    resultTime: `${today}T06:30:00Z`,
+    deadline: todayDeadline(15, 30),
+    resultTime: todayDeadline(15, 30),
     isActive: true,
     isResultReady: false,
   },
@@ -44,8 +53,8 @@ export const MOCK_BATTLES: Battle[] = [
         category: 'macro',
       },
     ],
-    deadline: `${today}T04:00:00Z`,
-    resultTime: `${today}T05:30:00Z`,
+    deadline: todayDeadline(13, 0),
+    resultTime: todayDeadline(14, 30),
     isActive: true,
     isResultReady: false,
   },
