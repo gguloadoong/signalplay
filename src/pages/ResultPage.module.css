@@ -1,0 +1,115 @@
+.page { padding: 0 16px; }
+.title { font-size: 22px; font-weight: 700; padding-top: 16px; }
+.subtitle { font-size: 13px; color: var(--color-text-secondary); margin: 4px 0 16px; }
+
+.cards { display: flex; flex-direction: column; gap: 12px; }
+
+.card {
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hidden {
+  background: var(--color-bg-secondary);
+  border: 1px dashed var(--color-border);
+}
+
+.revealed {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  cursor: default;
+  animation: flipIn 0.4s ease;
+}
+
+@keyframes flipIn {
+  from { transform: scaleY(0.8); opacity: 0.5; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+.hiddenContent {
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.hiddenTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.tapHint {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+.revealedContent { padding: 16px; }
+
+.resultBadge {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.resultTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.resultDetail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.comment {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.scoreRow { text-align: right; font-size: 16px; font-weight: 700; }
+.plus { color: var(--color-success); }
+.minus { color: var(--color-danger); }
+
+.summary {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f0f7ff;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.perfect {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+}
+
+.summaryScore { font-size: 16px; margin-bottom: 4px; }
+.summaryStreak { font-size: 13px; color: var(--color-text-secondary); }
+
+.shareBtn {
+  margin-top: 12px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

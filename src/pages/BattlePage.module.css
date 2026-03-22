@@ -1,0 +1,53 @@
+.page {
+  padding: 0 16px;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.submitArea {
+  position: sticky;
+  bottom: calc(56px + var(--safe-area-bottom) + 8px);
+  padding: 12px 0;
+  z-index: 10;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-border);
+  color: var(--color-text-tertiary);
+  transition: all 0.2s;
+}
+
+.submitBtn.ready {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.submitBtn:disabled {
+  cursor: not-allowed;
+}
+
+.submittedBanner {
+  text-align: center;
+  padding: 16px;
+  margin-top: 12px;
+  border-radius: 12px;
+  background: #e8f4fd;
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.submittedBanner span {
+  font-weight: 700;
+}

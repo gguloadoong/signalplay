@@ -1,0 +1,101 @@
+.page {
+  padding: 0 16px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  padding-top: 16px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #e8f4fd;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.cardContent {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.debate {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bull {
+  background: #e8f5e9;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.bear {
+  background: #ffebee;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.debateLabel {
+  font-size: 12px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.bull p,
+.bear p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.aiComment {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.source {
+  display: block;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-top: 8px;
+}

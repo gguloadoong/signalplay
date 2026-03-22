@@ -1,0 +1,146 @@
+.card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 16px;
+  transition: border-color 0.2s;
+}
+
+.card.predicted {
+  border-color: var(--color-primary);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.category {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #e8f4fd;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.summary {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  margin-bottom: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.predBtn {
+  flex: 1;
+  padding: 10px 0;
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.predBtn:not(:disabled):hover {
+  border-color: var(--color-text-tertiary);
+}
+
+.predBtn.selected {
+  border-width: 2px;
+}
+
+.predBtn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.confidenceArea {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.confLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.confButtons {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.confBtn {
+  flex: 1;
+  padding: 6px 0;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 12px;
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.confBtn.confSelected {
+  border-color: var(--color-primary);
+  background: #e8f4fd;
+  font-weight: 600;
+}
+
+.crowd {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  animation: fadeIn 0.3s ease;
+}
+
+.crowdBar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  gap: 2px;
+}
+
+.crowdSegment {
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.crowdLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 500;
+}

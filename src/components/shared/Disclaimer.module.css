@@ -1,0 +1,6 @@
+.disclaimer {
+  text-align: center;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  padding: 16px 0 24px;
+}

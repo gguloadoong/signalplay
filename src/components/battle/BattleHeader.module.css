@@ -1,0 +1,30 @@
+.header {
+  padding: 16px 0 8px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.streak {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-warning);
+  background: #fff8e1;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.deadline {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
