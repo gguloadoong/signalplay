@@ -4,6 +4,7 @@ import { Button, Badge } from '@toss/tds-mobile'
 import { SignalCard } from '@/components/battle/SignalCard'
 import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { useGameStore } from '@/stores/gameStore'
 import { MOCK_BATTLES, MOCK_CROWD } from '@/lib/mockData'
 import type { Signal, UserPrediction, Battle } from '@/types/signal'
@@ -105,9 +106,17 @@ function BattleSection({ battle }: { battle: Battle }) {
 export function BattlePage() {
   return (
     <div className={styles.page}>
-      {MOCK_BATTLES.map((battle) => (
-        <BattleSection key={battle.id} battle={battle} />
-      ))}
+      {MOCK_BATTLES.length === 0 ? (
+        <EmptyState
+          emoji="⏳"
+          title="오늘의 배틀 준비 중"
+          description="매일 오전 9시에 새로운 시그널이 도착합니다"
+        />
+      ) : (
+        MOCK_BATTLES.map((battle) => (
+          <BattleSection key={battle.id} battle={battle} />
+        ))
+      )}
       <Disclaimer />
     </div>
   )

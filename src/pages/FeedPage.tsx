@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { EmptyState } from '@/components/shared/EmptyState'
 import { MOCK_FEED } from '@/lib/mockData'
 import type { FeedItem } from '@/lib/mockData'
 import styles from './FeedPage.module.css'
@@ -87,16 +88,24 @@ export function FeedPage() {
       </div>
 
       <div className={styles.feed}>
-        {filtered.map((item) => {
-          switch (item.type) {
-            case 'debate':
-              return <DebateCard key={item.id} item={item} />
-            case 'insight':
-              return <InsightCard key={item.id} item={item} />
-            case 'news':
-              return <NewsCard key={item.id} item={item} />
-          }
-        })}
+        {filtered.length === 0 ? (
+          <EmptyState
+            emoji="📭"
+            title="해당 피드가 없어요"
+            description="다른 카테고리를 선택해보세요"
+          />
+        ) : (
+          filtered.map((item) => {
+            switch (item.type) {
+              case 'debate':
+                return <DebateCard key={item.id} item={item} />
+              case 'insight':
+                return <InsightCard key={item.id} item={item} />
+              case 'news':
+                return <NewsCard key={item.id} item={item} />
+            }
+          })
+        )}
       </div>
     </div>
   )
