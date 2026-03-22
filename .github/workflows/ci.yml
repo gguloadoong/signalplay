@@ -8,7 +8,7 @@ on:
 
 jobs:
   quality:
-    name: Lint → Typecheck → Build
+    name: Lint → Typecheck → Test → Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +30,9 @@ jobs:
 
       - name: Typecheck
         run: tsc -b --noEmit
+
+      - name: Test
+        run: pnpm test
 
       - name: Build
         run: pnpm build
