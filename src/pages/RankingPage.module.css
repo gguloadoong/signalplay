@@ -65,7 +65,28 @@
   background: var(--color-primary);
   color: #fff;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
-.myRank b { font-size: 16px; }
+.myRankLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.myRankLabel {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.myRankLeft b { font-size: 18px; }
+
+.myRankRight {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.myRankDivider { opacity: 0.5; }

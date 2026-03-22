@@ -7,19 +7,22 @@
 .card {
   border-radius: 16px;
   overflow: hidden;
-  cursor: pointer;
   transition: all 0.3s;
 }
 
 .hidden {
   background: var(--color-bg-secondary);
   border: 1px dashed var(--color-border);
+  cursor: pointer;
+}
+
+.hidden:active {
+  transform: scale(0.98);
 }
 
 .revealed {
   background: var(--color-bg);
   border: 1px solid var(--color-border);
-  cursor: default;
   animation: flipIn 0.4s ease;
 }
 
@@ -29,7 +32,7 @@
 }
 
 .hiddenContent {
-  padding: 24px 16px;
+  padding: 28px 16px;
   text-align: center;
 }
 
@@ -43,6 +46,12 @@
 .tapHint {
   font-size: 13px;
   color: var(--color-text-tertiary);
+  animation: bounce 1.5s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 .revealedContent { padding: 16px; }
@@ -59,7 +68,7 @@
 .resultTitle {
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .resultDetail {
@@ -67,7 +76,16 @@
   justify-content: space-between;
   font-size: 13px;
   color: var(--color-text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.conf {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #e8f4fd;
+  padding: 1px 5px;
+  border-radius: 3px;
 }
 
 .comment {
@@ -93,23 +111,53 @@
 }
 
 .perfect {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--color-primary);
   margin-bottom: 8px;
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  to { transform: scale(1); opacity: 1; }
 }
 
 .summaryScore { font-size: 16px; margin-bottom: 4px; }
+.bonusTag {
+  font-size: 12px;
+  color: var(--color-primary);
+  background: #d1e9ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
 .summaryStreak { font-size: 13px; color: var(--color-text-secondary); }
 
-.shareBtn {
-  margin-top: 12px;
-  padding: 12px 24px;
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  justify-content: center;
+}
+
+.shareBtn, .battleBtn {
+  padding: 12px 20px;
   border: none;
   border-radius: 10px;
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.shareBtn {
+  background: var(--color-bg);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+
+.battleBtn {
+  background: var(--color-primary);
+  color: #fff;
 }
