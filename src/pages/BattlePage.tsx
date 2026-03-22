@@ -3,16 +3,29 @@ import { useNavigate } from 'react-router-dom'
 import { SignalCard } from '@/components/battle/SignalCard'
 import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'
-import { MOCK_BATTLES, MOCK_CROWD, MOCK_USER_STATS } from '@/lib/mockData'
+import { useGameStore } from '@/stores/gameStore'
+import { MOCK_BATTLES, MOCK_CROWD } from '@/lib/mockData'
 import type { Signal, UserPrediction, Battle } from '@/types/signal'
 import styles from './BattlePage.module.css'
 
-function BattleSection({ battle, hasResult }: { battle: Battle; hasResult: boolean }) {
+function BattleSection({ battle }: { battle: Battle }) {
   const navigate = useNavigate()
-  const [predictions, setPredictions] = useState<Map<number, UserPrediction>>(new Map())
-  const [submitted, setSubmitted] = useState(false)
+  const { submitPrediction, hasPredicted, getPredictions, stats } = useGameStore()
+  const alreadySubmitted = hasPredicted(battle.id)
+  const savedEntry = getPredictions(battle.id)
+
+  const [predictions, setPredictions] = useState<Map<number, UserPrediction>>(() => {
+    if (savedEntry) {
+      const map = new Map<number, UserPrediction>()
+      savedEntry.predictions.forEach((p) => map.set(p.signalIndex, p))
+      return map
+    }
+    return new Map()
+  })
+  const [submitted, setSubmitted] = useState(alreadySubmitted)
 
   const handlePredict = (pred: UserPrediction) => {
+    if (submitted) return
     setPredictions((prev) => {
       const next = new Map(prev)
       next.set(pred.signalIndex, pred)
@@ -23,19 +36,23 @@ function BattleSection({ battle, hasResult }: { battle: Battle; hasResult: boole
   const allPredicted = predictions.size === battle.signals.length
 
   const handleSubmit = () => {
-    if (!allPredicted) return
+    if (!allPredicted || submitted) return
+    const predsArray = Array.from(predictions.values())
+    submitPrediction(battle.id, predsArray)
     setSubmitted(true)
   }
 
-  return (
-    <>
-      <BattleHeader
-        type={battle.type}
-        deadline={battle.deadline}
-        streak={MOCK_USER_STATS.currentStreak}
-      />
+  const battleTypeLabel = {
+    morning: '오늘 15:30에 결과가 공개됩니다',
+    flash: '약 1~2시간 후 결과 공개',
+    night: '내일 오전 9시에 결과가 공개됩니다',
+  }
 
-      {hasResult && !submitted && (
+  return (
+    <section className={styles.section}>
+      <BattleHeader type={battle.type} deadline={battle.deadline} streak={stats.currentStreak} />
+
+      {battle.type === 'morning' && (
         <button className={styles.resultBanner} onClick={() => navigate('/result')}>
           <span className={styles.resultDot} />
           <span className={styles.resultText}>어제 배틀 결과가 나왔어요!</span>
@@ -53,7 +70,7 @@ function BattleSection({ battle, hasResult }: { battle: Battle; hasResult: boole
             disabled={submitted}
             crowdSentiment={
               submitted
-                ? MOCK_CROWD[signal.index] ?? { signalIndex: signal.index, bullish: 60, bearish: 25, neutral: 15 }
+                ? MOCK_CROWD[signal.index] ?? { signalIndex: signal.index, bullish: 55, bearish: 30, neutral: 15 }
                 : undefined
             }
           />
@@ -74,23 +91,18 @@ function BattleSection({ battle, hasResult }: { battle: Battle; hasResult: boole
         </div>
       ) : (
         <div className={styles.submittedBanner}>
-          <span>예측 완료!</span>{' '}
-          {battle.type === 'morning'
-            ? '오늘 15:30에 결과가 공개됩니다'
-            : battle.type === 'flash'
-              ? '약 1~2시간 후 결과 공개'
-              : '내일 오전 9시에 결과가 공개됩니다'}
+          <span>예측 완료!</span> {battleTypeLabel[battle.type]}
         </div>
       )}
-    </>
+    </section>
   )
 }
 
 export function BattlePage() {
   return (
     <div className={styles.page}>
-      {MOCK_BATTLES.map((battle, i) => (
-        <BattleSection key={battle.id} battle={battle} hasResult={i === 0} />
+      {MOCK_BATTLES.map((battle) => (
+        <BattleSection key={battle.id} battle={battle} />
       ))}
       <Disclaimer />
     </div>
