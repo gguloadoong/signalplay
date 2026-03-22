@@ -8,6 +8,8 @@
 - [PROCESS] Next.js 프로젝트 초기화 — pnpm create next-app, TypeScript, Tailwind v4, ESLint 설정
 - [PROCESS] Supabase 프로젝트 생성 — CEO에게 계정 생성 요청 필요 (request-to-ceo)
 - [PROCESS] OpenAI API 키 발급 — CEO에게 요청 필요 (request-to-ceo)
+- [PROCESS] 카카오 개발자 앱 등록 — CEO에게 요청 필요 (소셜 로그인)
+- [PROCESS] 토스 WebView 호환성 검증 — 애니메이션, 소셜 로그인, Safe Area (킥오프 합의)
 - [DOCS] README 및 CONTRIBUTING.md 완성 — 초안 후 팀 리뷰
 
 ## P2 — 이번 스프린트 (Sprint 1)
