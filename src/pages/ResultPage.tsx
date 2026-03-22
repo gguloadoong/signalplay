@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -6,6 +6,7 @@ import { useGameStore } from '@/stores/gameStore'
 import { MOCK_YESTERDAY_RESULTS, MOCK_YESTERDAY_SIGNALS } from '@/lib/mockData'
 import { SCORE_TABLE } from '@/types/signal'
 import { formatScore } from '@/lib/utils/format'
+import { shareResult } from '@/lib/utils/share'
 import styles from './ResultPage.module.css'
 
 const LABELS = { bullish: '호재', bearish: '악재', neutral: '영향없음' } as const
@@ -37,6 +38,26 @@ export function ResultPage() {
       finalScore: total + (perfect ? SCORE_TABLE.perfectBonus : 0),
     }
   }, [results])
+
+  const [shareMsg, setShareMsg] = useState('')
+
+  const handleShare = useCallback(async () => {
+    const result = await shareResult({
+      correctCount,
+      totalCount: results.length,
+      score: finalScore,
+      streak: stats.currentStreak || 7,
+      isPerfect,
+      rank: stats.weeklyRank || 8,
+    })
+    if (result === 'copied') {
+      setShareMsg('클립보드에 복사되었습니다!')
+      setTimeout(() => setShareMsg(''), 2000)
+    } else if (result === 'failed') {
+      setShareMsg('공유에 실패했습니다')
+      setTimeout(() => setShareMsg(''), 2000)
+    }
+  }, [correctCount, results.length, finalScore, isPerfect, stats])
 
   if (results.length === 0) {
     return (
@@ -123,13 +144,15 @@ export function ResultPage() {
             🔥 {stats.currentStreak || 7}일 연속 참여 · 주간 랭킹 {stats.weeklyRank || 8}위
           </div>
           <div className={styles.actions}>
-            <button className={styles.shareBtn}>결과 공유하기</button>
+            <button className={styles.shareBtn} onClick={handleShare}>결과 공유하기</button>
             <button className={styles.battleBtn} onClick={() => navigate('/')}>
               오늘의 배틀 →
             </button>
           </div>
         </div>
       )}
+
+      {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
 
       <Disclaimer />
     </div>

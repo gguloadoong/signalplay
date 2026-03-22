@@ -142,6 +142,26 @@
   justify-content: center;
 }
 
+.toast {
+  position: fixed;
+  bottom: calc(56px + var(--safe-area-bottom) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 200;
+  animation: toastIn 0.3s ease;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
 .shareBtn, .battleBtn {
   padding: 12px 20px;
   border: none;
