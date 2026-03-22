@@ -1,6 +1,16 @@
+import { useState } from 'react'
 import { MOCK_FEED } from '@/lib/mockData'
 import type { FeedItem } from '@/lib/mockData'
 import styles from './FeedPage.module.css'
+
+type FeedFilter = 'all' | 'debate' | 'insight' | 'news'
+
+const FILTERS: { value: FeedFilter; label: string }[] = [
+  { value: 'all', label: '전체' },
+  { value: 'debate', label: '🤖 AI 토론' },
+  { value: 'insight', label: '🔮 전망' },
+  { value: 'news', label: '📰 뉴스' },
+]
 
 function DebateCard({ item }: { item: FeedItem & { type: 'debate' } }) {
   return (
@@ -56,13 +66,28 @@ function NewsCard({ item }: { item: FeedItem & { type: 'news' } }) {
 }
 
 export function FeedPage() {
+  const [filter, setFilter] = useState<FeedFilter>('all')
+  const filtered = filter === 'all' ? MOCK_FEED : MOCK_FEED.filter((item) => item.type === filter)
+
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>📰 AI 시그널 피드</h1>
       <p className={styles.subtitle}>AI가 분석한 오늘의 투자 인사이트</p>
 
+      <div className={styles.filters}>
+        {FILTERS.map((f) => (
+          <button
+            key={f.value}
+            className={`${styles.filterBtn} ${filter === f.value ? styles.filterActive : ''}`}
+            onClick={() => setFilter(f.value)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       <div className={styles.feed}>
-        {MOCK_FEED.map((item) => {
+        {filtered.map((item) => {
           switch (item.type) {
             case 'debate':
               return <DebateCard key={item.id} item={item} />

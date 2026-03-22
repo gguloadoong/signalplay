@@ -1,6 +1,37 @@
 .page { padding: 0 16px; }
 .title { font-size: 22px; font-weight: 700; padding-top: 16px; }
-.subtitle { font-size: 13px; color: var(--color-text-secondary); margin: 4px 0 16px; }
+.subtitle { font-size: 13px; color: var(--color-text-secondary); margin: 4px 0 12px; }
+
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filters::-webkit-scrollbar { display: none; }
+
+.filterBtn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 20px;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filterActive {
+  border-color: var(--color-primary);
+  background: #e8f4fd;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
 .feed { display: flex; flex-direction: column; gap: 12px; padding-bottom: 24px; }
 
 .card {
