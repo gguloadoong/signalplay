@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { BottomNav } from '@/components/shared/BottomNav'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { Onboarding } from '@/components/shared/Onboarding'
+import { PageTransition } from '@/components/shared/PageTransition'
 import { BattlePage } from '@/pages/BattlePage'
 import { FeedPage } from '@/pages/FeedPage'
 import { ResultPage } from '@/pages/ResultPage'
@@ -26,6 +27,7 @@ function App() {
     <div className="app">
       {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
       <main className="app-content">
+        <PageTransition>
         <Routes>
           <Route path="/" element={<BattlePage />} />
           <Route path="/feed" element={<FeedPage />} />
@@ -33,6 +35,7 @@ function App() {
           <Route path="/ranking" element={<RankingPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </PageTransition>
       </main>
       <BottomNav />
     </div>

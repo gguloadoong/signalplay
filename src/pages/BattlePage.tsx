@@ -5,6 +5,7 @@ import { SignalCard } from '@/components/battle/SignalCard'
 import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { SuccessAnimation } from '@/components/shared/SuccessAnimation'
 import { useGameStore } from '@/stores/gameStore'
 import { MOCK_BATTLES, MOCK_CROWD } from '@/lib/mockData'
 import type { Signal, UserPrediction, Battle } from '@/types/signal'
@@ -25,6 +26,7 @@ function BattleSection({ battle }: { battle: Battle }) {
     return new Map()
   })
   const [submitted, setSubmitted] = useState(alreadySubmitted)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const handlePredict = (pred: UserPrediction) => {
     if (submitted) return
@@ -41,6 +43,7 @@ function BattleSection({ battle }: { battle: Battle }) {
     if (!allPredicted || submitted) return
     const predsArray = Array.from(predictions.values())
     submitPrediction(battle.id, predsArray)
+    setShowSuccess(true)
     setSubmitted(true)
   }
 
@@ -52,6 +55,7 @@ function BattleSection({ battle }: { battle: Battle }) {
 
   return (
     <section className={styles.section}>
+      <SuccessAnimation show={showSuccess} onComplete={() => setShowSuccess(false)} />
       <BattleHeader type={battle.type} deadline={battle.deadline} streak={stats.currentStreak} />
 
       {battle.type === 'morning' && (
