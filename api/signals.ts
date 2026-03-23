@@ -41,7 +41,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: SIGNAL_PROMPT }] }],
-          generationConfig: { temperature: 0.7, maxOutputTokens: 1024 },
+          generationConfig: { temperature: 0.7, maxOutputTokens: 4096 },
         }),
         signal: AbortSignal.timeout(15000),
       })
@@ -50,15 +50,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const geminiData = await geminiRes.json()
         const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text
         if (rawText) {
-          const jsonStr = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
-          const signals = JSON.parse(jsonStr)
+          // 마크다운 코드블록, 앞뒤 텍스트 제거 → 순수 JSON 추출
+          let jsonStr = rawText
+          const jsonMatch = rawText.match(/\[[\s\S]*\]/)
+          if (jsonMatch) {
+            jsonStr = jsonMatch[0]
+          } else {
+            jsonStr = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+          }
+          let signals
+          const signals_typed = JSON.parse(jsonStr)
 
-          if (Array.isArray(signals) && signals.length === 3) {
+          if (Array.isArray(signals_typed) && signals_typed.length === 3) {
             const battle = {
               id: `morning-${today}`,
               type: 'morning',
               date: today,
-              signals: signals.map((s: { title: string; summary: string; category: string }, i: number) => ({
+              signals: signals_typed.map((s: { title: string; summary: string; category: string }, i: number) => ({
                 index: i,
                 title: s.title,
                 summary: s.summary,
@@ -77,10 +85,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     } catch (error) {
       console.error('Gemini API failed, falling back to mock:', error)
+      console.error('Gemini failed, using fallback')
     }
   }
 
-  // 폴백: 목데이터
+  // 폴백: 목데이터 (키 없음)
   const fallback = {
     id: `morning-${today}`,
     type: 'morning',
