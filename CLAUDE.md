@@ -121,7 +121,7 @@
 
 | 기술 | 사용처 |
 |------|--------|
-| Google Gemini API (gemini-2.0-flash) | 뉴스 요약 + 시그널 카드 생성 (무료 티어) |
+| Google Gemini API (gemini-2.5-flash) | 뉴스 요약 + 시그널 카드 생성 (무료 티어) |
 | Bedrock SDK (토스 통합 SDK) | 토스 로그인, 리더보드, AdMob 광고 연동 |
 
 ### 테스팅

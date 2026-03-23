@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
 
 const SIGNAL_PROMPT = `당신은 경제/투자 뉴스 분석 전문가입니다.
 오늘의 주요 경제 뉴스를 기반으로 투자 시그널 3개를 생성해주세요.
