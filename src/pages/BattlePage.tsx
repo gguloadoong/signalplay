@@ -6,7 +6,9 @@ import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { SuccessAnimation } from '@/components/shared/SuccessAnimation'
+import { SignalCardSkeleton } from '@/components/shared/Skeleton'
 import { useGameStore } from '@/stores/gameStore'
+import { useSignals } from '@/hooks/useSignals'
 import { MOCK_BATTLES, MOCK_CROWD } from '@/lib/mockData'
 import type { Signal, UserPrediction, Battle } from '@/types/signal'
 import styles from './BattlePage.module.css'
@@ -108,16 +110,29 @@ function BattleSection({ battle }: { battle: Battle }) {
 }
 
 export function BattlePage() {
+  const { battle: liveBattle, loading } = useSignals()
+
+  // 라이브 시그널 + 플래시 배틀 (목데이터)
+  const battles = liveBattle
+    ? [liveBattle, ...MOCK_BATTLES.filter((b) => b.type === 'flash')]
+    : MOCK_BATTLES
+
   return (
     <div className={styles.page}>
-      {MOCK_BATTLES.length === 0 ? (
+      {loading ? (
+        <div className={styles.cards}>
+          <SignalCardSkeleton />
+          <SignalCardSkeleton />
+          <SignalCardSkeleton />
+        </div>
+      ) : battles.length === 0 ? (
         <EmptyState
           emoji="⏳"
           title="오늘의 배틀 준비 중"
           description="매일 오전 9시에 새로운 시그널이 도착합니다"
         />
       ) : (
-        MOCK_BATTLES.map((battle) => (
+        battles.map((battle) => (
           <BattleSection key={battle.id} battle={battle} />
         ))
       )}
