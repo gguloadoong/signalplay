@@ -19,7 +19,7 @@
 | 백엔드 | Vercel Serverless Functions | - | API 엔드포인트. 서버사이드 Gemini/Supabase 호출. |
 | DB | Supabase PostgreSQL | latest | 영속 데이터 (3테이블). RLS 보안. |
 | 캐싱 | Vercel KV (Redis) | - | 오늘의 시그널 캐싱, 중복 제출 방지 세션 |
-| AI | Google Gemini API | gemini-2.0-flash | 시그널 카드 생성. 무료 티어로 일 3개 생성 충분. |
+| AI | Google Gemini API | gemini-2.5-flash | 시그널 카드 생성. 무료 티어로 일 3개 생성 충분. |
 | 배포 | Vercel | - | Serverless Functions + Cron Jobs + KV 통합 |
 
 ---

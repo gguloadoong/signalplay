@@ -28,7 +28,7 @@
 | UI | TDS Mobile (토스 디자인 시스템) + CSS Modules |
 | State | Zustand (persist) |
 | Backend | Vercel Serverless Functions |
-| AI | Google Gemini API (gemini-2.0-flash) |
+| AI | Google Gemini API (gemini-2.5-flash) |
 | DB | Supabase PostgreSQL |
 | Deploy | Vercel (GitHub 연동 자동 배포) |
 
