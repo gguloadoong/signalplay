@@ -84,7 +84,12 @@ export function ResultPage() {
           <div
             key={i}
             className={`${styles.card} ${revealed.has(i) ? styles.revealed : styles.hidden}`}
+            role="button"
+            tabIndex={0}
+            aria-expanded={revealed.has(i)}
+            aria-label={`${MOCK_YESTERDAY_SIGNALS[i]} 결과 ${revealed.has(i) ? '확인됨' : '탭하여 확인'}`}
             onClick={() => !revealed.has(i) && handleReveal(i)}
+            onKeyDown={(e) => e.key === 'Enter' && !revealed.has(i) && handleReveal(i)}
           >
             {!revealed.has(i) ? (
               <div className={styles.hiddenContent}>

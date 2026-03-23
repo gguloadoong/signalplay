@@ -69,6 +69,8 @@ export function SignalCard({ signal, prediction, onPredict, disabled, crowdSenti
               onClick={() => handleDirection(opt.value)}
               disabled={disabled}
               className={styles.predBtn}
+              aria-pressed={isSelected}
+              aria-label={`${signal.title} — ${opt.label} 예측`}
               style={isSelected ? { background: PRED_COLORS[opt.value], borderColor: PRED_COLORS[opt.value] } : {}}
             >
               {opt.label}
@@ -90,6 +92,8 @@ export function SignalCard({ signal, prediction, onPredict, disabled, crowdSenti
                 onClick={() => handleConfidence(c)}
                 disabled={disabled}
                 className={styles.confBtn}
+                aria-pressed={confidence === c}
+                aria-label={`확신도 ${c}배`}
               >
                 {'🔥'.repeat(c)} x{c}
               </Button>

@@ -13,12 +13,15 @@ export function BottomNav() {
   const navigate = useNavigate()
 
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.nav} role="tablist" aria-label="메인 네비게이션">
       {tabs.map((tab) => {
         const isActive = location.pathname === tab.path
         return (
           <button
             key={tab.path}
+            role="tab"
+            aria-selected={isActive}
+            aria-label={tab.label}
             className={`${styles.tab} ${isActive ? styles.active : ''}`}
             onClick={() => navigate(tab.path)}
           >
