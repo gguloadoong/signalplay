@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Badge } from '@toss/tds-mobile'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { SignalCardSkeleton } from '@/components/shared/Skeleton'
 import { useGameStore } from '@/stores/gameStore'
-import { MOCK_YESTERDAY_RESULTS, MOCK_YESTERDAY_SIGNALS } from '@/lib/mockData'
+import { useResults } from '@/hooks/useResults'
 import { SCORE_TABLE } from '@/types/signal'
 import { formatScore } from '@/lib/utils/format'
 import { shareResult } from '@/lib/utils/share'
@@ -21,8 +22,9 @@ const COLORS = {
 export function ResultPage() {
   const navigate = useNavigate()
   const { stats } = useGameStore()
+  const { data: resultsData, loading } = useResults()
   const [revealed, setRevealed] = useState<Set<number>>(new Set())
-  const results = MOCK_YESTERDAY_RESULTS
+  const results = resultsData?.results ?? []
 
   const handleReveal = (index: number) => {
     setRevealed((prev) => new Set([...prev, index]))
@@ -61,6 +63,19 @@ export function ResultPage() {
 
   const allRevealed = revealed.size === results.length
 
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <h1 className={styles.title}>🎯 어제의 결과</h1>
+        <div className={styles.cards}>
+          <SignalCardSkeleton />
+          <SignalCardSkeleton />
+          <SignalCardSkeleton />
+        </div>
+      </div>
+    )
+  }
+
   if (results.length === 0) {
     return (
       <div className={styles.page}>
@@ -87,13 +102,13 @@ export function ResultPage() {
             role="button"
             tabIndex={0}
             aria-expanded={revealed.has(i)}
-            aria-label={`${MOCK_YESTERDAY_SIGNALS[i]} 결과 ${revealed.has(i) ? '확인됨' : '탭하여 확인'}`}
+            aria-label={`${result.title ?? '시그널'} 결과 ${revealed.has(i) ? '확인됨' : '탭하여 확인'}`}
             onClick={() => !revealed.has(i) && handleReveal(i)}
             onKeyDown={(e) => e.key === 'Enter' && !revealed.has(i) && handleReveal(i)}
           >
             {!revealed.has(i) ? (
               <div className={styles.hiddenContent}>
-                <p className={styles.hiddenTitle}>{MOCK_YESTERDAY_SIGNALS[i]}</p>
+                <p className={styles.hiddenTitle}>{result.title ?? `시그널 ${i + 1}`}</p>
                 <p className={styles.tapHint}>탭하여 결과 확인 👆</p>
               </div>
             ) : (
@@ -105,7 +120,7 @@ export function ResultPage() {
                 >
                   {result.isCorrect ? '✅ 정답!' : '❌ 오답'}
                 </Badge>
-                <h3 className={styles.resultTitle}>{MOCK_YESTERDAY_SIGNALS[i]}</h3>
+                <h3 className={styles.resultTitle}>{result.title ?? `시그널 ${i + 1}`}</h3>
                 <div className={styles.resultDetail}>
                   <span>
                     내 예측:{' '}
