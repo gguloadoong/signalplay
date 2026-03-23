@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { MOCK_FEED } from '@/lib/mockData'
+import { FeedCardSkeleton } from '@/components/shared/Skeleton'
+import { useFeed } from '@/hooks/useFeed'
 import type { FeedItem } from '@/lib/mockData'
 import styles from './FeedPage.module.css'
 
@@ -67,8 +68,9 @@ function NewsCard({ item }: { item: FeedItem & { type: 'news' } }) {
 }
 
 export function FeedPage() {
+  const { feed, loading } = useFeed()
   const [filter, setFilter] = useState<FeedFilter>('all')
-  const filtered = filter === 'all' ? MOCK_FEED : MOCK_FEED.filter((item) => item.type === filter)
+  const filtered = filter === 'all' ? feed : feed.filter((item) => item.type === filter)
 
   return (
     <div className={styles.page}>
@@ -88,7 +90,13 @@ export function FeedPage() {
       </div>
 
       <div className={styles.feed}>
-        {filtered.length === 0 ? (
+        {loading ? (
+          <>
+            <FeedCardSkeleton />
+            <FeedCardSkeleton />
+            <FeedCardSkeleton />
+          </>
+        ) : filtered.length === 0 ? (
           <EmptyState
             emoji="📭"
             title="해당 피드가 없어요"

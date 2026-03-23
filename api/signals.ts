@@ -58,7 +58,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           } else {
             jsonStr = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
           }
-          let signals
           const signals_typed = JSON.parse(jsonStr)
 
           if (Array.isArray(signals_typed) && signals_typed.length === 3) {
