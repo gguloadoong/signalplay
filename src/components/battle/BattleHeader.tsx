@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { StreakBadge } from '@/components/shared/StreakBadge'
 import type { BattleType } from '@/types/signal'
 import styles from './BattleHeader.module.css'
 
@@ -47,9 +48,7 @@ export function BattleHeader({ type, deadline, streak }: Props) {
         <h1 className={styles.title}>
           {emoji} {label}
         </h1>
-        {streak > 0 && (
-          <div className={styles.streak}>🔥 {streak}일</div>
-        )}
+        {streak > 0 && <StreakBadge streak={streak} size="sm" />}
       </div>
       <div className={styles.meta}>
         <span className={styles.countdown}>

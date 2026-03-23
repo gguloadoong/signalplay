@@ -8,6 +8,7 @@ import { MOCK_YESTERDAY_RESULTS, MOCK_YESTERDAY_SIGNALS } from '@/lib/mockData'
 import { SCORE_TABLE } from '@/types/signal'
 import { formatScore } from '@/lib/utils/format'
 import { shareResult } from '@/lib/utils/share'
+import { StreakBadge } from '@/components/shared/StreakBadge'
 import styles from './ResultPage.module.css'
 
 const LABELS = { bullish: '호재', bearish: '악재', neutral: '영향없음' } as const
@@ -140,7 +141,7 @@ export function ResultPage() {
             )}
           </div>
           <div className={styles.summaryStreak}>
-            🔥 {stats.currentStreak || 7}일 연속 참여 · 주간 랭킹 {stats.weeklyRank || 8}위
+            <StreakBadge streak={stats.currentStreak || 7} size="md" /> · 주간 랭킹 {stats.weeklyRank || 8}위
           </div>
           <div className={styles.actions}>
             <Button size="medium" variant="weak" color="primary" onClick={handleShare}>
