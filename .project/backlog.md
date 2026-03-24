@@ -11,19 +11,19 @@
 - [x] [FEATURE] 4기둥 피벗 — VotePage + AI 점쟁이 + 군중 비율 (#36 merged)
 - [x] [BUG] E2E 테스트 피벗 반영 (#38 merged)
 - [x] [PROCESS] 구 코드 정리 (BattlePage/FeedPage/RankingPage 삭제)
-- [ ] [FEATURE] Gemini 실시간 질문 생성 (현재 폴백 목데이터 → 실제 뉴스 기반)
+- [x] [FEATURE] Gemini 실시간 질문 생성 — Google Search Grounding (#42 PR review 중)
 - [ ] [PROCESS] Supabase 프로젝트 생성 + 스키마 적용 (CEO 액션)
 
 ---
 
 ## P2 — 이번 스프린트
 
-- [ ] [FEATURE] 공유 카드 — 투표 결과 + 캐릭터 리포트 이미지 생성 (바이럴 핵심)
-- [ ] [FEATURE] 캐릭터 적중률 리더보드 (월간 집계)
-- [ ] [UX] 투표 완료 후 성공 애니메이션
+- [x] [FEATURE] 공유 카드 — 텍스트 공유 (#40 merged) / 이미지 생성은 P3로 이동
+- [ ] [FEATURE] 캐릭터 적중률 리더보드 (월간 집계) — Supabase 설정 후 진행
+- [x] [UX] 투표 완료 후 성공 애니메이션 (#44 PR review 중)
 - [ ] [FEATURE] 토스 로그인 연동 (Bedrock SDK)
 - [ ] [FEATURE] AdMob 리워드 광고 (결과 화면)
-- [ ] [PERFORMANCE] 번들 분석 — 미사용 의존성 제거 (TDS 라이브러리 등)
+- [x] [PERFORMANCE] 번들 분석 — TDS/Emotion 제거 완료 (f18d704)
 
 ---
 
