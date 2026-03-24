@@ -1,181 +1,130 @@
-import { useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
-import { SignalCardSkeleton } from '@/components/shared/Skeleton'
-import { useGameStore } from '@/stores/gameStore'
-import { useResults } from '@/hooks/useResults'
-import { SCORE_TABLE } from '@/types/signal'
-import { formatScore } from '@/lib/utils/format'
-import { shareResult } from '@/lib/utils/share'
-import { StreakBadge } from '@/components/shared/StreakBadge'
+import { CharacterCard } from '@/components/vote/CharacterCard'
+import { CrowdBar } from '@/components/vote/CrowdBar'
+import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 import styles from './ResultPage.module.css'
 
-const LABELS = { bullish: '호재', bearish: '악재', neutral: '영향없음' } as const
-const COLORS = {
-  bullish: 'var(--color-success)',
-  bearish: 'var(--color-danger)',
-  neutral: 'var(--color-warning)',
+const OUTCOME_LABELS = { bullish: '호재', bearish: '악재', neutral: '글쎄' } as const
+const OUTCOME_COLORS = {
+  bullish: 'green',
+  bearish: 'red',
+  neutral: 'yellow',
 } as const
 
 export function ResultPage() {
   const navigate = useNavigate()
-  const { stats } = useGameStore()
-  const { data: resultsData, loading } = useResults()
-  const [revealed, setRevealed] = useState<Set<number>>(new Set())
-  const results = resultsData?.results ?? []
+  const result = MOCK_VOTE_RESULT
 
-  const handleReveal = (index: number) => {
-    setRevealed((prev) => new Set([...prev, index]))
-  }
-
-  const { correctCount, isPerfect, finalScore } = useMemo(() => {
-    const total = results.reduce((acc, r) => acc + r.score, 0)
-    const correct = results.filter((r) => r.isCorrect).length
-    const perfect = correct === results.length
-    return {
-      correctCount: correct,
-      isPerfect: perfect,
-      finalScore: total + (perfect ? SCORE_TABLE.perfectBonus : 0),
-    }
-  }, [results])
-
-  const [shareMsg, setShareMsg] = useState('')
-
-  const handleShare = useCallback(async () => {
-    const result = await shareResult({
-      correctCount,
-      totalCount: results.length,
-      score: finalScore,
-      streak: stats.currentStreak || 7,
-      isPerfect,
-      rank: stats.weeklyRank || 8,
-    })
-    if (result === 'copied') {
-      setShareMsg('클립보드에 복사되었습니다!')
-      setTimeout(() => setShareMsg(''), 2000)
-    } else if (result === 'failed') {
-      setShareMsg('공유에 실패했습니다')
-      setTimeout(() => setShareMsg(''), 2000)
-    }
-  }, [correctCount, results.length, finalScore, isPerfect, stats])
-
-  const allRevealed = revealed.size === results.length
-
-  if (loading) {
-    return (
-      <div className={styles.page}>
-        <h1 className={styles.title}>🎯 어제의 결과</h1>
-        <div className={styles.cards}>
-          <SignalCardSkeleton />
-          <SignalCardSkeleton />
-          <SignalCardSkeleton />
-        </div>
-      </div>
-    )
-  }
-
-  if (results.length === 0) {
+  if (!result) {
     return (
       <div className={styles.page}>
         <EmptyState
           emoji="🔮"
           title="아직 결과가 없어요"
-          description="오늘의 배틀에 참여하면 내일 결과를 확인할 수 있어요"
-          action={{ label: '배틀 참여하기', onClick: () => navigate('/') }}
+          description="오늘의 투표에 참여하면 내일 결과를 확인할 수 있어요"
+          action={{ label: '투표하러 가기', onClick: () => navigate('/') }}
         />
       </div>
     )
   }
 
+  const crowdCorrect = result.crowdResult.bullish >= result.crowdResult.bearish &&
+    result.crowdResult.bullish >= result.crowdResult.neutral
+      ? result.actualOutcome === 'bullish'
+      : result.crowdResult.bearish >= result.crowdResult.neutral
+        ? result.actualOutcome === 'bearish'
+        : result.actualOutcome === 'neutral'
+
+  const correctCount = result.characters.filter((c) => c.isCorrect).length
+
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>🎯 어제의 결과</h1>
-      <p className={styles.subtitle}>카드를 탭하여 결과를 확인하세요</p>
 
-      <div className={styles.cards}>
-        {results.map((result, i) => (
-          <div
-            key={i}
-            className={`${styles.card} ${revealed.has(i) ? styles.revealed : styles.hidden}`}
-            role="button"
-            tabIndex={0}
-            aria-expanded={revealed.has(i)}
-            aria-label={`${result.title ?? '시그널'} 결과 ${revealed.has(i) ? '확인됨' : '탭하여 확인'}`}
-            onClick={() => !revealed.has(i) && handleReveal(i)}
-            onKeyDown={(e) => e.key === 'Enter' && !revealed.has(i) && handleReveal(i)}
+      {/* Question recap */}
+      <div className={styles.questionCard}>
+        <p className={styles.questionText}>{result.title}</p>
+        <div className={styles.outcomeRow}>
+          <span className={styles.outcomeLabel}>실제 결과</span>
+          <Badge
+            size="medium"
+            variant="fill"
+            color={OUTCOME_COLORS[result.actualOutcome]}
           >
-            {!revealed.has(i) ? (
-              <div className={styles.hiddenContent}>
-                <p className={styles.hiddenTitle}>{result.title ?? `시그널 ${i + 1}`}</p>
-                <p className={styles.tapHint}>탭하여 결과 확인 👆</p>
-              </div>
-            ) : (
-              <div className={styles.revealedContent}>
-                <Badge
-                  size="small"
-                  variant="fill"
-                  color={result.isCorrect ? 'green' : 'red'}
-                >
-                  {result.isCorrect ? '✅ 정답!' : '❌ 오답'}
-                </Badge>
-                <h3 className={styles.resultTitle}>{result.title ?? `시그널 ${i + 1}`}</h3>
-                <div className={styles.resultDetail}>
-                  <span>
-                    내 예측:{' '}
-                    <b style={{ color: COLORS[result.myPrediction] }}>
-                      {LABELS[result.myPrediction]}
-                    </b>{' '}
-                    <Badge size="xsmall" variant="weak" color="blue">x{result.myConfidence}</Badge>
-                  </span>
-                  <span>
-                    실제:{' '}
-                    <b style={{ color: COLORS[result.actualResult] }}>
-                      {LABELS[result.actualResult]}
-                    </b>
-                  </span>
-                </div>
-                <p className={styles.comment}>{result.resultComment}</p>
-                <div className={styles.scoreRow}>
-                  <span className={result.score >= 0 ? styles.plus : styles.minus}>
-                    {formatScore(result.score)}점
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
+            {OUTCOME_LABELS[result.actualOutcome]}
+          </Badge>
+        </div>
       </div>
 
-      {allRevealed && (
-        <div className={styles.summary}>
-          {isPerfect && <div className={styles.perfect}>🎉 PERFECT!</div>}
-          <div className={styles.summaryScore}>
-            적중 {correctCount}/{results.length} · 총점{' '}
-            <b className={finalScore >= 0 ? styles.plus : styles.minus}>
-              {formatScore(finalScore)}점
-            </b>
-            {isPerfect && (
-              <Badge size="xsmall" variant="fill" color="blue">+{SCORE_TABLE.perfectBonus} 보너스</Badge>
-            )}
-          </div>
-          <div className={styles.summaryStreak}>
-            <StreakBadge streak={stats.currentStreak || 7} size="md" /> · 주간 랭킹 {stats.weeklyRank || 8}위
-          </div>
-          <div className={styles.actions}>
-            <Button size="medium" variant="weak" color="primary" onClick={handleShare}>
-              결과 공유하기
-            </Button>
-            <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
-              오늘의 배틀 →
-            </Button>
-          </div>
+      {/* Crowd result */}
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h3 className={styles.sectionTitle}>군중의 선택</h3>
+          <Badge
+            size="small"
+            variant="fill"
+            color={crowdCorrect ? 'green' : 'red'}
+          >
+            {crowdCorrect ? '✅ 군중 정답' : '❌ 군중 오답'}
+          </Badge>
         </div>
-      )}
+        <CrowdBar result={result.crowdResult} animated={false} />
+      </div>
 
-      {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
+      {/* Character results */}
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h3 className={styles.sectionTitle}>AI 점쟁이 결과</h3>
+          <span className={styles.score}>{correctCount}/5 적중</span>
+        </div>
+        <div className={styles.characters}>
+          {result.characters.map((char) => (
+            <CharacterCard
+              key={char.character}
+              prediction={char}
+              isCorrect={char.isCorrect}
+              showCorrect
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* AI comment */}
+      <div className={styles.aiComment}>
+        <span className={styles.aiLabel}>AI 총평</span>
+        <p>{result.aiComment}</p>
+      </div>
+
+      {/* This month leaderboard */}
+      <div className={styles.section}>
+        <h3 className={styles.sectionTitle}>이번 달 적중률 순위</h3>
+        <div className={styles.leaderboard}>
+          {MOCK_CHARACTER_ACCURACY.map((c, i) => (
+            <div key={c.character} className={styles.leaderRow}>
+              <span className={styles.leaderRank}>{i + 1}</span>
+              <span className={styles.leaderEmoji}>{c.emoji}</span>
+              <span className={styles.leaderName}>{c.name}</span>
+              <div className={styles.leaderBarWrap}>
+                <div
+                  className={styles.leaderBar}
+                  style={{ width: `${c.rate}%` }}
+                />
+              </div>
+              <span className={styles.leaderRate}>{c.rate}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className={styles.actions}>
+        <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
+          오늘 투표하기 →
+        </Button>
+      </div>
 
       <Disclaimer />
     </div>

@@ -1,15 +1,18 @@
 import type { Battle, BattleResult, CrowdSentiment, UserStats } from '@/types/signal'
+import type { Question, CharacterPrediction, CrowdResult, VoteResult } from '@/types/vote'
 
 const today = new Date().toISOString().split('T')[0]
+const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
 
 /** 오늘 15:30 KST를 UTC로 (마감 시간) */
 function todayDeadline(hour: number, min: number): string {
   const d = new Date()
   d.setHours(hour, min, 0, 0)
-  // 마감이 이미 지났으면 내일로
   if (d.getTime() < Date.now()) d.setDate(d.getDate() + 1)
   return d.toISOString()
 }
+
+// ─── Legacy battle mock data (kept for backward compat) ───────────────────────
 
 export const MOCK_BATTLES: Battle[] = [
   {
@@ -176,3 +179,145 @@ export const MOCK_FEED = [
 ]
 
 export type FeedItem = (typeof MOCK_FEED)[number]
+
+// ─── Vote mock data ────────────────────────────────────────────────────────────
+
+export const MOCK_TODAY_QUESTION: Question = {
+  id: `question-${today}`,
+  date: today,
+  title: '삼성전자 1분기 실적 발표',
+  question: '이번 분기 실적, 삼성전자 주가에 호재일까?',
+  category: '종목',
+  totalVotes: 4821,
+  deadline: todayDeadline(15, 30),
+  isActive: true,
+}
+
+export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
+  {
+    character: 'quant',
+    name: '퀀트봇',
+    emoji: '📊',
+    prediction: 'bullish',
+    reasoning: '최근 3개월 EPS 상향 조정 빈도가 역대 최고 수준. 기관 순매수 신호 지속.',
+    methodology: '기술적 분석',
+  },
+  {
+    character: 'professor',
+    name: '논문쟁이',
+    emoji: '🎓',
+    prediction: 'neutral',
+    reasoning: '반도체 사이클 논문 기준 현재는 중간 회복 국면. 큰 방향 전환은 2분기 이후.',
+    methodology: '학술 논문',
+  },
+  {
+    character: 'reporter',
+    name: '속보왕',
+    emoji: '📰',
+    prediction: 'bullish',
+    reasoning: '업계 소식통 3곳 모두 HBM 수주 증가 전망. 공식 발표 전 선반영 가능성.',
+    methodology: '뉴스 센티멘트',
+  },
+  {
+    character: 'pattern',
+    name: '패턴술사',
+    emoji: '🔮',
+    prediction: 'bearish',
+    reasoning: '과거 5년 실적 발표 당일 패턴: 기대치 충족해도 -1~2% "소문에 사고 뉴스에 팔기".',
+    methodology: '패턴 매칭',
+  },
+  {
+    character: 'chimp',
+    name: '다트침팬지',
+    emoji: '🐵',
+    prediction: 'neutral',
+    reasoning: '🎯 다트가 글쎄에 꽂혔어요! (근거: 없음)',
+    methodology: '다트 던지기',
+  },
+]
+
+export const MOCK_CROWD_RESULT: CrowdResult = {
+  bullish: 58,
+  bearish: 27,
+  neutral: 15,
+  totalVotes: 4821,
+}
+
+export const MOCK_YESTERDAY_QUESTION: Question = {
+  id: `question-${yesterday}`,
+  date: yesterday,
+  title: '연준 파월 의장 발언',
+  question: '파월 발언이 코스피에 호재로 작용했을까?',
+  category: '매크로',
+  totalVotes: 6203,
+  deadline: new Date(Date.now() - 86400000).toISOString(),
+  isActive: false,
+}
+
+export const MOCK_VOTE_RESULT: VoteResult = {
+  questionId: `question-${yesterday}`,
+  title: '파월 발언이 코스피에 호재로 작용했을까?',
+  actualOutcome: 'bullish',
+  crowdResult: {
+    bullish: 62,
+    bearish: 25,
+    neutral: 13,
+    totalVotes: 6203,
+  },
+  characters: [
+    {
+      character: 'quant',
+      name: '퀀트봇',
+      emoji: '📊',
+      prediction: 'bullish',
+      reasoning: '금리 동결 시 역사적으로 나스닥·코스피 동반 상승.',
+      methodology: '기술적 분석',
+      isCorrect: true,
+    },
+    {
+      character: 'professor',
+      name: '논문쟁이',
+      emoji: '🎓',
+      prediction: 'bullish',
+      reasoning: '테일러 준칙 모델상 현재 금리는 중립 수준 이상. 동결 발언은 완화 신호.',
+      methodology: '학술 논문',
+      isCorrect: true,
+    },
+    {
+      character: 'reporter',
+      name: '속보왕',
+      emoji: '📰',
+      prediction: 'neutral',
+      reasoning: '발언 수위가 예상보다 덜 완화적. 시장 반응 제한적일 것.',
+      methodology: '뉴스 센티멘트',
+      isCorrect: false,
+    },
+    {
+      character: 'pattern',
+      name: '패턴술사',
+      emoji: '🔮',
+      prediction: 'bearish',
+      reasoning: '파월 발언 후 단기 차익실현 패턴 반복.',
+      methodology: '패턴 매칭',
+      isCorrect: false,
+    },
+    {
+      character: 'chimp',
+      name: '다트침팬지',
+      emoji: '🐵',
+      prediction: 'bullish',
+      reasoning: '🎯 다트가 호재에 꽂혔어요! (근거: 없음)',
+      methodology: '다트 던지기',
+      isCorrect: true,
+    },
+  ],
+  aiComment: '군중의 62%가 호재를 예상했고 실제로도 코스피 +1.1% 상승했습니다. 퀀트봇과 논문쟁이가 정확하게 맞혔네요. 침팬지도 이번엔 운 좋게 적중!',
+}
+
+export const MOCK_CHARACTER_ACCURACY = [
+  { character: 'quant', name: '퀀트봇', emoji: '📊', correct: 18, total: 25, rate: 72 },
+  { character: 'reporter', name: '속보왕', emoji: '📰', correct: 17, total: 25, rate: 68 },
+  { character: 'professor', name: '논문쟁이', emoji: '🎓', correct: 16, total: 25, rate: 64 },
+  { character: 'pattern', name: '패턴술사', emoji: '🔮', correct: 15, total: 25, rate: 60 },
+  { character: 'chimp', name: '다트침팬지', emoji: '🐵', correct: 13, total: 25, rate: 52 },
+]

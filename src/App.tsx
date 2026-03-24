@@ -4,10 +4,8 @@ import { BottomNav } from '@/components/shared/BottomNav'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { Onboarding } from '@/components/shared/Onboarding'
 import { PageTransition } from '@/components/shared/PageTransition'
-import { BattlePage } from '@/pages/BattlePage'
-import { FeedPage } from '@/pages/FeedPage'
+import { VotePage } from '@/pages/VotePage'
 import { ResultPage } from '@/pages/ResultPage'
-import { RankingPage } from '@/pages/RankingPage'
 import './App.css'
 
 const ONBOARDING_KEY = 'signalplay-onboarded'
@@ -29,10 +27,8 @@ function App() {
       <main className="app-content">
         <PageTransition>
         <Routes>
-          <Route path="/" element={<BattlePage />} />
-          <Route path="/feed" element={<FeedPage />} />
+          <Route path="/" element={<VotePage />} />
           <Route path="/result" element={<ResultPage />} />
-          <Route path="/ranking" element={<RankingPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         </PageTransition>

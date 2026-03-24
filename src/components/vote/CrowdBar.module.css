@@ -1,0 +1,55 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.barWrap {
+  display: flex;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.segment {
+  height: 100%;
+  transition: width 0s;
+}
+
+.animated {
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bullish  { background: var(--color-success); }
+.neutral  { background: var(--color-warning); }
+.bearish  { background: var(--color-danger); }
+
+.legend {
+  display: flex;
+  gap: 16px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bullishDot { background: var(--color-success); }
+.neutralDot { background: var(--color-warning); }
+.bearishDot { background: var(--color-danger); }
