@@ -34,6 +34,6 @@
 - [ ] [FEATURE] 관심 종목 설정 → 개인화 질문
 - [ ] [FEATURE] 캐릭터별 팔로우/구독
 - [ ] [FEATURE] 한줄 의견 (텍스트 코멘트)
-- [ ] [UX] 온보딩 피벗 반영 (캐릭터 소개)
+- [x] [UX] 온보딩 피벗 반영 — 4기둥 슬라이드 (#50 PR review 중)
 - [ ] [PERFORMANCE] Lighthouse 90+ 목표
-- [ ] [DOCS] README 피벗 반영
+- [x] [DOCS] README 피벗 반영 (da0e078 merged)
