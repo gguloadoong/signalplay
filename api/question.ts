@@ -1,5 +1,24 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { QUESTION_PROMPT, CHARACTER_PROMPT, CHARACTER_META, type CharacterKey } from '../src/lib/prompts'
+
+// 프롬프트와 메타데이터를 인라인 (Vercel Serverless에서 src/ import 불가)
+const CHARACTER_META: Record<string, { name: string; emoji: string; methodology: string }> = {
+  quant: { name: '퀀트봇', emoji: '📊', methodology: '기술적 분석' },
+  professor: { name: '논문쟁이', emoji: '🎓', methodology: '학술 논문' },
+  reporter: { name: '속보왕', emoji: '📰', methodology: '뉴스 센티멘트' },
+  pattern: { name: '패턴술사', emoji: '🔮', methodology: '패턴 매칭' },
+  chimp: { name: '다트침팬지', emoji: '🐵', methodology: '다트 던지기' },
+}
+
+const QUESTION_PROMPT = `당신은 투자 뉴스 편집자입니다. 오늘의 주요 경제/주식 이슈 중에서 투자자들의 의견이 갈릴 만한 질문 1개를 만들어주세요.
+좋은 질문: 구체적 종목/이벤트 기반, 호재/악재 의견 갈림, 오늘/이번 주 실제 이벤트.
+나쁜 질문: 추상적, 암호화폐 관련.
+JSON으로만 응답: {"title":"이슈 제목(15자)","question":"투표 질문(25자, ~일까?)","category":"종목|지수|매크로"}`
+
+const CHARACTER_PROMPT = `당신은 5명의 AI 투자 점쟁이입니다. 질문에 대해 각자 방법론으로 예측합니다.
+질문: {QUESTION_TITLE} — {QUESTION_TEXT}
+캐릭터: 1.퀀트봇(기술적분석) 2.논문쟁이(학술논문/행동경제학) 3.속보왕(뉴스센티멘트) 4.패턴술사(과거패턴매칭) 5.다트침팬지(랜덤)
+규칙: 5명 전원 같은 예측 금지(최소 2명 다른 의견). 근거 1~2문장 필수(침팬지 제외). 매수/매도 추천 금지. 암호화폐 금지.
+JSON 배열로만 응답: [{"character":"quant","prediction":"bullish|bearish|neutral","reasoning":"근거"},{"character":"professor",...},{"character":"reporter",...},{"character":"pattern",...},{"character":"chimp","prediction":"...","reasoning":"🎯 다트가 [호재/악재/글쎄]에 꽂혔어요!"}]`
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
@@ -63,7 +82,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const enrichedCharacters = characters.map((c) => {
-    const key = c.character as CharacterKey
+    const key = c.character as string
     const meta = CHARACTER_META[key] ?? CHARACTER_META.chimp
     return {
       character: key,
