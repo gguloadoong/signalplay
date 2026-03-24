@@ -4,18 +4,18 @@ import styles from './Onboarding.module.css'
 const SLIDES = [
   {
     emoji: '⚡',
-    title: '마켓 배틀에 오신 걸 환영합니다',
-    description: '매일 AI가 분석한 경제 시그널을 확인하고\n호재/악재를 예측하는 게임이에요',
+    title: '오늘의 투자 시그널, 예측해보세요',
+    description: 'AI가 실시간 뉴스를 분석해\n매일 새로운 투자 질문을 던져요',
   },
   {
-    emoji: '🎯',
-    title: '예측하고 결과를 확인하세요',
-    description: '확신도를 걸어 점수를 극대화하고\n장 마감 후 결과를 확인해보세요',
+    emoji: '🔮',
+    title: 'AI 점쟁이 5명의 예측을 확인하세요',
+    description: '퀀트봇·논문쟁이·속보왕·패턴술사·다트침팬지\n각자 다른 이론으로 호재/악재를 예측해요',
   },
   {
-    emoji: '🏆',
-    title: '랭킹에서 경쟁하세요',
-    description: '매주 리셋되는 리더보드에서\n예측왕에 도전해보세요',
+    emoji: '👥',
+    title: '군중과 비교하고, 적중률을 쌓으세요',
+    description: '투표 후 군중 비율이 공개돼요\n나는 군중과 같을까, 다를까?',
   },
 ]
 
