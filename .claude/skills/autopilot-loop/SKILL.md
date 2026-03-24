@@ -1,5 +1,5 @@
 ---
-name: loop
+name: autopilot-loop
 description: 자율 팀 운영 사이클 (오토파일럿) — kickoff 이후 자동 실행, 백로그를 완료할 때까지 자율 반복
 user_invocable: true
 triggers:
