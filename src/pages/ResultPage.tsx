@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Badge } from '@toss/tds-mobile'
+import { TdsButton as Button } from '@/components/shared/TdsButton'
+import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { SignalCardSkeleton } from '@/components/shared/Skeleton'

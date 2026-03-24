@@ -1,0 +1,25 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:not(:disabled):active { opacity: 0.7; }
+
+.small { padding: 6px 12px; font-size: 13px; border-radius: 6px; }
+.medium { padding: 10px 18px; font-size: 15px; }
+.large { padding: 14px 24px; font-size: 16px; border-radius: 12px; }
+.full { width: 100%; }
+
+.fill.primary { background: var(--color-primary); color: #fff; }
+.fill.light { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+.fill.danger { background: var(--color-danger); color: #fff; }
+
+.weak.primary { background: #e8f4fd; color: var(--color-primary); }
+.weak.light { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+.weak.danger { background: #ffebee; color: var(--color-danger); }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Badge } from '@toss/tds-mobile'
+import { TdsButton as Button } from '@/components/shared/TdsButton'
+import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { SignalCard } from '@/components/battle/SignalCard'
 import { BattleHeader } from '@/components/battle/BattleHeader'
 import { Disclaimer } from '@/components/shared/Disclaimer'

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button, Badge } from '@toss/tds-mobile'
+import { TdsButton as Button } from '@/components/shared/TdsButton'
+import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import type { Signal, UserPrediction, Prediction, Confidence, CrowdSentiment } from '@/types/signal'
 import styles from './SignalCard.module.css'
 

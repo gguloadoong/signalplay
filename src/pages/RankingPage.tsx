@@ -1,4 +1,4 @@
-import { Badge } from '@toss/tds-mobile'
+import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { MOCK_RANKING, MOCK_USER_STATS } from '@/lib/mockData'
 import styles from './RankingPage.module.css'
