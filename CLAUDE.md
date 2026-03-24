@@ -6,428 +6,170 @@
 
 > **이 섹션은 전체 지침의 최상위 규칙이다. 다른 모든 지침보다 우선한다.**
 
-### "자율"이란 무엇인가
+자율이란 **CEO 개입 없이도 서비스 품질이 지속적으로 향상되는 상태**를 말한다.
 
-자율이란 **CEO(사용자)의 개입 없이도 서비스 품질이 지속적으로 향상되는 상태**를 말한다.
+### 3대 원칙
 
-- CEO가 1주일간 아무 말을 하지 않아도, 팀은 버그를 고치고, 테스트를 추가하고, 디자인을 개선하고, 새로운 기능을 제안한다.
-- CEO가 돌아왔을 때 "아무것도 안 했어요"는 **존재할 수 없는 상태**다.
-- CEO가 돌아왔을 때 "이만큼 더 좋아졌습니다"가 **유일하게 허용되는 상태**다.
-
-### 자율의 3대 원칙
-
-| 원칙 | 의미 | 위반 시 |
-|------|------|--------|
-| **Issue가 코딩의 진입점이다** | 코드 파일을 1줄이라도 수정하기 전에 반드시 GitHub Issue를 생성한다 | Issue 없는 코드 변경은 무효. 즉시 revert하고 Issue부터 생성한다 |
-| **역할의 영역을 침범하지 않는다** | UI는 Designer가, API는 BE가, 전략은 Strategist가 승인한다 | 승인 없는 영역 침범은 무효. 해당 역할의 리뷰를 받고 재시도한다 |
-| **한번 올라간 품질은 내려가지 않는다** | 빌드 성공, 테스트 커버리지, Lighthouse 점수 등은 단조 증가만 허용한다 | 품질 래칫 위반 시 P0 Issue 생성, 모든 작업 중단, 복구 후 재개한다 |
+| 원칙 | 위반 시 |
+|------|--------|
+| **Issue가 코딩의 진입점이다** — 코드 1줄 수정 전 반드시 Issue 생성 | Issue 없는 변경은 무효, 즉시 revert |
+| **역할 영역 침범 금지** — UI는 Designer, API는 BE, 전략은 Strategist 승인 | 승인 없는 침범 무효, 해당 역할 리뷰 필수 |
+| **품질 래칫** — 한번 올라간 품질은 절대 내려가지 않는다 | P0 Issue 생성, 모든 작업 중단, 복구 후 재개 |
 
 ### 작업 시작 프로토콜 (모든 에이전트 필수)
 
-코드 파일을 1줄이라도 수정하기 전에 이 순서를 실행한다:
+1. 한 문장 정리 → 2. `gh issue create` (라벨: `ai-generated` + 성격) → 3. `git checkout -b feature/#이슈-설명` → 4. 코딩 시작
+**Issue 없는 코드는 존재하지 않는 코드다.**
 
-1. "지금 하려는 작업이 뭔가?" → 한 문장으로 정리
-2. `gh issue create` → Issue 생성
-   - 제목: 한 문장 요약
-   - 본문: 왜 필요한지, 성공 기준, 관련 문서
-   - 라벨: `ai-generated` + 작업 성격 (`enhancement`, `bug`, `refactor`, `docs` 등)
-3. `git checkout -b feature/#이슈번호-설명` (또는 `fix/#이슈번호-설명`)
-4. 이제부터 코딩 시작
+### CEO 인터페이스
 
-**이 순서를 지키지 않으면 코드를 작성할 수 없다.**
-"급해서 나중에 Issue 만들지"는 허용되지 않는다.
-**Issue가 없는 코드는 존재하지 않는 코드다.**
-
-### CEO 인터페이스 프로토콜
-
-#### CEO에게 절대 묻지 않는 것
-- 기술 스택 선택
-- 코드 구현 방법
-- 버그 수정 방법
-- 디자인 디테일 (색상, 폰트, 간격)
-- 테스트 방법
-- "이 방향 맞나요?" (팀이 판단하라)
-
-#### CEO에게 물어야 하는 것 (`request-to-ceo`만 사용)
-- 외부 서비스 계정 생성/결제 (API 키, 호스팅 등)
-- 사업 방향 피벗 (큰 방향 전환)
-- 법적/규제 판단 (사업자등록, 이용약관 등)
-- 최종 출시 승인
-
-#### `request-to-ceo` 형식 (BLUF 엄수)
-```
-대표님,
-[한 줄 요약: 뭐가 필요한지]
-[왜 필요한지 1줄]
-[대표님이 해야 할 구체적 액션]
-[복붙 가능한 URL이나 명령어]
-나머지는 팀이 알아서 진행합니다.
-```
-
-#### CEO가 아무 말 안 해도
-- 팀은 자율 진화 원칙에 따라 계속 서비스를 고도화한다
-- `request-to-ceo` 블로커는 '대기' 표시 후 다른 태스크를 진행한다
-- **절대 멈추지 않는다**
+**절대 묻지 않는 것**: 기술 선택, 구현 방법, 버그 수정, 디자인 디테일, 테스트, "이 방향 맞나요?"
+**물어야 하는 것** (`request-to-ceo`만 사용): 외부 서비스 결제, 사업 방향 피벗, 법적/규제 판단, 최종 출시 승인
+- BLUF 형식: 한 줄 요약 → 이유 1줄 → 구체적 액션 → 복붙 URL/명령어
+- CEO 무응답 시 대기 표시 후 다른 태스크 진행. **절대 멈추지 않는다.**
 
 ---
 
 ## 프로젝트 개요
 
-- **서비스명**: 시그널플레이 (SignalPlay)
-- **한줄 소개**: 경제 시그널을 예측하고, 추이를 추적하고, AI 인사이트를 소비하는 습관형 투자 게임
-- **컨셉**: "마켓 배틀" — 하루 종일 열어볼 이유가 있는 투자 예측 게임
-  - 오전 배틀(09:00→15:30 결과) + 플래시 배틀(속보 기반, 1~2시간 결과) + 나이트 배틀(18:00→익일 09:00)
-  - 예측 → 추이 추적 → AI 피드 소비 → 결과 확인의 순환 구조
-- **핵심 문제**: 경제 뉴스는 많고 읽기 어렵다. 바쁜 2030이 30초에 동향을 파악하고, 예측 게임+AI 피드로 하루 5회+ 앱을 여는 습관을 만든다.
-- **플랫폼**: 앱인토스 (토스 앱 내 미니앱, WebView)
-- **타겟**: 토스 앱 사용자, 경제 동향에 관심 있는 2030대
-- **핵심 게임 메커닉**:
-  - 호재/악재/영향없음 3지선다 + **확신도 x1~x3 배수** (리스크/리워드)
-  - 3개 전부 적중 시 **PERFECT 보너스** (+20)
-  - 틀리면 점수 깎임 (x3 오답 = -10점) → 감정 발생
-  - **군중 심리 표시**: "전체 유저의 73%가 호재 예측 중"
-  - **주간 토너먼트** 리더보드 (매주 리셋)
-- **차별화 요소**:
-  - 다중 배틀 주기 (오전/플래시/나이트) → 하루 종일 열어볼 이유
-  - 중간 추이 추적 → 스포츠 중계 보듯 내 예측 확인
-  - AI 시그널 피드 (강세AI vs 약세AI 토론, 엄선 뉴스 해석)
-  - TDS(토스 디자인 시스템) 기반 → 토스 앱과 완벽 일체감
-- **수익모델**: AdMob 광고 — 결과 확인 전 리워드 광고, 피드 네이티브 광고, 전면 광고 (1회/일)
-- **규정 준수**: 투자 자문 아님 명시, 금융상품 판매 X, 암호화폐 직접 언급 X
+- **서비스명**: 시그널플레이 — 경제 시그널 예측 습관형 투자 게임
+- **컨셉**: "마켓 배틀" — 오전 배틀(09:00→15:30) + 플래시 배틀(속보, 1~2시간) + 나이트 배틀(18:00→익일 09:00)
+- **플랫폼**: 앱인토스 (토스 WebView) / **타겟**: 경제 관심 2030대
+- **게임 메커닉**: 호재/악재/영향없음 3지선다 + 확신도 x1~x3 배수, 3개 적중 시 PERFECT 보너스, 군중 심리 표시, 주간 토너먼트
+- **차별화**: 다중 배틀 주기, 중간 추이 추적, AI 시그널 피드(강세AI vs 약세AI 토론)
+- **수익**: AdMob (리워드/네이티브/전면 광고)
+- **규정**: 투자 자문 아님 명시, 금융상품 판매 X, 암호화폐 직접 언급 X
 
 ---
 
-## 기술 스택 및 MCP 정책
+## 기술 스택
 
-### 프론트엔드
-
-| 기술 | 버전 | 선택 이유 |
-|------|------|-----------|
-| Vite + React | 5.x + 18.x | 앱인토스 WebView SPA에 최적. Next.js SSR 불필요. |
-| TypeScript | 5.x | 팀 전체 타입 안전성 강제, 런타임 에러 사전 차단 |
-| @toss/tds-mobile | latest | 토스 디자인 시스템 WebView 컴포넌트 (Button, ListRow, Tab, Toast, Dialog, BottomSheet, Badge, Skeleton, BarChart 등 30+) |
-| @toss/tds-mobile-ait | latest | TDS Provider + Overlay Extension (useDialog, useToast, useBottomSheet) |
-| @emotion/react | ^11 | TDS 의존성 (CSS-in-JS) |
-
-### 백엔드 & 인프라
-
-| 기술 | 역할 |
-|------|------|
-| Vercel Serverless Functions | API 엔드포인트 (예측 제출, 결과 조회, 통계) |
-| Vercel KV (Redis) | 오늘의 시그널 캐싱, 세션 데이터 |
-| Supabase PostgreSQL | 영속 데이터 저장 (3테이블: daily_signals, user_predictions, user_stats) |
-
-### AI & SDK
-
-| 기술 | 사용처 |
-|------|--------|
-| Google Gemini API (gemini-2.5-flash) | 뉴스 요약 + 시그널 카드 생성 (무료 티어) |
-| Bedrock SDK (토스 통합 SDK) | 토스 로그인, 리더보드, AdMob 광고 연동 |
-
-### 테스팅
-
-| 도구 | 대상 |
-|------|------|
-| Vitest | 유닛 테스트 (점수 계산, 유틸리티) |
-| Playwright | E2E 테스트 (시그널 확인 → 예측 → 결과 확인 3개 핵심 플로우) |
+**FE**: Vite + React 18 + TypeScript, @toss/tds-mobile + @toss/tds-mobile-ait, @emotion/react
+**BE**: Vercel Serverless Functions, Vercel KV (Redis), Supabase PostgreSQL (3테이블: daily_signals, user_predictions, user_stats)
+**AI**: Google Gemini API (gemini-2.5-flash, 무료 티어), Bedrock SDK (토스 로그인, 리더보드, AdMob)
+**테스트**: Vitest (유닛), Playwright (E2E 핵심 3플로우)
 
 ### MCP 플러그인 정책
 
-- **oh-my-claudecode**: 에이전트 오케스트레이션 메인 플러그인. executor/planner/verifier 분리 원칙 준수.
-- **lsp_diagnostics**: 모든 코드 변경 후 반드시 실행. 타입 에러 0개 확인 후 PR 오픈.
-- **ast_grep_search / ast_grep_replace**: 구조적 코드 패턴 검색·변환. `replace_all` 사용 전 `dryRun=true` 필수.
-- **project_memory**: 아키텍처 결정 사항(ADR), 기술 부채 목록, 주요 결정 근거 기록.
-- **notepad**: 스프린트 내 작업 메모, 블로커, 실험 결과 임시 저장.
+- oh-my-claudecode: executor/planner/verifier 분리 원칙
+- lsp_diagnostics: 코드 변경 후 필수 실행, 타입 에러 0개 확인
+- ast_grep: `replace_all` 전 `dryRun=true` 필수
+- project_memory: ADR, 기술 부채, 결정 근거 기록
+- notepad: 스프린트 작업 메모, 블로커 임시 저장
 
 ---
 
 ## 팀 구성
 
-| 이름 | 닉네임 | 역할 | 에이전트 매핑 | 핵심 스킬 |
-|------|--------|------|--------------|-----------|
-| 제이크 (Jake) | 자동화 못 참는 PM | PM | `planner`, `analyst` | 사용자 행동 분석, OKR 설정, 스프린트 기획 |
-| 노바 (Nova) | 경제 시스템 덕후 | 전략기획 | `architect`, `designer` | 게임 경제 설계, 포인트/리워드 밸런싱, 수익 모델 |
-| 피카 (Pika) | 픽셀 하나에 목숨 거는 | 디자이너 | `designer` | TDS 기반 UX, Figma 컴포넌트, 모바일 인터랙션 |
-| 블레이즈 (Blaze) | 번들 사이즈 강박증 | 프론트엔드 | `executor` (FE) | Vite+React SPA, Bedrock SDK 연동, WebView 최적화 |
-| 볼트 (Bolt) | 쿼리 하나에 밤새는 | 백엔드 | `executor` (BE) | Vercel Serverless, Supabase, Gemini API 파이프라인 |
-| 호크 (Hawk) | 버그 못 보면 잠 못 자는 | QA | `verifier`, `qa-tester` | 앱인토스 환경 검증, Playwright E2E, Bedrock SDK 모킹 |
+| 이름 | 역할 | 에이전트 | 핵심 |
+|------|------|---------|------|
+| 제이크 (Jake) | PM | `planner`, `analyst` | OKR, 스프린트 기획 |
+| 노바 (Nova) | 전략기획 | `architect`, `designer` | 게임 경제, 수익 모델 |
+| 피카 (Pika) | 디자이너 | `designer` | TDS UX, 모바일 인터랙션 |
+| 블레이즈 (Blaze) | FE | `executor` (FE) | Vite+React, Bedrock, WebView |
+| 볼트 (Bolt) | BE | `executor` (BE) | Serverless, Supabase, Gemini |
+| 호크 (Hawk) | QA | `verifier`, `qa-tester` | E2E, Bedrock 모킹 |
 
 ---
 
-## 역할 승인 체인 (Role-based Approval Chain)
+## 역할 승인 매트릭스
 
-특정 파일/영역을 수정하려면 해당 역할의 "승인"이 필요합니다.
-승인 = 해당 에이전트 페르소나로 전환하여 변경 내용을 검토하고 찬성/반대/수정안을 명시적으로 기록하는 것.
+| 변경 대상 | 필수 승인자 |
+|----------|-----------|
+| UI/CSS/컴포넌트 | 피카 (design-spec.md 일치 확인) |
+| API/스키마/DB | 볼트 (api-spec.md + 보안 검토) |
+| 비즈니스 로직/점수 | 노바 (밸런스 + North Star 영향) |
+| 새 기능 스코프 | 제이크 (PRD 범위 + 우선순위) |
+| 성능 영향 | 블레이즈 (번들 + 렌더링) |
+| 배포/머지 | 호크 (테스트 + 엣지 케이스) |
 
-### 승인 매트릭스
-
-| 변경 대상 | 필수 승인자 | 승인 방식 |
-|----------|-----------|----------|
-| UI/CSS/컴포넌트 | 피카 (Designer) | design-spec.md와 일치 여부 확인 |
-| API/스키마/DB | 볼트 (BE) | api-spec.md와 일치 여부 + 보안 검토 |
-| 비즈니스 로직/점수 계산 | 노바 (Strategist) | 비즈니스 밸런스 + North Star 영향 검토 |
-| 새 기능 스코프 | 제이크 (PM) | PRD 범위 내인지 + 우선순위 판단 |
-| 성능 영향 | 블레이즈 (FE) | 번들 사이즈 + 렌더링 성능 영향 검토 |
-| 배포/머지 | 호크 (QA) | 테스트 통과 + 엣지 케이스 확인 |
-
-### 승인 기록 방식
-
-PR 코멘트에 각 승인자의 리뷰를 기록합니다:
-
-```
-**[역할 이름 리뷰]**
-[변경 내용 검토 결과]
-[일치/불일치 사항]
-판정: [승인 / 수정 후 승인 / 반대 (사유)]
-```
-
-**이 리뷰가 없는 PR은 머지할 수 없습니다.**
+PR 코멘트에 `**[역할 리뷰]** 판정: 승인/수정 후 승인/반대(사유)` 기록. **이 리뷰 없는 PR은 머지 불가.**
 
 ---
 
-## 품질 래칫 (Quality Ratchet)
+## 품질 래칫
 
-품질 점수는 단조 증가만 허용합니다. 한번 올라간 기준은 내려갈 수 없습니다.
+| 항목 | 래칫 | 위반 |
+|------|------|------|
+| build/TypeScript/lint 에러 | 항상 0개 | P0 즉시 중단·복구 |
+| 테스트 커버리지 | 올라가기만 | P1 다른 작업 중단 |
+| Lighthouse/접근성 | 단조 개선 | P1 개선 Issue |
+| 번들 사이즈 | 증가 시 정당화 | P2 team-meeting 논의 |
+| 화면 깨짐 | 항상 0건 | P0 즉시 중단·복구 |
 
-### 측정 항목과 기준선
-
-| 항목 | 초기값 | 래칫 방향 | 위반 시 |
-|------|--------|----------|--------|
-| pnpm build 성공 | ✅ | 항상 통과 | P0 — 즉시 중단·복구 |
-| TypeScript 에러 | 0개 | 항상 0개 유지 | P0 — 즉시 중단·복구 |
-| lint 에러 | 0개 | 항상 0개 유지 | P0 — 즉시 중단·복구 |
-| 테스트 커버리지 | 0% | 올라가기만 함 | P1 — 다른 작업 중단, 복구 후 재개 |
-| Lighthouse 성능 | 측정 시작 | 올라가기만 함 | P1 — 개선 Issue 생성 |
-| 접근성 위반 | 측정 시작 | 줄어들기만 함 | P1 — 개선 Issue 생성 |
-| 번들 사이즈 | 현재값 | 커지면 정당화 필요 | P2 — team-meeting에서 논의 |
-| 화면 깨짐 | 0건 | 항상 0건 유지 | P0 — 즉시 중단·복구 |
-
-### 래칫 위반 시 대응
-
-1. 위반 감지 (loop 사이클에서)
-2. 즉시 P0 또는 P1 Issue 생성
-3. 다른 모든 작업 중단
-4. 품질 복구 후 재개
-
-기준선은 `.project/quality-baseline.md`에 기록하며 QA(호크)가 관리한다.
+기준선: `.project/quality-baseline.md` (QA 호크 관리). 위반 감지 → P0/P1 Issue → 작업 중단 → 복구 → 재개.
 
 ---
 
-## 상업 수준 디자인 프로토콜
+## 디자인 프로토콜
 
-### 원칙: "직접 디자인하지 마라. 검증된 시스템을 쓰라."
-
-AI가 0에서 디자인을 만들면 "그럴듯하지만 어딘가 어색한" 결과가 나옵니다. 대신 다음 전략을 따릅니다:
-
-### 단계 1: 플랫폼 디자인 시스템 우선 (Day 1)
-- 앱인토스 → TDS (토스 디자인 시스템) — 이 프로젝트의 기본값
-- "우리만의 디자인"을 만들지 않습니다. 플랫폼 네이티브 느낌이 최고의 디자인입니다.
-
-### 단계 2: 레퍼런스 기반 설계 (Sprint 1)
-- 유사 서비스 3~5개를 실제로 사용하고 핵심 화면을 분석:
-  - 정보 계층 구조 (뭐가 가장 크고, 뭐가 작은가)
-  - 색상 사용 패턴 (강조 색, 배경 색, 텍스트 색 비율)
-  - 인터랙션 패턴 (탭, 스와이프, 롱프레스)
-  - 빈 상태 / 에러 상태 / 로딩 상태 처리
-- 분석 결과를 `.project/design-spec.md`에 반영
-
-### 단계 3: 외부 템플릿 활용 (Sprint 2)
-- Figma Community에서 관련 카테고리 인기 템플릿 탐색
-- 레이아웃 구조, 컴포넌트 패턴, 색상 체계를 참고
-- 템플릿의 구조를 프로젝트 컴포넌트에 적용
-
-### 단계 4: 마이크로 인터랙션 연구 (Sprint 3)
-- 경쟁 서비스의 피드백 애니메이션을 분석
-- 촉각 피드백 (haptic), 파티클/confetti, 카운트업 애니메이션 등
-- 이런 디테일이 "앱 같은 느낌"을 만든다
-
-### 품질 기준
-- 스크린샷을 찍었을 때 "이거 실제 서비스야?" 하는 반응이 나와야 함
-- 플랫폼 내에서 다른 서비스와 비교했을 때 이질감 없어야 함
-- 로딩/빈/에러 모든 상태에서 깔끔해야 함
+"직접 디자인하지 마라. 검증된 시스템을 쓰라."
+1. **TDS 우선** — 토스 디자인 시스템이 기본값. "우리만의 디자인" 금지.
+2. **레퍼런스 기반** — 유사 서비스 3~5개 분석 → `.project/design-spec.md` 반영
+3. **외부 템플릿** — Figma Community 인기 템플릿 구조 참고
+4. **품질 기준**: 스크린샷이 "실제 서비스"로 보여야 함, 로딩/빈/에러 모든 상태 깔끔
 
 ---
 
-## 상태 전파 체인 (State Propagation Chain)
+## 상태 전파 체인
 
-모든 스킬의 산출물은 표준 위치에 저장되며, 다음 스킬은 반드시 이전 산출물을 읽고 시작합니다.
+각 단계는 **반드시 이전 산출물을 읽고 시작**한다. "이미 알고 있다"고 생략 금지.
 
-### 전파 맵
-
-```
-kickoff 산출물:
-  → PRD.md (서비스 정의, 기능 목록)
-  → design-spec.md (톤앤매너, 색상, 화면 설계)
-  → tech-spec.md (아키텍처, 디렉토리 구조)
-  → decisions.md (킥오프 결정사항)
-     ↓
-sprint 시작 시 반드시 읽는 것:
-  → PRD.md (이번 스프린트 범위 확인)
-  → backlog.md (P1/P2 태스크 확인)
-  → decisions.md (이전 결정사항 충돌 여부)
-     ↓
-개발 시작 시 반드시 읽는 것:
-  → 해당 Issue의 수락 기준
-  → design-spec.md (UI 관련 시)
-  → api-spec.md (API 관련 시)
-  → tech-spec.md (아키텍처 패턴 준수)
-     ↓
-PR 리뷰 시 반드시 읽는 것:
-  → PRD.md (기획 의도와 일치하는가?)
-  → design-spec.md (디자인 스펙과 일치하는가?)
-  → test-plan.md (테스트 시나리오 커버되는가?)
-     ↓
-retro 시 반드시 읽는 것:
-  → 이번 스프린트 모든 PR과 리뷰 코멘트
-  → 발견된 버그 목록
-  → CEO 피드백 (있는 경우)
-```
-
-### 실행 규칙
-
-각 스킬의 첫 번째 액션은 **"관련 문서 읽기"**입니다.
-"이미 알고 있다"고 생략하지 않습니다.
-**문서를 읽지 않고 실행한 스킬의 결과는 무효입니다.**
+- **kickoff** 산출물 → PRD.md, design-spec.md, tech-spec.md, decisions.md
+- **sprint 시작** 시 읽기 → PRD.md, backlog.md, decisions.md
+- **개발 시작** 시 읽기 → Issue 수락 기준, design-spec.md, api-spec.md, tech-spec.md
+- **PR 리뷰** 시 읽기 → PRD.md, design-spec.md, test-plan.md
+- **retro** 시 읽기 → PR·리뷰 코멘트, 버그 목록, CEO 피드백
 
 ---
 
 ## 자율 팀 운영 원칙
 
-1. **자율적 사고 (Autonomous Thinking)**
-   - 지시 대기 없이 다음 할 일을 스스로 파악하고 선제적으로 제안한다.
-   - "어떻게 할까요?" 대신 "이렇게 하겠습니다. 이유는 X입니다."로 소통한다.
-   - 불확실한 요구사항은 가정을 명시하고 구현한 뒤 확인받는다.
-
-2. **도구 우선 활용 (Tool-First Execution)**
-   - 코드 변경 전 `lsp_diagnostics`로 현재 상태 확인.
-   - 패턴 검색은 Grep/ast_grep을 먼저 사용하고 파일을 열기 전에 범위를 좁힌다.
-   - 3개 이상 독립적 탐색은 병렬 에이전트로 동시 실행한다.
-
-3. **지속적 학습 (Continuous Learning)**
-   - 새로운 기술 결정, 버그 원인, 성능 개선 사례는 `project_memory`에 ADR로 기록한다.
-   - 스프린트 종료 후 회고 내용을 `.omc/notepads/`에 보존한다.
-   - Bedrock SDK / Gemini API / TDS 사용 전 공식 문서를 `document-specialist`로 조회한다.
-
-4. **스크럼 타임박스 (Scrum Timeboxing)**
-   - 스프린트: 1주 단위 (MVP 목표). 계획은 월요일 오전, 리뷰는 금요일.
-   - 데일리 스탠드업: 어제 한 것 / 오늘 할 것 / 블로커 — 각 항목 2문장 이내.
-   - 태스크 예상 시간이 2일 초과 시 즉시 분리. 3일 초과는 허용 안 함.
-   - 블로커 발생 시 2시간 내 에스컬레이션.
-
-5. **GitHub 관리 (GitHub Workflow)**
-   - `feat:` / `fix:` 작업은 반드시 Issue → Branch → PR 순서 준수 (전역 CLAUDE.md 규칙 적용).
-   - 브랜치 네이밍: `feature/#이슈번호-기능명`, `fix/#이슈번호-버그명`.
-   - PR 제목은 한국어 + Conventional Commit 말머리. 본문에 `Closes #이슈번호` 필수.
-   - main 직접 push 금지. 모든 변경은 PR을 통해 머지.
-   - CI (lint → typecheck → build → test) 통과 후 머지.
-
-   **기획 리뷰 (Claude Code 담당):**
-   - PR 본문에 "이 PR이 무엇을 추가/변경하는지" 명시되어 있는지 확인한다
-   - PR 본문을 기준으로 CLAUDE.md의 프로젝트 목표/타겟 유저/핵심 가치와 방향이 맞는지 판단한다
-   - 서비스 방향과 맞지 않으면 "방향성 확인 필요" 코멘트를 남긴다
-   - PRD 대조는 하지 않는다 — outdated PRD로 잘못된 판단을 내리는 것을 방지
-
-   **PR 리뷰 대응 (절대 건너뛰지 마라):**
-
-   **⚠️ PR 생성 후 즉시 머지 금지. 반드시 봇 리뷰를 실질적으로 검토한 뒤 머지하라.**
-   - "리뷰 종합" 코멘트에 봇 제안 최소 1건의 채택/기각 근거가 있어야 한다
-   - "CI ✅ 머지" 같은 한 줄 요약은 리뷰 종합이 아니다
-   - "역할 승인"은 외부 봇 리뷰를 대체할 수 없다 — 봇 리뷰 확인이 우선이다
-
-   ```
-   PR 생성 후 필수 절차:
-   1. PR 생성 → 최소 2분 대기 (봇 리뷰 도착 시간)
-   2. gh api 로 봇 리뷰 코멘트 확인 (Gemini, CodeRabbit, Copilot)
-   3. 봇 제안 중 채택할 것 → 코드 수정 반영
-   4. "리뷰 종합" 코멘트 작성 — 봇 제안 채택/기각 근거 상세 기술
-   5. @coderabbitai 멘션으로 토론 질문
-   6. 최소 2분 대기 → 봇 응답 확인
-   7. "최종 판단" 코멘트 작성 후 머지
-
-   토론 종료 규칙 (무한 루프 방지):
-   - 토론은 최대 1회전: 종합 코멘트(1회) → 봇 응답 확인(1회) → 최종 판단 → 머지
-   - 봇 응답에 새로운 질문을 던지지 않는다 — 읽고 판단만 한다
-   - 보안/버그 지적 → 코드 수정 후 머지 (추가 토론 없이)
-   - 스타일/취향 제안 → 채택 or 기각 근거 한 줄 남기고 머지
-   - 봇 응답이 2분 내 안 오면 기존 리뷰만으로 판단하고 머지
-   ```
-
-6. **API 요청 원칙 (API Request Standards)**
-   - Gemini API 호출은 항상 타임아웃(15초) + 재시도(최대 2회) 설정.
-   - Supabase 쿼리는 RLS 정책 적용 확인 후 실행. `service_role` 키는 Vercel 서버사이드에서만.
-   - 외부 API 키는 환경변수로만 관리. `.env.local`에 저장, `.env.example`에 키 이름만 명시.
-   - 시그널 생성 배치는 Vercel Cron Job으로 분리, 프론트엔드에서 직접 Gemini 호출 금지.
-   - Bedrock SDK 호출은 앱인토스 WebView 컨텍스트에서만 동작 — 로컬 개발 시 모킹 필수.
-
-7. **품질 우선 (Quality First)**
-   - 핵심 비즈니스 로직(점수 계산, 예측 검증, 스트릭 관리)은 유닛 테스트 커버리지 80% 이상.
-   - 3개 핵심 E2E 플로우 (시그널 확인 / 예측 제출 / 결과 확인) PR 머지 전 통과 필수.
-   - 성능 기준: LCP 2.0초 이하, FID 100ms 이하 (토스 앱 WebView 기준).
-   - TDS 컴포넌트 기본 aria 속성 유지. 임의 제거 금지.
-   - 프로덕션 배포 전 `npm audit` 실행, critical 취약점 0개 유지.
+1. **자율적 사고**: "어떻게 할까요?" 대신 "이렇게 하겠습니다. 이유는 X." 불확실하면 가정 명시 후 구현.
+2. **도구 우선**: 코드 변경 전 `lsp_diagnostics`, 패턴 검색은 Grep/ast_grep, 3개+ 독립 탐색은 병렬.
+3. **지속 학습**: ADR은 `project_memory`, 회고는 `.omc/notepads/`, SDK 사용 전 `document-specialist` 조회.
+4. **스크럼**: 1주 스프린트, 태스크 2일 초과 시 분리, 블로커 2시간 내 에스컬레이션.
+5. **GitHub**: 전역 CLAUDE.md의 Issue & PR 규칙 그대로 적용. main 직접 push 금지.
+6. **API 원칙**: Gemini(타임아웃 15초, 재시도 2회), Supabase(RLS 필수, service_role은 서버사이드만), Bedrock(WebView 전용, 로컬은 모킹), 시그널 생성은 Vercel Cron.
+7. **품질**: 핵심 로직 커버리지 80%+, E2E 3플로우 PR 전 통과, LCP 2.0초/FID 100ms 이하, TDS aria 유지, `npm audit` critical 0개.
 
 ---
 
-## 앱인토스 규정 준수 원칙
+## 앱인토스 규정 준수
 
-- **투자 자문 금지**: 모든 시그널 카드 하단에 "투자 참고용 정보이며 투자 책임은 본인에게 있습니다" 면책 문구 필수.
-- **금융상품 판매 금지**: 증권사 계좌 개설 링크, ETF/펀드 직접 추천 콘텐츠 포함 금지.
-- **암호화폐 직접 언급 금지**: 비트코인, 이더리움 등 가상자산 직접 언급 및 예측 대상 제외. "디지털 자산 시장 동향" 수준의 간접 언급만 허용.
-- **광고 규정**: AdMob 광고는 Bedrock SDK 표준 방식으로만 구현. 광고임을 명시하는 UI 필수.
-- **개인정보**: 토스 로그인을 통해 취득한 유저 식별자(toss_user_id)는 서비스 내 게임 데이터 연결 용도로만 사용.
+- 투자 자문 금지 (면책 문구 필수), 금융상품 판매 금지, 암호화폐 직접 언급 금지 ("디지털 자산 시장 동향" 수준만)
+- AdMob은 Bedrock SDK 표준 방식만, 광고 명시 UI 필수
+- toss_user_id는 게임 데이터 연결 용도로만 사용
 
 ---
 
 ## 문서 소유권
 
-| 문서 | 소유자 | 비고 |
-|------|--------|------|
-| `CLAUDE.md` | 제이크 (Jake) | 프로젝트 규칙 변경 시 Jake 승인 필수 |
-| `.project/PRD.md` | 노바 (Nova) + 제이크 | 기능 추가/변경 시 동기화 필수 |
-| `.project/design-spec.md` | 피카 (Pika) | TDS 컴포넌트 스펙, 색상 토큰 |
-| `.project/tech-spec.md` | 블레이즈 (Blaze) + 볼트 | 아키텍처 및 기술 결정 사항 |
-| `.project/api-spec.md` | 볼트 (Bolt) | Vercel API 스펙 |
-| `.project/decisions.md` | 전체 팀 | ADR, 변경 불가 (신규 ADR로 대체) |
-| `.project/quality-baseline.md` | 호크 (Hawk) | 품질 래칫 기준선 기록 |
-| `.omc/plans/` | Claude (planner) | 플랜 파일 수동 편집 금지 |
+| 문서 | 소유자 |
+|------|--------|
+| CLAUDE.md | 제이크 (변경 시 승인 필수) |
+| PRD.md | 노바 + 제이크 |
+| design-spec.md | 피카 |
+| tech-spec.md | 블레이즈 + 볼트 |
+| api-spec.md | 볼트 |
+| decisions.md | 전체 팀 (변경 불가, 신규 ADR로 대체) |
+| quality-baseline.md | 호크 |
+| .omc/plans/ | Claude (수동 편집 금지) |
 
 ---
 
-## 환경 변수 관리
+## 환경 변수
 
-```bash
-# .env.example (커밋 허용)
-VITE_APP_URL=
-GEMINI_API_KEY=
-SUPABASE_URL=
-SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-KV_REST_API_URL=
-KV_REST_API_TOKEN=
-BEDROCK_CLIENT_ID=
-```
+`.env.example` (커밋 허용): `VITE_APP_URL`, `GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `BEDROCK_CLIENT_ID`
 
-- `.env.local` — 로컬 개발용, `.gitignore`에 포함 필수
-- Vercel 대시보드 — 스테이징/프로덕션 환경변수 별도 관리
-- `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — Vercel 서버사이드 전용. 클라이언트 번들에 절대 포함 금지 (VITE_ 접두사 사용 불가).
+- `.env.local` — 로컬 개발용, `.gitignore` 필수
+- `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — Vercel 서버사이드 전용 (VITE_ 접두사 금지)
 
 ---
 
-## 코드 컨벤션 (Quick Reference)
+## 코드 컨벤션
 
-```typescript
-// 컴포넌트 파일명: PascalCase (SignalCard.tsx)
-// 훅 파일명: camelCase (useSignalGame.ts)
-// 유틸 파일명: camelCase (formatScore.ts)
-// 타입 파일명: PascalCase (Signal.types.ts)
+컴포넌트: PascalCase (`SignalCard.tsx`), 훅: camelCase (`useSignalGame.ts`), 유틸: camelCase, 타입: PascalCase (`.types.ts`)
+상태: useState + Context (Zustand는 전역 게임 상태만), API: `/api/*` Vercel 함수만 (클라이언트 직접 호출 금지), 에러: try/catch + TDS Toast, Bedrock: WebView 컨텍스트 확인 후 호출
 
-// 상태관리: useState + Context (Zustand는 전역 게임 상태에만)
-// API 호출: /api/* Vercel 함수로만. 클라이언트에서 Supabase/Gemini 직접 호출 금지.
-// 에러 처리: try/catch + 토스트 알림 (TDS Toast 컴포넌트)
-// Bedrock SDK: window.toss 또는 import from '@toss/bedrock' — WebView 컨텍스트 확인 후 호출
-```
-
----
-
-> 이 파일은 Claude Code가 시그널플레이 프로젝트를 이해하고 일관성 있게 작업하기 위한 최우선 참조 문서입니다.
 > 전역 `~/.claude/CLAUDE.md` 규칙이 이 파일보다 상위이며, 충돌 시 전역 규칙을 따릅니다.
