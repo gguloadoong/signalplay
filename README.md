@@ -1,6 +1,6 @@
 # ⚡ 시그널플레이 (SignalPlay)
 
-**매일 경제 시그널을 예측하고, 추이를 추적하고, AI 인사이트를 소비하는 습관형 투자 게임**
+**AI 점쟁이 5명이 예측하고, 군중이 투표하고, 적중률로 승부하는 투자 예측 서비스**
 
 > 앱인토스(토스 미니앱) 플랫폼용 WebView SPA
 
@@ -10,25 +10,22 @@
 
 ---
 
-## 서비스 소개
+## 4기둥 컨셉
 
-| 기능 | 설명 |
+| 기둥 | 설명 |
 |------|------|
-| **마켓 배틀** | 오전/플래시/나이트 배틀 — 하루 종일 예측할 거리 |
-| **확신도 시스템** | x1~x3 배수로 리스크/리워드 조절 |
-| **AI 피드** | 강세 AI vs 약세 AI 토론, 엄선 뉴스 해석 |
-| **카드 플립 결과** | 탭하여 결과 확인 + PERFECT 보너스 |
-| **주간 토너먼트** | 매주 리셋 리더보드로 경쟁 |
+| **속도** | 어디보다 빠른 시장 소식 — Gemini 실시간 뉴스 기반 질문 생성 |
+| **캐릭터** | AI 점쟁이 5명 (퀀트봇/논문쟁이/속보왕/패턴술사/다트침팬지) — 각자 다른 이론으로 예측 |
+| **군중** | 투표 후 공개되는 유저 집단 비율 — "나는 군중과 같나, 다른가?" |
+| **적중** | 캐릭터별·군중 적중률 트랙레코드 — 누가 진짜 잘 맞추나 |
 
 ## 기술 스택
 
 | 레이어 | 기술 |
 |--------|------|
-| Frontend | Vite + React 18 + TypeScript |
-| UI | TDS Mobile (토스 디자인 시스템) + CSS Modules |
-| State | Zustand (persist) |
-| Backend | Vercel Serverless Functions |
-| AI | Google Gemini API (gemini-2.5-flash) |
+| Frontend | Vite + React 18 + TypeScript + CSS Modules |
+| Backend | Vercel Serverless Functions + Vercel KV (Redis) |
+| AI | Google Gemini API (gemini-2.5-flash, Search Grounding) |
 | DB | Supabase PostgreSQL |
 | Deploy | Vercel (GitHub 연동 자동 배포) |
 
@@ -47,25 +44,26 @@ pnpm dev
 
 # 빌드
 pnpm build
+
+# 테스트
+pnpm test
 ```
 
 ## 프로젝트 구조
 
 ```
 src/
-├── pages/           # 4개 탭 페이지 (Battle, Feed, Result, Ranking)
+├── pages/           # VotePage, ResultPage
 ├── components/
-│   ├── battle/      # SignalCard, BattleHeader
-│   └── shared/      # BottomNav, Disclaimer, Onboarding, Skeleton, ErrorBoundary
-├── stores/          # Zustand (gameStore)
+│   ├── vote/        # CharacterCard, CrowdBar
+│   └── shared/      # BottomNav, SuccessAnimation, Skeleton, ErrorBoundary
 ├── lib/
-│   ├── api/         # API 클라이언트
-│   ├── utils/       # score, format, share
-│   └── mockData.ts  # 목데이터
+│   ├── utils/       # share, format
+│   └── mockData.ts  # 목데이터 (Supabase 설정 전)
 └── types/           # TypeScript 타입 정의
 
-api/                 # Vercel Serverless Functions
-supabase/            # DB 스키마
+api/                 # Vercel Serverless Functions (question, vote, result)
+supabase/            # DB 스키마 (daily_signals, user_predictions, user_stats)
 .project/            # 프로젝트 문서 (PRD, 디자인 스펙, ADR 등)
 ```
 
