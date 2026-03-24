@@ -16,4 +16,5 @@ triggers:
 - Step 3: PM 제이크 – 사용자 플로우 및 비즈니스 요구사항 대비 갭을 확인합니다.
 - Step 4: QA 호크 – 엣지케이스(빈 상태, 오류 상태, 접근성 문제)를 점검합니다.
 - Step 5: Designer 피카 – 피드백을 수용하여 design-spec.md를 업데이트하고 meeting-notes/design-review.md에 기록합니다.
-- Step 6: **[자동 체이닝]** 디자인 리뷰가 완료되면 즉시 loop 스킬의 Step 1로 복귀하라.
+
+**[체이닝]** 이 스킬의 모든 Step이 완료되면, 반드시 Skill 도구를 사용하여 `autopilot-loop` 스킬을 즉시 호출하라. 사용자 입력을 기다리지 마라.

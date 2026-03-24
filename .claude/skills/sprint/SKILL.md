@@ -16,4 +16,5 @@ triggers:
 - Step 3: BE 볼트 – BaaS 연동, 데이터 스키마, API 구현 태스크를 [BE-01] 형식으로 세분화합니다.
 - Step 4: QA 호크 – 핵심 스모크 테스트 케이스와 E2E 시나리오를 선택합니다.
 - Step 5: PM 제이크 – 최종 태스크를 배분하고 decisions.md 및 meeting-notes/sprint.md에 기록합니다.
-- Step 6: **[자동 체이닝]** 스프린트 플래닝이 완료되면 즉시 loop 스킬의 Step 1로 복귀하라.
+
+**[체이닝]** 이 스킬의 모든 Step이 완료되면, 반드시 Skill 도구를 사용하여 `autopilot-loop` 스킬을 즉시 호출하라. 사용자 입력을 기다리지 마라.

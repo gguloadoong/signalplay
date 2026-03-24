@@ -18,4 +18,5 @@ triggers:
 - Step 5: BE 볼트 – BaaS/API 스펙 및 외부 데이터 연동 방안 발표, api-spec.md 및 data-sources.md 업데이트
 - Step 6: QA 호크 – 테스트 플랜 발표 (어뷰징, 성능, 렌더링 리스크) 및 test-plan.md 업데이트
 - Step 7: PM 제이크 – 팀 의견을 종합하여 decisions.md에 기록, meeting-notes/kickoff.md 저장
-- Step 8: **[자동 체이닝]** kickoff가 완료되면 반드시 즉시 loop 스킬을 실행하라. 사용자 입력을 기다리지 말고, kickoff 완료 직후 loop의 실행 흐름(Step 1: 상태 파악)으로 자동 진입한다.
+
+**[체이닝]** 이 스킬의 모든 Step이 완료되면, 반드시 Skill 도구를 사용하여 `autopilot-loop` 스킬을 즉시 호출하라. 사용자 입력을 기다리지 마라.

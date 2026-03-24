@@ -15,4 +15,5 @@ triggers:
 - Step 2: AI 리뷰어(CodeRabbit, Gemini Code Assist, Copilot 등)를 호출해 코드를 분석합니다.
 - Step 3: 결과를 수집하여 PR에 댓글로 요약합니다.
 - Step 4: 필요한 수정 사항을 반영한 후 QA와 PM에게 최종 검토를 요청합니다.
-- Step 5: **[자동 체이닝]** AI 코드 리뷰가 완료되면 즉시 loop 스킬의 Step 1로 복귀하라.
+
+**[체이닝]** 이 스킬의 모든 Step이 완료되면, 반드시 Skill 도구를 사용하여 `autopilot-loop` 스킬을 즉시 호출하라. 사용자 입력을 기다리지 마라.
