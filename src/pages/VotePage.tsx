@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
+import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -26,11 +27,33 @@ export function VotePage() {
   const navigate = useNavigate()
   const question = MOCK_TODAY_QUESTION
   const [voted, setVoted] = useState<VoteChoice | null>(null)
+  const [shareMsg, setShareMsg] = useState('')
 
   const handleVote = (choice: VoteChoice) => {
     if (voted) return
     setVoted(choice)
   }
+
+  const handleShare = useCallback(async () => {
+    const text = generateVoteShareText({
+      title: question.title,
+      question: question.question,
+      crowdBullish: MOCK_CROWD_RESULT.bullish,
+      crowdBearish: MOCK_CROWD_RESULT.bearish,
+      crowdNeutral: MOCK_CROWD_RESULT.neutral,
+      totalVotes: MOCK_CROWD_RESULT.totalVotes,
+      characters: MOCK_CHARACTER_PREDICTIONS.map((c) => ({
+        emoji: c.emoji,
+        name: c.name,
+        prediction: c.prediction,
+      })),
+    })
+    const result = await shareText(text)
+    if (result === 'copied') {
+      setShareMsg('클립보드에 복사됨!')
+      setTimeout(() => setShareMsg(''), 2000)
+    }
+  }, [question])
 
   if (!question) {
     return (
@@ -96,6 +119,9 @@ export function VotePage() {
             <b>{VOTE_OPTIONS.find((o) => o.value === voted)?.label}</b>
           </div>
           <CrowdBar result={MOCK_CROWD_RESULT} animated />
+          <Button size="medium" variant="weak" color="primary" onClick={handleShare} className={styles.shareBtn}>
+            공유하기 — "너는 어떻게 봐?"
+          </Button>
         </div>
       )}
 
@@ -113,6 +139,7 @@ export function VotePage() {
         </div>
       </section>
 
+      {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
       <Disclaimer />
     </div>
   )
