@@ -1,0 +1,44 @@
+name: PR 규칙 검증
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize, ready_for_review]
+
+jobs:
+  check-labels:
+    name: ai-generated 라벨 확인
+    runs-on: ubuntu-latest
+    steps:
+      - name: ai-generated 라벨 필수 확인
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(l => l.name);
+            if (!labels.includes('ai-generated')) {
+              core.setFailed(
+                '❌ ai-generated 라벨이 없습니다.\n' +
+                '해결: gh pr edit <번호> --add-label "ai-generated"\n' +
+                '규칙: CLAUDE.md — 라벨: ai-generated + 작업 성격 필수 조합'
+              );
+            } else {
+              console.log('✅ ai-generated 라벨 확인');
+            }
+
+  check-role-review:
+    name: 역할 리뷰 확인
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR body에 역할 리뷰 포함 여부 확인
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            if (!body.includes('[역할 리뷰]')) {
+              core.warning(
+                '⚠️ PR body에 [역할 리뷰] 섹션이 없습니다.\n' +
+                '규칙: CLAUDE.md — 역할 리뷰 없는 PR은 머지 불가\n' +
+                '해결: PR body 또는 코멘트에 **[역할 리뷰]** 판정: 승인/반대(사유) 추가'
+              );
+            } else {
+              console.log('✅ 역할 리뷰 확인');
+            }
