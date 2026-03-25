@@ -45,8 +45,9 @@
 - [x] [UX] CharacterCard reasoning 미리보기 + 슬라이드 애니메이션 (#58 merged)
 - [x] [UX] 접근성 개선 — 색상 대비 + 폰트 크기 (#61 merged)
 - [x] [UX] CharacterCard aria-label 제거 — WCAG 2.5.3 (#63 merged)
-- [ ] [PERFORMANCE] Lighthouse 점수 90+ 달성 (CI 측정 후 추가 최적화)
-- [x] [PERFORMANCE] React.lazy 코드 스플리팅 — ResultPage/Onboarding (#67 PR open, 205→193KB)
+- [ ] [PERFORMANCE] Lighthouse 점수 90+ 달성 (현재 85+, 추가 최적화 필요)
+- [x] [PERFORMANCE] React.lazy 코드 스플리팅 — ResultPage/Onboarding (#67 merged, 205→193KB)
+- [x] [PERFORMANCE] WeeklyPicksSection lazy load — TBT 개선 (#69 merged, 193→191KB, Lighthouse 85+ 달성)
 - [x] [UX] index.html title/description 피벗 반영 — SEO 개선 (5db7e56)
 - [x] [DOCS] README 피벗 반영 (da0e078 merged)
 
