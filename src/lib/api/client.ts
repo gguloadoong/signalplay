@@ -31,29 +31,15 @@ async function request<T>(
 }
 
 export const api = {
-  getSignals: () => request<import('@/types/signal').Battle>('/signals'),
+  getQuestion: () => request<import('@/types/vote').Question & {
+    characters: import('@/types/vote').CharacterPrediction[]
+  }>('/question'),
 
-  submitPredictions: (
-    battleId: string,
-    predictions: import('@/types/signal').UserPrediction[],
-  ) =>
-    request<{ ok: boolean; crowdSentiment: import('@/types/signal').CrowdSentiment[] }>(
-      '/predictions',
-      {
-        method: 'POST',
-        body: JSON.stringify({ battleId, predictions }),
-      },
-    ),
-
-  getResults: () =>
+  vote: (body: { questionId: string; vote: string; userId?: string }) =>
     request<{
-      date: string
-      results: import('@/types/signal').BattleResult[]
-      totalScore: number
-      isPerfect: boolean
-      streak: number
-      weeklyRank: number
-    }>('/results'),
+      ok: boolean
+      crowd: { bullish: number; bearish: number; neutral: number; totalVotes: number }
+    }>('/vote', { method: 'POST', body: JSON.stringify(body) }),
 
-  getStats: () => request<import('@/types/signal').UserStats>('/stats'),
+  getResult: () => request<import('@/types/vote').VoteResult | null>('/result'),
 }
