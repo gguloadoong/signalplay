@@ -5,6 +5,7 @@ import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
+import { getVote } from '@/lib/utils/voteHistory'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 import styles from './ResultPage.module.css'
 
@@ -18,6 +19,7 @@ const OUTCOME_COLORS = {
 export function ResultPage() {
   const navigate = useNavigate()
   const result = MOCK_VOTE_RESULT
+  const myVote = result ? getVote(result.questionId) : null
 
   if (!result) {
     return (
@@ -58,6 +60,19 @@ export function ResultPage() {
             {OUTCOME_LABELS[result.actualOutcome]}
           </Badge>
         </div>
+        {myVote && (
+          <div className={styles.outcomeRow}>
+            <span className={styles.outcomeLabel}>내 예측</span>
+            <Badge
+              size="medium"
+              variant="weak"
+              color={OUTCOME_COLORS[myVote.choice]}
+            >
+              {OUTCOME_LABELS[myVote.choice]}
+              {myVote.choice === result.actualOutcome ? ' ✅' : ' ❌'}
+            </Badge>
+          </div>
+        )}
       </div>
 
       {/* Crowd result */}

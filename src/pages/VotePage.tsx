@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
+import { saveVote, getVote } from '@/lib/utils/voteHistory'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -28,7 +29,7 @@ const CATEGORY_COLOR: Record<string, 'blue' | 'green' | 'yellow'> = {
 export function VotePage() {
   const navigate = useNavigate()
   const question = MOCK_TODAY_QUESTION
-  const [voted, setVoted] = useState<VoteChoice | null>(null)
+  const [voted, setVoted] = useState<VoteChoice | null>(() => getVote(question.id)?.choice ?? null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [shareMsg, setShareMsg] = useState('')
 
@@ -36,6 +37,7 @@ export function VotePage() {
     if (voted) return
     setVoted(choice)
     setShowSuccess(true)
+    saveVote({ questionId: question.id, date: question.date, title: question.title, choice })
   }
 
   const handleAnimationComplete = useCallback(() => {
