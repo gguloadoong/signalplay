@@ -45,4 +45,9 @@ export const api = {
     }>('/vote', { method: 'POST', body: JSON.stringify(body) }),
 
   getResult: () => request<import('@/types/vote').VoteResult | null>('/result'),
+
+  getLeaderboard: () => request<Array<{
+    character: string; name: string; emoji: string
+    correct: number; total: number; rate: number
+  }>>('/leaderboard'),
 }

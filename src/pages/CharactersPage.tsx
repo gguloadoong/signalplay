@@ -1,13 +1,39 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CHARACTER_PROFILES } from '@/lib/characters'
+import { api } from '@/lib/api/client'
 import styles from './CharactersPage.module.css'
 
 const RANK_LABELS = ['🥇', '🥈', '🥉', '4위', '5위']
 
+interface LiveStat {
+  character: string
+  correct: number
+  total: number
+  rate: number
+}
+
 export function CharactersPage() {
   const navigate = useNavigate()
+  const [liveStats, setLiveStats] = useState<LiveStat[]>([])
 
-  const sorted = [...CHARACTER_PROFILES].sort((a, b) => b.accuracy.rate - a.accuracy.rate)
+  useEffect(() => {
+    api.getLeaderboard().then(({ data }) => {
+      if (data && data.length > 0) setLiveStats(data)
+    })
+  }, [])
+
+  const merged = CHARACTER_PROFILES.map((char) => {
+    const live = liveStats.find((s) => s.character === char.id)
+    return {
+      ...char,
+      accuracy: live
+        ? { correct: live.correct, total: live.total, rate: live.rate }
+        : char.accuracy,
+    }
+  })
+
+  const sorted = [...merged].sort((a, b) => b.accuracy.rate - a.accuracy.rate)
 
   return (
     <div className={styles.page}>
