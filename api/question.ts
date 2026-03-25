@@ -36,7 +36,12 @@ JSON 배열로만 응답:
 [{"character":"quant","prediction":"bullish|bearish|neutral","reasoning":"근거"},{"character":"professor","prediction":"...","reasoning":"..."},{"character":"reporter","prediction":"...","reasoning":"..."},{"character":"pattern","prediction":"...","reasoning":"..."},{"character":"chimp","prediction":"...","reasoning":"오늘 [이유]라서 [예측]인 것 같아요 🎲"}]`
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
+const API_CONFIG = {
+  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+  temperature: 0.8,
+  maxOutputTokens: 8192,
+  timeoutMs: 15000,
+}
 
 let cache: { date: string; data: unknown } | null = null
 
@@ -45,14 +50,14 @@ async function callGemini(prompt: string, useSearch = false): Promise<string | n
   try {
     const body: Record<string, unknown> = {
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.8, maxOutputTokens: 8192 },
+      generationConfig: { temperature: API_CONFIG.temperature, maxOutputTokens: API_CONFIG.maxOutputTokens },
     }
     if (useSearch) body.tools = [{ google_search: {} }]
-    const res = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+    const res = await fetch(`${API_CONFIG.url}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(API_CONFIG.timeoutMs),
     })
     if (!res.ok) return null
     const data = await res.json()

@@ -50,6 +50,6 @@
 
 ## P2 — 레트로 도출 (다음 스프린트)
 
-- [ ] [FEATURE] 내 투표 기록 로컬 스토리지 뷰 — Supabase 없이 적중률 표시
+- [x] [FEATURE] 내 투표 기록 로컬 스토리지 뷰 — Supabase 없이 적중률 표시 (#65 PR open)
 - [ ] [PROCESS] api/question.ts `API_CONFIG` 상수 분리 — merge conflict 방지
 - [ ] [UX] `--font-size-caption: 12px` CSS 변수 도입 — 소폰트 단일 제어
