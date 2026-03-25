@@ -59,8 +59,11 @@
 - [x] [FEATURE] 투표 스트릭 + 적중률 localStorage 추적 — 사용자 축적 시스템 MVP (PR #139)
 - [x] [TEST] userStats.ts 유닛 테스트 11개 — 60→71개 (PR #141)
 - [x] [BUG] E2E vote.spec.ts 캐릭터명 → 이모지 기반 리질리언트 셀렉터 (PR #131)
-- [ ] [UX] CharacterCard 접힘 상태 reasoning 미리보기 (첫 줄 40자)
-- [ ] [CONTENT] 캐릭터 성격 대사 강화 — 적중/오답 반응 대사 추가
+- [x] [UX] CharacterCard 접힘 상태 reasoning 미리보기 (첫 줄 40자) (PR #153)
+- [x] [CONTENT] 캐릭터 성격 대사 강화 — 적중/오답 반응 대사 추가 (PR #155)
+- [x] [CONTENT] 앱 전체 문구 UX 워싱 — 친근·유머 톤으로 전면 교체 (PR #161)
+- [x] [FEATURE] 캐릭터 적중률 리더보드 Supabase 실데이터 연동 (PR #165)
+- [x] [FEATURE] ResultPage 결과 공유 버튼 추가 (PR #159)
 
 ## P3 — 다음 스프린트
 
