@@ -9,9 +9,10 @@ const CHARACTER_META: Record<string, { name: string; emoji: string; methodology:
   chimp: { name: '다트침팬지', emoji: '🐵', methodology: '다트 던지기' },
 }
 
-const QUESTION_PROMPT = `당신은 투자 뉴스 편집자입니다. 오늘의 주요 경제/주식 이슈 중에서 투자자들의 의견이 갈릴 만한 질문 1개를 만들어주세요.
-좋은 질문: 구체적 종목/이벤트 기반, 호재/악재 의견 갈림, 오늘/이번 주 실제 이벤트.
-나쁜 질문: 추상적, 암호화폐 관련.
+const buildQuestionPrompt = (today: string) =>
+  `당신은 투자 뉴스 편집자입니다. 오늘(${today}) 실제 발생한 주요 경제/주식 뉴스를 검색하여, 투자자들의 의견이 갈릴 만한 질문 1개를 만들어주세요.
+좋은 질문: 오늘 실제 보도된 구체적 종목/이벤트 기반, 호재/악재 의견 갈림.
+나쁜 질문: 추상적, 암호화폐 관련, 오래된 이슈.
 JSON으로만 응답: {"title":"이슈 제목(15자)","question":"투표 질문(25자, ~일까?)","category":"종목|지수|매크로"}`
 
 const CHARACTER_PROMPT = `당신은 5명의 AI 투자 점쟁이입니다. 질문에 대해 각자 방법론으로 예측합니다.
@@ -25,17 +26,19 @@ const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemi
 
 let cache: { date: string; data: unknown } | null = null
 
-async function callGemini(prompt: string): Promise<string | null> {
+async function callGemini(prompt: string, useSearch = false): Promise<string | null> {
   if (!GEMINI_API_KEY) return null
   try {
+    const body: Record<string, unknown> = {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.8, maxOutputTokens: 4096 },
+    }
+    if (useSearch) body.tools = [{ google_search: {} }]
     const res = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.8, maxOutputTokens: 4096 },
-      }),
-      signal: AbortSignal.timeout(20000),
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(15000),
     })
     if (!res.ok) return null
     const data = await res.json()
@@ -55,8 +58,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const today = new Date().toISOString().split('T')[0]
   if (cache?.date === today) return res.status(200).json(cache.data)
 
-  // 1. Generate question
-  const qRaw = await callGemini(QUESTION_PROMPT)
+  // 1. Generate question (Google Search Grounding으로 실시간 뉴스 기반)
+  const qRaw = await callGemini(buildQuestionPrompt(today), true)
   let question = qRaw ? parseJson(qRaw) as { title: string; question: string; category: string } | null : null
 
   if (!question) {
