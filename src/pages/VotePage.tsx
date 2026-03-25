@@ -24,6 +24,15 @@ const VOTE_OPTIONS: { value: VoteChoice; label: string; emoji: string }[] = [
   { value: 'bearish', label: '악재', emoji: '📉' },
 ]
 
+function formatDeadline(deadline: string): string {
+  const diff = new Date(deadline).getTime() - Date.now()
+  if (diff <= 0) return '투표 마감'
+  const hours = Math.floor(diff / 3600000)
+  if (hours >= 1) return `${hours}시간 후 마감`
+  const minutes = Math.floor(diff / 60000)
+  return `${minutes}분 후 마감`
+}
+
 const CATEGORY_COLOR: Record<string, 'blue' | 'green' | 'yellow'> = {
   종목: 'blue',
   지수: 'green',
@@ -130,9 +139,7 @@ export function VotePage() {
           >
             {questionData.category}
           </Badge>
-          <span className={styles.deadline}>
-            {new Date(questionData.deadline) > new Date() ? '투표 진행 중' : '투표 마감'}
-          </span>
+          <span className={styles.deadline}>{formatDeadline(questionData.deadline)}</span>
         </div>
         <h2 className={styles.questionTitle}>{questionData.title}</h2>
         <p className={styles.questionText}>{questionData.question}</p>
