@@ -62,9 +62,24 @@ export function ResultPage() {
 
   const correctCount = result.characters.filter((c) => c.isCorrect).length
 
+  const isCorrect = myVote?.choice === result.actualOutcome
+
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>🎯 어제의 결과</h1>
+      {/* 결과 헤더 — 스크롤 없이 3초 내 적중 여부 확인 */}
+      {myVote ? (
+        <div className={`${styles.outcomeHeader} ${isCorrect ? styles.outcomeHeaderHit : styles.outcomeHeaderMiss}`}>
+          <p className={styles.outcomeHeaderTitle}>{result.title}</p>
+          <div className={styles.outcomeHeaderRow}>
+            <span>내 예측 <strong>{OUTCOME_LABELS[myVote.choice]}</strong></span>
+            <span className={styles.outcomeArrow}>→</span>
+            <span>실제 <strong>{OUTCOME_LABELS[result.actualOutcome]}</strong></span>
+          </div>
+          <p className={styles.outcomeVerdict}>{isCorrect ? '✅ 적중!' : '❌ 빗나감'}</p>
+        </div>
+      ) : (
+        <h1 className={styles.title}>🎯 어제의 결과</h1>
+      )}
 
       {/* Question recap */}
       <div className={styles.questionCard}>
@@ -79,19 +94,6 @@ export function ResultPage() {
             {OUTCOME_LABELS[result.actualOutcome]}
           </Badge>
         </div>
-        {myVote && (
-          <div className={styles.outcomeRow}>
-            <span className={styles.outcomeLabel}>내 예측</span>
-            <Badge
-              size="medium"
-              variant="weak"
-              color={OUTCOME_COLORS[myVote.choice]}
-            >
-              {OUTCOME_LABELS[myVote.choice]}
-              {myVote.choice === result.actualOutcome ? ' ✅' : ' ❌'}
-            </Badge>
-          </div>
-        )}
       </div>
 
       {/* Crowd result */}
