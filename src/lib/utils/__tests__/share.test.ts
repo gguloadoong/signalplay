@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { generateVoteShareText, generateResultShareText } from '../share'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { generateVoteShareText, generateResultShareText, shareText } from '../share'
 
 describe('generateVoteShareText', () => {
   it('기본 형식으로 텍스트 생성', () => {
@@ -101,5 +101,56 @@ describe('generateResultShareText', () => {
     const text = generateResultShareText(baseData)
     expect(text).toContain('방구석 전문가 적중:')
     expect(text).not.toContain('AI 점쟁이')
+  })
+})
+
+describe('shareText', () => {
+  beforeEach(() => {
+    vi.stubGlobal('navigator', { share: undefined, clipboard: undefined })
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('navigator.share 성공 → shared 반환', async () => {
+    vi.stubGlobal('navigator', {
+      share: vi.fn().mockResolvedValue(undefined),
+      clipboard: undefined,
+    })
+    const result = await shareText('테스트')
+    expect(result).toBe('shared')
+  })
+
+  it('navigator.share 취소 → clipboard 성공 → copied 반환', async () => {
+    vi.stubGlobal('navigator', {
+      share: vi.fn().mockRejectedValue(new DOMException('', 'AbortError')),
+      clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+    })
+    const result = await shareText('테스트')
+    expect(result).toBe('copied')
+  })
+
+  it('navigator.share 없음 + clipboard 성공 → copied 반환', async () => {
+    vi.stubGlobal('navigator', {
+      share: undefined,
+      clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+    })
+    const result = await shareText('테스트')
+    expect(result).toBe('copied')
+  })
+
+  it('navigator.share 없음 + clipboard 실패 → failed 반환', async () => {
+    vi.stubGlobal('navigator', {
+      share: undefined,
+      clipboard: { writeText: vi.fn().mockRejectedValue(new Error('Permission denied')) },
+    })
+    const result = await shareText('테스트')
+    expect(result).toBe('failed')
+  })
+
+  it('navigator.share 없음 + clipboard 없음 → failed 반환', async () => {
+    const result = await shareText('테스트')
+    expect(result).toBe('failed')
   })
 })
