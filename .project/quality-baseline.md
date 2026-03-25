@@ -11,9 +11,9 @@
 | pnpm lint | ✅ 0 에러 | 항상 0 | P0 |
 | TypeScript 에러 | 0개 | 항상 0 | P0 |
 | npm audit high+ | 0개 | 항상 0 | P0 |
-| JS 번들 (초기 로드) | 24.07KB (9.61KB gzip) | 커지면 정당화 필요 | P2 |
-| JS 번들 (vendor, 캐시됨) | 40.72KB (14.50KB gzip) | 커지면 정당화 필요 | P2 |
-| JS 번들 (tds, 캐시됨) | 1,063KB (341KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
+| JS 번들 (초기 로드) | 24.28KB (9.58KB gzip) | 커지면 정당화 필요 | P2 |
+| JS 번들 (router, 캐시됨) | 47.18KB (16.73KB gzip) — react+react-dom+react-router-dom 통합 | 커지면 정당화 필요 | P2 |
+| JS 번들 (tds, 캐시됨) | 1,056KB (339KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
 | CSS 번들 | 14.22KB (4.42KB gzip) | 커지면 정당화 필요 | P3 |
 | 테스트 커버리지 | 유닛 92개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) — PR #127로 복구 | 올라가기만 함 | P1 |
@@ -42,3 +42,4 @@
 | 2026-03-26 | JS 19.29→23.26KB (기능 다수 추가: profiles, share, preview, reactions, deadline 등 정당화). 유닛 78→89개 래칫 상향. | QA 호크 |
 | 2026-03-26 | @toss/tds-mobile 2.3.0 + @emotion/react 도입 (PR #166). tds 청크 1,063KB (캐시됨, 앱인토스 심사 정당화). vendor 180.5→40.72KB. Tossface CDN 추가. | QA 호크 |
 | 2026-03-26 | getCharacterAlignment() 유닛 3개 추가 (PR #174) — 유닛 89→92개 래칫 상향. | QA 호크 |
+| 2026-03-26 | html-to-image 추가 (PR #173), 서비스 기획 v2 기능 5개 머지. router 청크 40.72→47.18KB (react+router 통합, html-to-image 정당화). tds 1,063→1,056KB (소폭 감소). | QA 호크 |
