@@ -43,6 +43,13 @@
 - [x] [UX] 온보딩 피벗 반영 — 4기둥 슬라이드 (#50 merged)
 - [x] [PERFORMANCE] Lighthouse CI 자동 측정 설정 (#56 merged)
 - [x] [UX] CharacterCard reasoning 미리보기 + 슬라이드 애니메이션 (#58 merged)
-- [x] [UX] 접근성 개선 — 색상 대비 + 폰트 크기 (#61 in review)
+- [x] [UX] 접근성 개선 — 색상 대비 + 폰트 크기 (#61 merged)
+- [x] [UX] CharacterCard aria-label 제거 — WCAG 2.5.3 (#63 merged)
 - [ ] [PERFORMANCE] Lighthouse 점수 90+ 달성 (CI 측정 후 추가 최적화)
 - [x] [DOCS] README 피벗 반영 (da0e078 merged)
+
+## P2 — 레트로 도출 (다음 스프린트)
+
+- [ ] [FEATURE] 내 투표 기록 로컬 스토리지 뷰 — Supabase 없이 적중률 표시
+- [ ] [PROCESS] api/question.ts `API_CONFIG` 상수 분리 — merge conflict 방지
+- [ ] [UX] `--font-size-caption: 12px` CSS 변수 도입 — 소폰트 단일 제어
