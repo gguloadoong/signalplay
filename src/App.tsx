@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { BottomNav } from '@/components/shared/BottomNav'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
-import { Onboarding } from '@/components/shared/Onboarding'
 import { PageTransition } from '@/components/shared/PageTransition'
 import { VotePage } from '@/pages/VotePage'
-import { ResultPage } from '@/pages/ResultPage'
 import './App.css'
+
+const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
+const Onboarding = lazy(() => import('@/components/shared/Onboarding').then((m) => ({ default: m.Onboarding })))
 
 const ONBOARDING_KEY = 'signalplay-onboarded'
 
@@ -23,14 +24,18 @@ function App() {
   return (
     <ErrorBoundary>
     <div className="app">
-      {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
+      <Suspense>
+        {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
+      </Suspense>
       <main className="app-content">
         <PageTransition>
-        <Routes>
-          <Route path="/" element={<VotePage />} />
-          <Route path="/result" element={<ResultPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        <Suspense>
+          <Routes>
+            <Route path="/" element={<VotePage />} />
+            <Route path="/result" element={<ResultPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
         </PageTransition>
       </main>
       <BottomNav />
