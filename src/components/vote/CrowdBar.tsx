@@ -15,18 +15,25 @@ export function CrowdBar({ result, animated = true }: Props) {
         토스 유저 <b>{totalVotes.toLocaleString()}명</b> 투표
       </div>
 
-      <div className={styles.barWrap}>
+      <div
+        className={styles.barWrap}
+        role="img"
+        aria-label={`호재 ${bullish}%, 글쎄 ${neutral}%, 악재 ${bearish}%`}
+      >
         <div
           className={`${styles.segment} ${styles.bullish} ${animated ? styles.animated : ''}`}
           style={{ width: `${bullish}%` }}
+          aria-hidden="true"
         />
         <div
           className={`${styles.segment} ${styles.neutral} ${animated ? styles.animated : ''}`}
           style={{ width: `${neutral}%` }}
+          aria-hidden="true"
         />
         <div
           className={`${styles.segment} ${styles.bearish} ${animated ? styles.animated : ''}`}
           style={{ width: `${bearish}%` }}
+          aria-hidden="true"
         />
       </div>
 
