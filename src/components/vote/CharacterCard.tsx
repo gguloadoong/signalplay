@@ -31,7 +31,7 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
       tabIndex={0}
       aria-expanded={expanded}
       onClick={() => setExpanded((v) => !v)}
-      onKeyDown={(e) => e.key === 'Enter' && setExpanded((v) => !v)}
+      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setExpanded((v) => !v)}
     >
       <div className={styles.header}>
         <div className={styles.identity}>
