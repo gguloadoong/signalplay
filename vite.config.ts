@@ -11,13 +11,17 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules/@toss') || id.includes('node_modules/@emotion') || id.includes('node_modules/framer-motion') || id.includes('node_modules/motion')) {
             return 'tds'
           }
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom') || id.includes('node_modules/scheduler')) {
+          if (id.includes('node_modules/react-router-dom') || id.includes('node_modules/react-router/')) {
+            return 'router'
+          }
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/scheduler')) {
             return 'vendor'
           }
         },

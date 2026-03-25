@@ -3,8 +3,9 @@
   padding: 14px 16px;
   cursor: pointer;
   border: 1px solid var(--color-border);
-  transition: all 0.2s;
+  transition: transform 0.2s;
   user-select: none;
+  contain: layout style;
 }
 
 .card:active {
@@ -71,17 +72,7 @@
   margin-top: 6px;
   font-size: var(--font-size-caption);
   color: var(--color-text-tertiary);
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.preview {
-  margin-top: 6px;
-  font-size: 12px;
   line-height: 1.5;
-  color: var(--color-text-tertiary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
