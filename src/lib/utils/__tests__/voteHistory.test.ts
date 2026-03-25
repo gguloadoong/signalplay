@@ -56,8 +56,8 @@ describe('getVote', () => {
     expect(getVote(mockRecord.questionId)).not.toBeNull()
   })
 
-  it('7일 이상 지난 기록은 null 반환', () => {
-    const oldDate = new Date(Date.now() - 8 * 86400000).toISOString().split('T')[0]
+  it('90일 이상 지난 기록은 null 반환', () => {
+    const oldDate = new Date(Date.now() - 91 * 86400000).toISOString().split('T')[0]
     localStorageMock.setItem(STORAGE_KEY, JSON.stringify([{ ...mockRecord, date: oldDate }]))
     expect(getVote(mockRecord.questionId)).toBeNull()
   })
