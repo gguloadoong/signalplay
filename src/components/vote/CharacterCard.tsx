@@ -82,31 +82,41 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false, defa
         </div>
       </div>
 
-      <div className={`${styles.reasoningWrap} ${expanded ? styles.expanded : ''}`}>
-        <div className={`${styles.reasoningContent} ${expanded && !unlocked ? styles.gated : ''}`}>
-          <p className={styles.reasoning}>{prediction.reasoning}</p>
-          {expanded && !unlocked && <div className={styles.blurOverlay} />}
+      {!expanded && prediction.reasoning && (
+        <p className={styles.preview}>
+          {prediction.reasoning.length > 40
+            ? `${prediction.reasoning.slice(0, 40)}...`
+            : prediction.reasoning}
+        </p>
+      )}
+
+      {expanded && (
+        <div className={`${styles.reasoningWrap} ${styles.expanded}`}>
+          <div className={`${styles.reasoningContent} ${!unlocked ? styles.gated : ''}`}>
+            <p className={styles.reasoning}>{prediction.reasoning}</p>
+            {!unlocked && <div className={styles.blurOverlay} />}
+          </div>
+
+          {!unlocked && (
+            <button
+              className={styles.unlockBtn}
+              onClick={handleUnlock}
+              disabled={adLoading}
+              aria-label="광고 시청 후 전체 분석 보기"
+            >
+              {adLoading ? '광고 로딩 중...' : '🎬 전체 분석 보기'}
+            </button>
+          )}
+
+          {unlocked && showCorrect && isCorrect !== undefined && (
+            <p className={`${styles.reaction} ${isCorrect ? styles.reactionCorrect : styles.reactionWrong}`}>
+              {isCorrect
+                ? CHARACTER_REACTIONS[prediction.character].correct
+                : CHARACTER_REACTIONS[prediction.character].wrong}
+            </p>
+          )}
         </div>
-
-        {expanded && !unlocked && (
-          <button
-            className={styles.unlockBtn}
-            onClick={handleUnlock}
-            disabled={adLoading}
-            aria-label="광고 시청 후 전체 분석 보기"
-          >
-            {adLoading ? '광고 로딩 중...' : '🎬 전체 분석 보기'}
-          </button>
-        )}
-
-        {expanded && unlocked && showCorrect && isCorrect !== undefined && (
-          <p className={`${styles.reaction} ${isCorrect ? styles.reactionCorrect : styles.reactionWrong}`}>
-            {isCorrect
-              ? CHARACTER_REACTIONS[prediction.character].correct
-              : CHARACTER_REACTIONS[prediction.character].wrong}
-          </p>
-        )}
-      </div>
+      )}
     </div>
   )
 }
