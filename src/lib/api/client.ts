@@ -33,6 +33,9 @@ async function request<T>(
 export const api = {
   getQuestion: () => request<import('@/types/vote').Question & {
     characters: import('@/types/vote').CharacterPrediction[]
+    totalVotes: number
+    deadline: string
+    isActive: boolean
   }>('/question'),
 
   vote: (body: { questionId: string; vote: string; userId?: string }) =>
