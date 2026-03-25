@@ -5,7 +5,7 @@ const SLIDES = [
   {
     emoji: '⚡',
     title: '오늘의 투자 시그널, 예측해보세요',
-    description: 'AI가 실시간 뉴스를 분석해\n매일 새로운 투자 질문을 던져요',
+    description: '실시간 시장 뉴스 기반으로\n매일 새로운 투자 질문을 던져요',
   },
   {
     emoji: '🔮',
