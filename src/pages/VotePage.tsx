@@ -164,6 +164,15 @@ export function VotePage() {
             투표 완료 — 내 선택:{' '}
             <b>{VOTE_OPTIONS.find((o) => o.value === voted)?.label}</b>
           </div>
+          {voted && (() => {
+            const syncCount = characters.filter((c) => c.prediction === voted).length
+            const msg = syncCount === 0
+              ? '방구석 전문가들은 모두 다른 의견이에요 👀'
+              : syncCount === characters.length
+              ? '방구석 전문가 전원과 같은 선택이에요! 🎯'
+              : `방구석 전문가 ${characters.length}명 중 ${syncCount}명이 같은 선택을 했어요`
+            return <p className={styles.syncMsg}>{msg}</p>
+          })()}
           <CrowdBar result={crowd} animated />
           <Button size="medium" variant="weak" color="primary" onClick={handleShare} className={styles.shareBtn}>
             공유하기 — "너는 어떻게 봐?"
