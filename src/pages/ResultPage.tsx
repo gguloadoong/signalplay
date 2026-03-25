@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
@@ -7,6 +8,8 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { getVote } from '@/lib/utils/voteHistory'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
+import { api } from '@/lib/api/client'
+import type { VoteResult } from '@/types/vote'
 import styles from './ResultPage.module.css'
 
 const OUTCOME_LABELS = { bullish: '호재', bearish: '악재', neutral: '글쎄' } as const
@@ -18,8 +21,24 @@ const OUTCOME_COLORS = {
 
 export function ResultPage() {
   const navigate = useNavigate()
-  const result = MOCK_VOTE_RESULT
+  const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
+
+  useEffect(() => {
+    api.getResult().then(({ data }) => {
+      // data null = API 연결됐지만 결과 없음, undefined = API 실패 → mock 폴백
+      setResult(data !== undefined ? data : MOCK_VOTE_RESULT)
+    })
+  }, [])
+
   const myVote = result ? getVote(result.questionId) : null
+
+  if (result === undefined) {
+    return (
+      <div className={styles.page}>
+        <EmptyState emoji="⏳" title="결과 불러오는 중..." description="" />
+      </div>
+    )
+  }
 
   if (!result) {
     return (
