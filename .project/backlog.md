@@ -88,7 +88,7 @@
 - [x] [FEATURE] @toss/tds-mobile 전면 도입 + Tossface CDN (PR #167 merged)
 - [x] [FEATURE] 공유 카드 이미지 생성 — html-to-image (PR #173 merged)
 - [x] [FEATURE] voteHistory 보관 기간 7 → 90일 (PR #172 merged)
-- [ ] [CONTENT] 운형 reasoning 강화 — Gemini 프롬프트에 일상 에피소드 지시 추가
+- [x] [CONTENT] 코인토 reasoning 강화 — Gemini 프롬프트 에피소드 5카테고리 확장 (PR #177 merged)
 - [x] [FEATURE] 너의 투자 성향 — 누적 투표 기반 캐릭터 일치율 (PR #175 merged)
 
 
