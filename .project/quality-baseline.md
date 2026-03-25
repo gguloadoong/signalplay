@@ -11,8 +11,8 @@
 | pnpm lint | ✅ 0 에러 | 항상 0 | P0 |
 | TypeScript 에러 | 0개 | 항상 0 | P0 |
 | npm audit high+ | 0개 | 항상 0 | P0 |
-| JS 번들 (main) | 201KB (67KB gzip) | 커지면 정당화 필요 | P2 |
-| CSS 번들 | 11.36KB (2.94KB gzip) | 커지면 정당화 필요 | P3 |
+| JS 번들 (main) | 205KB (68KB gzip) | 커지면 정당화 필요 | P2 |
+| CSS 번들 | 13.56KB (3.44KB gzip) | 커지면 정당화 필요 | P3 |
 | 테스트 커버리지 | 유닛 35개 | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
@@ -26,3 +26,4 @@
 | 2026-03-23 | 초기 기준선 설정 | QA 호크 |
 | 2026-03-24 | 유닛 35개 + E2E 4개 래칫 상향 | QA 호크 |
 | 2026-03-25 | JS 번들 1,135KB→201KB (TDS/Emotion 제거), npm audit 0개 추가 | QA 호크 |
+| 2026-03-25 | JS 201→205KB, CSS 11.4→13.6KB (WeeklyPicksSection 신규, 정당화됨) | QA 호크 |
