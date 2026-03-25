@@ -27,3 +27,4 @@ dist/
 .vercel
 e2e-results/
 test-results/
+supabase/.temp/
