@@ -72,7 +72,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const today = new Date().toISOString().split('T')[0]
   if (cache?.date === today) return res.status(200).json(cache.data)
 
-  // 1. Generate question
+  // 1. Generate question (Google Search Grounding으로 실시간 뉴스 기반)
   const qRaw = await callGemini(buildQuestionPrompt(today), true)
   let question = qRaw ? parseJson(qRaw) as { title: string; question: string; category: string } | null : null
 

@@ -5,6 +5,7 @@ import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { SuccessAnimation } from '@/components/shared/SuccessAnimation'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { MOCK_TODAY_QUESTION, MOCK_CHARACTER_PREDICTIONS, MOCK_CROWD_RESULT } from '@/lib/mockData'
@@ -27,12 +28,18 @@ export function VotePage() {
   const navigate = useNavigate()
   const question = MOCK_TODAY_QUESTION
   const [voted, setVoted] = useState<VoteChoice | null>(null)
+  const [showSuccess, setShowSuccess] = useState(false)
   const [shareMsg, setShareMsg] = useState('')
 
   const handleVote = (choice: VoteChoice) => {
     if (voted) return
     setVoted(choice)
+    setShowSuccess(true)
   }
+
+  const handleAnimationComplete = useCallback(() => {
+    setShowSuccess(false)
+  }, [])
 
   const handleShare = useCallback(async () => {
     const text = generateVoteShareText({
@@ -69,6 +76,7 @@ export function VotePage() {
 
   return (
     <div className={styles.page}>
+      <SuccessAnimation show={showSuccess} onComplete={handleAnimationComplete} />
       {/* Result banner */}
       <button className={styles.resultBanner} onClick={() => navigate('/result')}>
         <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
