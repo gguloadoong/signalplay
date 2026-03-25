@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'sp_vote_history'
-const MAX_AGE_DAYS = 7
+const MAX_AGE_DAYS = 90
 
 export type VoteRecord = {
   questionId: string
