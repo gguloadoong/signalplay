@@ -50,6 +50,18 @@
 - [x] [PERFORMANCE] manifest.json + robots.txt — Lighthouse Best Practices/SEO (PR #111)
 - [x] [FEATURE] ResultPage 전면 광고 게이팅 세션 1회 (PR #109)
 
+## P1 — 서비스 기획 스프린트 (2026-03-25)
+
+- [x] [FEATURE] actual_outcome 자동 판정 Cron — 장 마감 후 Gemini Search 기반 (PR #130)
+- [x] [UX] ResultPage 결과 헤더 최상단 노출 — 스크롤 없이 적중 여부 확인 (PR #133)
+- [x] [BUG] VotePage 결과 배너 result_ready 가드 — 첫 방문자 빈 결과 페이지 차단 (PR #135)
+- [x] [UX] CharacterCard 첫 번째 카드 기본 펼침 — 핵심 콘텐츠 노출 (PR #137)
+- [x] [FEATURE] 투표 스트릭 + 적중률 localStorage 추적 — 사용자 축적 시스템 MVP (PR #139)
+- [x] [TEST] userStats.ts 유닛 테스트 11개 — 60→71개 (PR #141)
+- [x] [BUG] E2E vote.spec.ts 캐릭터명 → 이모지 기반 리질리언트 셀렉터 (PR #131)
+- [ ] [UX] CharacterCard 접힘 상태 reasoning 미리보기 (첫 줄 40자)
+- [ ] [CONTENT] 캐릭터 성격 대사 강화 — 적중/오답 반응 대사 추가
+
 ## P3 — 다음 스프린트
 
 - [ ] [FEATURE] 플래시 투표 (속보 기반, 1~2시간 한정)
