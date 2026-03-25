@@ -12,7 +12,7 @@
 - [x] [BUG] E2E 테스트 피벗 반영 (#38 merged)
 - [x] [PROCESS] 구 코드 정리 (BattlePage/FeedPage/RankingPage 삭제)
 - [x] [FEATURE] Gemini 실시간 질문 생성 — Google Search Grounding (#42 merged)
-- [ ] [PROCESS] Supabase 프로젝트 생성 + 스키마 적용 (CEO 액션)
+- [ ] [PROCESS] Supabase 프로젝트 생성 + 스키마 적용 (CEO 액션) — PR #71 준비 완료, supabase login 후 적용 가능
 
 ---
 
