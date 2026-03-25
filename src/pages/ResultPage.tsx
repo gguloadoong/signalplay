@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toPng } from 'html-to-image'
 import { showInterstitialAd } from '@/lib/bedrock'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
@@ -7,6 +8,7 @@ import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
+import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
 import { recordResult, getStreak, getAccuracyPercent } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText } from '@/lib/utils/share'
@@ -28,6 +30,7 @@ export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
   const [shareMsg, setShareMsg] = useState('')
+  const shareCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!sessionStorage.getItem(AD_SESSION_KEY)) {
@@ -52,13 +55,29 @@ export function ResultPage() {
 
   const handleShare = useCallback(async () => {
     if (!result) return
+    const vote = getVote(result.questionId)
+
+    // 이미지 공유 시도
+    if (shareCardRef.current && navigator.canShare) {
+      try {
+        const dataUrl = await toPng(shareCardRef.current, { cacheBust: true, pixelRatio: 2 })
+        const res = await fetch(dataUrl)
+        const blob = await res.blob()
+        const file = new File([blob], 'signalplay-result.png', { type: 'image/png' })
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: '시그널플레이 결과' })
+          return
+        }
+      } catch { /* 이미지 공유 실패 시 텍스트로 폴백 */ }
+    }
+
+    // 텍스트 폴백
     const crowdWon = result.crowdResult.bullish >= result.crowdResult.bearish &&
       result.crowdResult.bullish >= result.crowdResult.neutral
         ? result.actualOutcome === 'bullish'
         : result.crowdResult.bearish >= result.crowdResult.neutral
           ? result.actualOutcome === 'bearish'
           : result.actualOutcome === 'neutral'
-    const vote = getVote(result.questionId)
     const text = generateResultShareText({
       title: result.title,
       crowdCorrect: crowdWon,
@@ -226,6 +245,16 @@ export function ResultPage() {
 
       {shareMsg && <div className={styles.toast} aria-live="polite">{shareMsg}</div>}
       <Disclaimer />
+
+      {/* 공유 이미지 생성용 — 화면 밖에 렌더링 */}
+      <div ref={shareCardRef} style={{ position: 'fixed', left: '-9999px', top: 0, pointerEvents: 'none' }} aria-hidden="true">
+        <ShareCard
+          result={result}
+          myVote={myVote}
+          streak={getStreak()}
+          accuracyPercent={getAccuracyPercent()}
+        />
+      </div>
     </div>
   )
 }
