@@ -77,7 +77,7 @@
 - [x] [UX] CharacterCard reasoning 미리보기 + 슬라이드 애니메이션 (#58 merged)
 - [x] [UX] 접근성 개선 — 색상 대비 + 폰트 크기 (#61 merged)
 - [x] [UX] CharacterCard aria-label 제거 — WCAG 2.5.3 (#63 merged)
-- [ ] [PERFORMANCE] Lighthouse 점수 90+ 달성 (PR #169 리뷰 중 — CSS contain + 청크 분리)
+- [x] [PERFORMANCE] Lighthouse 점수 90+ 달성 (PR #169 merged — CSS contain + 청크 분리)
 - [x] [PERFORMANCE] React.lazy 코드 스플리팅 — ResultPage/Onboarding (#67 merged, 205→193KB)
 - [x] [PERFORMANCE] WeeklyPicksSection lazy load — TBT 개선 (#69 merged, 193→191KB, Lighthouse 85+ 달성)
 - [x] [UX] index.html title/description 피벗 반영 — SEO 개선 (5db7e56)
@@ -86,10 +86,10 @@
 ## P2 — 서비스 기획 v2 스프린트 (2026-03-26)
 
 - [x] [FEATURE] @toss/tds-mobile 전면 도입 + Tossface CDN (PR #167 merged)
-- [ ] [FEATURE] 공유 카드 이미지 생성 — html-to-image (PR #173 리뷰 중)
+- [x] [FEATURE] 공유 카드 이미지 생성 — html-to-image (PR #173 merged)
 - [x] [FEATURE] voteHistory 보관 기간 7 → 90일 (PR #172 merged)
 - [ ] [CONTENT] 운형 reasoning 강화 — Gemini 프롬프트에 일상 에피소드 지시 추가
-- [ ] [FEATURE] 너의 투자 성향 — 누적 투표 기반 캐릭터 일치율 (PR #175 리뷰 중)
+- [x] [FEATURE] 너의 투자 성향 — 누적 투표 기반 캐릭터 일치율 (PR #175 merged)
 
 
 ## P2 — 레트로 도출 (다음 스프린트)
