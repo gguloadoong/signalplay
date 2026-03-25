@@ -33,6 +33,12 @@
   color: var(--color-text-secondary);
 }
 
+.statsRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 .section {
   margin-bottom: 24px;
 }

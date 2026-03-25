@@ -7,6 +7,7 @@ import { EmptyState } from '@/components/shared/EmptyState'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { getVote } from '@/lib/utils/voteHistory'
+import { recordResult, getStreak, getAccuracyPercent } from '@/lib/utils/userStats'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 import { api } from '@/lib/api/client'
 import type { VoteResult } from '@/types/vote'
@@ -26,7 +27,12 @@ export function ResultPage() {
   useEffect(() => {
     api.getResult().then(({ data }) => {
       // data null = API 연결됐지만 결과 없음, undefined = API 실패 → mock 폴백
-      setResult(data !== undefined ? data : MOCK_VOTE_RESULT)
+      const r = data !== undefined ? data : MOCK_VOTE_RESULT
+      setResult(r)
+      if (r) {
+        const vote = getVote(r.questionId)
+        if (vote) recordResult(r.questionId, vote.choice === r.actualOutcome)
+      }
     })
   }, [])
 
@@ -93,6 +99,18 @@ export function ResultPage() {
           </div>
         )}
       </div>
+
+      {/* 내 성적 배지 */}
+      {(getStreak() > 0 || getAccuracyPercent() !== null) && (
+        <div className={styles.statsRow}>
+          {getStreak() > 0 && (
+            <Badge size="small" variant="weak" color="blue">🔥 {getStreak()}일 연속</Badge>
+          )}
+          {getAccuracyPercent() !== null && (
+            <Badge size="small" variant="weak" color="green">{getAccuracyPercent()}% 적중</Badge>
+          )}
+        </div>
+      )}
 
       {/* Crowd result */}
       <div className={styles.section}>
