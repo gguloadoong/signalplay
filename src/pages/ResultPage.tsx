@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { showInterstitialAd } from '@/lib/bedrock'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
@@ -19,9 +20,18 @@ const OUTCOME_COLORS = {
   neutral: 'yellow',
 } as const
 
+const AD_SESSION_KEY = 'sp_interstitial_shown'
+
 export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
+
+  useEffect(() => {
+    if (!sessionStorage.getItem(AD_SESSION_KEY)) {
+      sessionStorage.setItem(AD_SESSION_KEY, 'true')
+      showInterstitialAd()
+    }
+  }, [])
 
   useEffect(() => {
     api.getResult().then(({ data }) => {
