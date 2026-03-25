@@ -73,26 +73,69 @@
   border-top: 1px solid var(--color-border);
   overflow: hidden;
   max-height: 1.6em;
-  transition: max-height 0.25s ease;
+  transition: max-height 0.3s ease;
 }
 
 .reasoningWrap.expanded {
-  max-height: 200px;
+  max-height: 300px;
 }
+
+/* 게이트: 1.5줄 + 블러 오버레이 */
+.reasoningContent {
+  position: relative;
+}
+
+.reasoningContent.gated {
+  max-height: 3.8em;
+  overflow: hidden;
+}
+
+.blurOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.6em;
+  pointer-events: none;
+}
+
+.quant    .blurOverlay { background: linear-gradient(to bottom, transparent, #f0f7ff); }
+.professor .blurOverlay { background: linear-gradient(to bottom, transparent, #f3f0ff); }
+.reporter .blurOverlay { background: linear-gradient(to bottom, transparent, #f0fff4); }
+.pattern  .blurOverlay { background: linear-gradient(to bottom, transparent, #fff7f0); }
+.chimp    .blurOverlay { background: linear-gradient(to bottom, transparent, #fffbf0); }
 
 .reasoning {
   font-size: 13px;
   line-height: 1.6;
   color: var(--color-text-secondary);
+}
+
+.reasoningWrap:not(.expanded) .reasoning {
   display: -webkit-box;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.reasoningWrap:not(.expanded) .reasoning {
-  -webkit-line-clamp: 1;
+.unlockBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
 
-.reasoningWrap.expanded .reasoning {
-  -webkit-line-clamp: unset;
+.unlockBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
