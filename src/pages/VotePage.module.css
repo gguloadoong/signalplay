@@ -93,6 +93,12 @@
   text-align: center;
 }
 
+.syncMsg {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
 .crowdHint {
   text-align: center;
   font-size: 13px;
