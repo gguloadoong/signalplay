@@ -13,6 +13,7 @@
 - [x] [PROCESS] 구 코드 정리 (BattlePage/FeedPage/RankingPage 삭제)
 - [x] [FEATURE] Gemini 실시간 질문 생성 — Google Search Grounding (#42 merged)
 - [ ] [PROCESS] Supabase 프로젝트 생성 + 스키마 적용 (CEO 액션) — PR #71 준비 완료, supabase login 후 적용 가능
+- [x] [FEATURE] 알고리즘 고도화 1단계 — 캐릭터별 독립 프롬프트 + reasoning 필드 (ADR-009, b807b1b + CharacterCard #58)
 
 ---
 

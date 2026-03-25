@@ -129,7 +129,7 @@ export function ResultPage() {
 
       {/* AI comment */}
       <div className={styles.aiComment}>
-        <span className={styles.aiLabel}>AI 총평</span>
+        <span className={styles.aiLabel}>오늘의 총평</span>
         <p>{result.aiComment}</p>
       </div>
 
