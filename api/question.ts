@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { getSupabase } from './_supabase'
 
 // 프롬프트와 메타데이터를 인라인 (Vercel Serverless에서 src/ import 불가)
 const CHARACTER_META: Record<string, { name: string; emoji: string; methodology: string }> = {
@@ -129,5 +130,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   cache = { date: today, data: response }
+
+  // Supabase upsert — 환경변수 설정 시 활성화
+  const supabase = getSupabase()
+  if (supabase) {
+    await supabase.from('daily_questions').upsert({
+      id: response.id,
+      date: today,
+      title: question.title,
+      question: question.question,
+      category: question.category,
+      deadline: response.deadline,
+      character_predictions: enrichedCharacters,
+    }, { onConflict: 'date' }).select()
+  }
+
   return res.status(200).json(response)
 }
