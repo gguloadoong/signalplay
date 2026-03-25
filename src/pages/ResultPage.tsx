@@ -139,6 +139,12 @@ export function ResultPage() {
         <CrowdBar result={result.crowdResult} animated={false} />
       </div>
 
+      <div className={styles.actions}>
+        <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
+          오늘 투표하기 →
+        </Button>
+      </div>
+
       {/* Character results */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
@@ -182,12 +188,6 @@ export function ResultPage() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className={styles.actions}>
-        <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
-          오늘 투표하기 →
-        </Button>
       </div>
 
       <Disclaimer />
