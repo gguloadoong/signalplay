@@ -19,7 +19,7 @@ export function SuccessAnimation({ show, onComplete }: Props) {
   if (!show) return null
 
   return (
-    <div className={styles.overlay} onAnimationEnd={handleAnimationEnd}>
+    <div className={styles.overlay} role="alert" onAnimationEnd={handleAnimationEnd}>
       <div className={styles.content}>
         <div className={styles.checkmark}>✓</div>
         <p className={styles.text}>예측 완료!</p>
