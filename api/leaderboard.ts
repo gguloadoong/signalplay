@@ -3,11 +3,11 @@ import { getSupabase } from './_supabase'
 
 const CHARACTERS = ['quant', 'professor', 'reporter', 'pattern', 'chimp'] as const
 const MOCK_LEADERBOARD = [
-  { character: 'quant', name: '엑셀형', emoji: '💼', correct: 18, total: 25, rate: 72 },
-  { character: 'reporter', name: '뉴스형', emoji: '📺', correct: 17, total: 25, rate: 68 },
-  { character: 'professor', name: '도서관형', emoji: '📚', correct: 16, total: 25, rate: 64 },
-  { character: 'pattern', name: '차트형', emoji: '📐', correct: 15, total: 25, rate: 60 },
-  { character: 'chimp', name: '운형', emoji: '🎲', correct: 13, total: 25, rate: 52 },
+  { character: 'quant', name: '밸류김', emoji: '💼', correct: 18, total: 25, rate: 72 },
+  { character: 'reporter', name: '뉴스최', emoji: '📺', correct: 17, total: 25, rate: 68 },
+  { character: 'professor', name: '팩터박', emoji: '📚', correct: 16, total: 25, rate: 64 },
+  { character: 'pattern', name: '봉준선', emoji: '📐', correct: 15, total: 25, rate: 60 },
+  { character: 'chimp', name: '코인토', emoji: '🎲', correct: 13, total: 25, rate: 52 },
 ]
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

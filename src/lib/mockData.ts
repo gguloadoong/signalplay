@@ -24,7 +24,7 @@ export const MOCK_TODAY_QUESTION: Question = {
 export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
   {
     character: 'quant',
-    name: '엑셀형',
+    name: '밸류김',
     emoji: '💼',
     prediction: 'bullish',
     reasoning: '현재 PER 11.2배로 반도체 섹터 평균(14.8배) 대비 24% 할인. 최근 3분기 연속 EPS 컨센서스 상향 조정 중이며, 기관 순매수가 5거래일 연속 +800억 이상 유지. 밸류에이션 + 수급 모두 긍정적.',
@@ -32,7 +32,7 @@ export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
   },
   {
     character: 'professor',
-    name: '도서관형',
+    name: '팩터박',
     emoji: '📚',
     prediction: 'neutral',
     reasoning: 'Bernard & Thomas(1989) PEAD 모델 기준, 실적 서프라이즈 발생 시 60거래일간 초과 수익이 나타나지만 현재는 이미 주가에 기대치가 반영된 상태. Fama-French Momentum Factor 기준 최근 12개월 수익률이 상위 10%에 진입해 단기 되돌림 확률도 공존.',
@@ -40,7 +40,7 @@ export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
   },
   {
     character: 'reporter',
-    name: '뉴스형',
+    name: '뉴스최',
     emoji: '📺',
     prediction: 'bullish',
     reasoning: '최근 7일 국내 주요 언론 센티멘트 스코어 +68점(100점 만점). 외국인 투자자 포지션이 3주 만에 순매도→순매수로 전환. 시장 컨센서스 영업이익 추정치가 발표 2주 전 기준 +12% 상향 조정.',
@@ -48,7 +48,7 @@ export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
   },
   {
     character: 'pattern',
-    name: '차트형',
+    name: '봉준선',
     emoji: '📐',
     prediction: 'bearish',
     reasoning: '일봉 기준 RSI 71.3으로 과매수 구간 진입. 직전 3번의 실적 발표일 패턴 분석 결과 기대치 충족 시에도 발표 당일 평균 -1.8% 하락("소문에 사고 뉴스에 팔기"). 현재 저항선 8만 2천원대 돌파 실패 시 단기 조정 가능성.',
@@ -56,7 +56,7 @@ export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
   },
   {
     character: 'chimp',
-    name: '운형',
+    name: '코인토',
     emoji: '🎲',
     prediction: 'neutral',
     reasoning: '오늘 아침 지하철에서 아저씨가 경제신문 읽다가 졸았어요. 그게 무슨 의미인지는 모르겠지만... 글쎄요? 🎲',
@@ -84,7 +84,7 @@ export const MOCK_VOTE_RESULT: VoteResult = {
   characters: [
     {
       character: 'quant',
-      name: '엑셀형',
+      name: '밸류김',
       emoji: '💼',
       prediction: 'bullish',
       reasoning: '연준 동결 시 S&P500 평균 +1.4% 상승(최근 5회 기준). 코스피 상관계수 0.72 적용 시 +1.0% 기대. 외국인 선물 포지션도 순매수로 전환.',
@@ -93,7 +93,7 @@ export const MOCK_VOTE_RESULT: VoteResult = {
     },
     {
       character: 'professor',
-      name: '도서관형',
+      name: '팩터박',
       emoji: '📚',
       prediction: 'bullish',
       reasoning: '테일러 준칙(Taylor Rule) 기준 현재 금리는 중립 수준(2.5%) 대비 100bp 이상 높은 긴축 구간. 동결 발언은 실질적 완화 신호로, 리스크 프리미엄 축소 → 주가 재평가 기대.',
@@ -102,7 +102,7 @@ export const MOCK_VOTE_RESULT: VoteResult = {
     },
     {
       character: 'reporter',
-      name: '뉴스형',
+      name: '뉴스최',
       emoji: '📺',
       prediction: 'neutral',
       reasoning: '파월 발언의 실제 수위가 "인하 검토"가 아닌 "데이터 의존"에 그침. Bloomberg 센티멘트 인덱스 발언 전후 변화 미미(+3점). 시장이 기대한 완화 메시지 미달.',
@@ -111,7 +111,7 @@ export const MOCK_VOTE_RESULT: VoteResult = {
     },
     {
       character: 'pattern',
-      name: '차트형',
+      name: '봉준선',
       emoji: '📐',
       prediction: 'bearish',
       reasoning: '코스피 2,780 저항선(20일 이평선 + 피보나치 61.8% 레벨 겹침). 파월 발언 후 5회 중 4회 당일 고점 형성 후 되돌림 패턴. MACD 히스토그램 수축 중.',
@@ -120,7 +120,7 @@ export const MOCK_VOTE_RESULT: VoteResult = {
     },
     {
       character: 'chimp',
-      name: '운형',
+      name: '코인토',
       emoji: '🎲',
       prediction: 'bullish',
       reasoning: '오늘 점심에 된장찌개를 먹었는데 맛있었어요. 좋은 일이 생길 것 같은 느낌? 🎲',
@@ -128,13 +128,13 @@ export const MOCK_VOTE_RESULT: VoteResult = {
       isCorrect: true,
     },
   ],
-  aiComment: '군중의 62%가 호재를 예상했고 실제로도 코스피 +1.1% 상승했습니다. 엑셀형과 도서관형이 정확하게 맞혔고, 운형도 이번엔 감으로 적중!',
+  aiComment: '군중의 62%가 호재를 예상했고 실제로도 코스피 +1.1% 상승했습니다. 밸류김과 팩터박이 정확하게 맞혔고, 코인토도 이번엔 감으로 적중!',
 }
 
 export const MOCK_CHARACTER_ACCURACY = [
-  { character: 'quant', name: '엑셀형', emoji: '💼', correct: 18, total: 25, rate: 72 },
-  { character: 'reporter', name: '뉴스형', emoji: '📺', correct: 17, total: 25, rate: 68 },
-  { character: 'professor', name: '도서관형', emoji: '📚', correct: 16, total: 25, rate: 64 },
-  { character: 'pattern', name: '차트형', emoji: '📐', correct: 15, total: 25, rate: 60 },
-  { character: 'chimp', name: '운형', emoji: '🎲', correct: 13, total: 25, rate: 52 },
+  { character: 'quant', name: '밸류김', emoji: '💼', correct: 18, total: 25, rate: 72 },
+  { character: 'reporter', name: '뉴스최', emoji: '📺', correct: 17, total: 25, rate: 68 },
+  { character: 'professor', name: '팩터박', emoji: '📚', correct: 16, total: 25, rate: 64 },
+  { character: 'pattern', name: '봉준선', emoji: '📐', correct: 15, total: 25, rate: 60 },
+  { character: 'chimp', name: '코인토', emoji: '🎲', correct: 13, total: 25, rate: 52 },
 ]

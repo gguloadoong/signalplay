@@ -2,8 +2,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import styles from './BottomNav.module.css'
 
 const tabs = [
-  { path: '/', label: '투표', icon: '⚡', badge: false },
-  { path: '/result', label: '결과', icon: '🎯', badge: true },
+  { path: '/', label: '투표', icon: '⚡', badge: false, exact: true },
+  { path: '/result', label: '결과', icon: '🎯', badge: true, exact: true },
+  { path: '/characters', label: '전문가', icon: '🔮', badge: false, exact: false },
 ] as const
 
 export function BottomNav() {
@@ -13,7 +14,9 @@ export function BottomNav() {
   return (
     <nav className={styles.nav} role="tablist" aria-label="메인 네비게이션">
       {tabs.map((tab) => {
-        const isActive = location.pathname === tab.path
+        const isActive = tab.exact
+          ? location.pathname === tab.path
+          : location.pathname.startsWith(tab.path)
         return (
           <button
             key={tab.path}
