@@ -40,6 +40,10 @@ body {
   margin: 0 auto;
 }
 
+.tossface {
+  font-family: 'Tossface', sans-serif;
+}
+
 .app-content {
   flex: 1;
   padding-bottom: calc(56px + var(--safe-area-bottom));

@@ -140,7 +140,7 @@ export function ResultPage() {
           {MOCK_CHARACTER_ACCURACY.map((c, i) => (
             <div key={c.character} className={styles.leaderRow}>
               <span className={styles.leaderRank}>{i + 1}</span>
-              <span className={styles.leaderEmoji}>{c.emoji}</span>
+              <span className={`${styles.leaderEmoji} tossface`}>{c.emoji}</span>
               <span className={styles.leaderName}>{c.name}</span>
               <div className={styles.leaderBarWrap}>
                 <div

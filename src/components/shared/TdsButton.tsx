@@ -1,5 +1,5 @@
+import { Button } from '@toss/tds-mobile'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
-import styles from './TdsButton.module.css'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large'
@@ -15,15 +15,13 @@ export function TdsButton({
   color = 'primary',
   display = 'inline',
   children,
-  className,
   ...rest
 }: Props) {
+  // Cast rest to any to bridge ButtonHTMLAttributes vs framer-motion ButtonProps event types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (
-    <button
-      className={`${styles.btn} ${styles[size]} ${styles[variant]} ${styles[color]} ${display === 'full' ? styles.full : ''} ${className ?? ''}`}
-      {...rest}
-    >
+    <Button size={size} variant={variant} color={color} display={display} {...(rest as any)}>
       {children}
-    </button>
+    </Button>
   )
 }

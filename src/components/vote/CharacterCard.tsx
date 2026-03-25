@@ -35,7 +35,7 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
     >
       <div className={styles.header}>
         <div className={styles.identity}>
-          <span className={styles.emoji}>{prediction.emoji}</span>
+          <span className={`${styles.emoji} tossface`}>{prediction.emoji}</span>
           <div className={styles.nameWrap}>
             <span className={styles.name}>{prediction.name}</span>
             <span className={styles.methodology}>{prediction.methodology}</span>

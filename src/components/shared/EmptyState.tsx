@@ -10,7 +10,7 @@ interface Props {
 export function EmptyState({ emoji, title, description, action }: Props) {
   return (
     <div className={styles.container}>
-      <span className={styles.emoji}>{emoji}</span>
+      <span className={`${styles.emoji} tossface`}>{emoji}</span>
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
       {action && (

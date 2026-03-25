@@ -31,7 +31,7 @@ export function Onboarding({ onComplete }: Props) {
   return (
     <div className={styles.overlay}>
       <div className={styles.content}>
-        <span className={styles.emoji}>{slide.emoji}</span>
+        <span className={`${styles.emoji} tossface`}>{slide.emoji}</span>
         <h2 className={styles.title}>{slide.title}</h2>
         <p className={styles.description}>{slide.description}</p>
 

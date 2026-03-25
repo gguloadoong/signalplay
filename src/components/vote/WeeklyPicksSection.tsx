@@ -47,7 +47,7 @@ export function WeeklyPicksSection() {
               <div key={pick.ticker} className={`${styles.card} ${styles[SENTIMENT_COLOR[pick.sentiment]]}`}>
                 <div className={styles.cardHeader}>
                   <span className={styles.ticker}>{pick.ticker}</span>
-                  <span className={styles.trend}>{TREND_EMOJI[pick.trend]} {pick.trend}</span>
+                  <span className={styles.trend}><span className="tossface">{TREND_EMOJI[pick.trend]}</span> {pick.trend}</span>
                 </div>
                 <div className={styles.name}>{pick.name}</div>
                 <p className={styles.summary}>{pick.summary}</p>

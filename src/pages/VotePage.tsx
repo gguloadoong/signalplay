@@ -151,7 +151,7 @@ export function VotePage() {
               onClick={() => handleVote(opt.value)}
               className={styles.voteBtn}
             >
-              <span className={styles.voteBtnEmoji}>{opt.emoji}</span>
+              <span className={`${styles.voteBtnEmoji} tossface`}>{opt.emoji}</span>
               {opt.label}
             </Button>
           ))}

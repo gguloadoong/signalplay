@@ -24,7 +24,7 @@ export function BottomNav() {
             onClick={() => navigate(tab.path)}
           >
             <span className={styles.iconWrap}>
-              <span className={styles.icon}>{tab.icon}</span>
+              <span className={`${styles.icon} tossface`}>{tab.icon}</span>
               {tab.badge && !isActive && <span className={styles.badge} />}
             </span>
             <span className={styles.label}>{tab.label}</span>
