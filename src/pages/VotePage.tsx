@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useCallback } from 'react'
+import { lazy, Suspense, useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
@@ -9,13 +9,14 @@ import { EmptyState } from '@/components/shared/EmptyState'
 import { SuccessAnimation } from '@/components/shared/SuccessAnimation'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
+import { api } from '@/lib/api/client'
+import { MOCK_TODAY_QUESTION, MOCK_CHARACTER_PREDICTIONS, MOCK_CROWD_RESULT } from '@/lib/mockData'
+import type { VoteChoice, Question, CharacterPrediction, CrowdResult } from '@/types/vote'
+import styles from './VotePage.module.css'
 
 const WeeklyPicksSection = lazy(() =>
   import('@/components/vote/WeeklyPicksSection').then((m) => ({ default: m.WeeklyPicksSection }))
 )
-import { MOCK_TODAY_QUESTION, MOCK_CHARACTER_PREDICTIONS, MOCK_CROWD_RESULT } from '@/lib/mockData'
-import type { VoteChoice } from '@/types/vote'
-import styles from './VotePage.module.css'
 
 const VOTE_OPTIONS: { value: VoteChoice; label: string; emoji: string }[] = [
   { value: 'bullish', label: '호재', emoji: '📈' },
@@ -29,33 +30,52 @@ const CATEGORY_COLOR: Record<string, 'blue' | 'green' | 'yellow'> = {
   매크로: 'yellow',
 }
 
+type QuestionData = Question & { characters: CharacterPrediction[] }
+
 export function VotePage() {
   const navigate = useNavigate()
-  const question = MOCK_TODAY_QUESTION
-  const [voted, setVoted] = useState<VoteChoice | null>(() => getVote(question.id)?.choice ?? null)
+  const [questionData, setQuestionData] = useState<QuestionData | null>(null)
+  const [crowd, setCrowd] = useState<CrowdResult>(MOCK_CROWD_RESULT)
+  const [loading, setLoading] = useState(true)
+  const [voted, setVoted] = useState<VoteChoice | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [shareMsg, setShareMsg] = useState('')
 
-  const handleVote = (choice: VoteChoice) => {
-    if (voted) return
+  useEffect(() => {
+    api.getQuestion().then(({ data }) => {
+      const q = data ?? ({ ...MOCK_TODAY_QUESTION, characters: MOCK_CHARACTER_PREDICTIONS } as QuestionData)
+      setQuestionData(q)
+      const existing = getVote(q.id)
+      if (existing) setVoted(existing.choice)
+      setLoading(false)
+    })
+  }, [])
+
+  const handleVote = useCallback(async (choice: VoteChoice) => {
+    if (voted || !questionData) return
     setVoted(choice)
     setShowSuccess(true)
-    saveVote({ questionId: question.id, date: question.date, title: question.title, choice })
-  }
+    saveVote({ questionId: questionData.id, date: questionData.date, title: questionData.title, choice })
+    const { data } = await api.vote({ questionId: questionData.id, vote: choice })
+    if (data?.crowd) {
+      setCrowd({ ...data.crowd })
+    }
+  }, [voted, questionData])
 
   const handleAnimationComplete = useCallback(() => {
     setShowSuccess(false)
   }, [])
 
   const handleShare = useCallback(async () => {
+    if (!questionData) return
     const text = generateVoteShareText({
-      title: question.title,
-      question: question.question,
-      crowdBullish: MOCK_CROWD_RESULT.bullish,
-      crowdBearish: MOCK_CROWD_RESULT.bearish,
-      crowdNeutral: MOCK_CROWD_RESULT.neutral,
-      totalVotes: MOCK_CROWD_RESULT.totalVotes,
-      characters: MOCK_CHARACTER_PREDICTIONS.map((c) => ({
+      title: questionData.title,
+      question: questionData.question,
+      crowdBullish: crowd.bullish,
+      crowdBearish: crowd.bearish,
+      crowdNeutral: crowd.neutral,
+      totalVotes: crowd.totalVotes,
+      characters: questionData.characters.map((c) => ({
         emoji: c.emoji,
         name: c.name,
         prediction: c.prediction,
@@ -66,9 +86,17 @@ export function VotePage() {
       setShareMsg('클립보드에 복사됨!')
       setTimeout(() => setShareMsg(''), 2000)
     }
-  }, [question])
+  }, [questionData, crowd])
 
-  if (!question) {
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <EmptyState emoji="⏳" title="오늘의 질문 불러오는 중..." description="" />
+      </div>
+    )
+  }
+
+  if (!questionData) {
     return (
       <div className={styles.page}>
         <EmptyState
@@ -79,6 +107,8 @@ export function VotePage() {
       </div>
     )
   }
+
+  const characters = questionData.characters
 
   return (
     <div className={styles.page}>
@@ -96,16 +126,16 @@ export function VotePage() {
           <Badge
             size="small"
             variant="weak"
-            color={CATEGORY_COLOR[question.category] ?? 'blue'}
+            color={CATEGORY_COLOR[questionData.category] ?? 'blue'}
           >
-            {question.category}
+            {questionData.category}
           </Badge>
           <span className={styles.deadline}>
-            {new Date(question.deadline) > new Date() ? '투표 진행 중' : '투표 마감'}
+            {new Date(questionData.deadline) > new Date() ? '투표 진행 중' : '투표 마감'}
           </span>
         </div>
-        <h2 className={styles.questionTitle}>{question.title}</h2>
-        <p className={styles.questionText}>{question.question}</p>
+        <h2 className={styles.questionTitle}>{questionData.title}</h2>
+        <p className={styles.questionText}>{questionData.question}</p>
       </div>
 
       {/* Vote buttons */}
@@ -132,7 +162,7 @@ export function VotePage() {
             투표 완료 — 내 선택:{' '}
             <b>{VOTE_OPTIONS.find((o) => o.value === voted)?.label}</b>
           </div>
-          <CrowdBar result={MOCK_CROWD_RESULT} animated />
+          <CrowdBar result={crowd} animated />
           <Button size="medium" variant="weak" color="primary" onClick={handleShare} className={styles.shareBtn}>
             공유하기 — "너는 어떻게 봐?"
           </Button>
@@ -147,7 +177,7 @@ export function VotePage() {
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>방구석 전문가들의 예측</h3>
         <div className={styles.characters}>
-          {MOCK_CHARACTER_PREDICTIONS.map((pred) => (
+          {characters.map((pred) => (
             <CharacterCard key={pred.character} prediction={pred} />
           ))}
         </div>
