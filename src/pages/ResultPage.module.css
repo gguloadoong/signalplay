@@ -71,7 +71,7 @@
 
 .aiLabel {
   display: inline-block;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   font-weight: 700;
   color: var(--color-primary);
   background: #d1e9ff;
@@ -136,7 +136,7 @@
 
 .leaderRate {
   width: 36px;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   font-weight: 700;
   color: var(--color-primary);
   text-align: right;

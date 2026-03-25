@@ -19,6 +19,7 @@
   --color-confidence-2: #ff9800;
   --color-confidence-3: #f44336;
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --font-size-caption: 12px;
 }
 
 body {

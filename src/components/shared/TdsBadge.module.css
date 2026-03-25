@@ -6,8 +6,8 @@
   white-space: nowrap;
 }
 
-.xsmall { padding: 1px 5px; font-size: 12px; }
-.small { padding: 2px 8px; font-size: 12px; }
+.xsmall { padding: 1px 5px; font-size: var(--font-size-caption); }
+.small { padding: 2px 8px; font-size: var(--font-size-caption); }
 .medium { padding: 3px 10px; font-size: 13px; }
 
 .fill.blue { background: #e8f4fd; color: #3182f6; }

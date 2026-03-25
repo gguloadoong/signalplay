@@ -16,7 +16,7 @@
 }
 
 .disclaimer {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-text-tertiary, #999);
 }
 
@@ -76,13 +76,13 @@
 }
 
 .ticker {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-text-tertiary, #999);
   font-weight: 500;
 }
 
 .trend {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   font-weight: 600;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .summary {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-text-secondary, #555);
   line-height: 1.5;
   margin: 0;

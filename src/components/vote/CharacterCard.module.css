@@ -48,7 +48,7 @@
 }
 
 .methodology {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-text-tertiary);
 }
 
@@ -63,7 +63,7 @@
 }
 
 .chevron {
-  font-size: 12px;
+  font-size: var(--font-size-caption);
   color: var(--color-text-tertiary);
 }
 
