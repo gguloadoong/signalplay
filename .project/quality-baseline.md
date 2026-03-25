@@ -12,8 +12,8 @@
 | TypeScript 에러 | 0개 | 항상 0 | P0 |
 | npm audit high+ | 0개 | 항상 0 | P0 |
 | JS 번들 (main) | 205KB (68KB gzip) | 커지면 정당화 필요 | P2 |
-| CSS 번들 | 13.56KB (3.44KB gzip) | 커지면 정당화 필요 | P3 |
-| 테스트 커버리지 | 유닛 35개 | 올라가기만 함 | P1 |
+| CSS 번들 | 14.25KB (3.54KB gzip) | 커지면 정당화 필요 | P3 |
+| 테스트 커버리지 | 유닛 42개 | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
 | Lighthouse 성능 | 미측정 | 올라가기만 함 | P2 |
@@ -27,3 +27,4 @@
 | 2026-03-24 | 유닛 35개 + E2E 4개 래칫 상향 | QA 호크 |
 | 2026-03-25 | JS 번들 1,135KB→201KB (TDS/Emotion 제거), npm audit 0개 추가 | QA 호크 |
 | 2026-03-25 | JS 201→205KB, CSS 11.4→13.6KB (WeeklyPicksSection 신규, 정당화됨) | QA 호크 |
+| 2026-03-25 | CSS 13.56→14.25KB (+0.7KB, --font-size-caption 변수 + voteHistory 기능), 유닛 35→42개 | QA 호크 |
