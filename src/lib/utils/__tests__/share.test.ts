@@ -27,8 +27,8 @@ describe('generateVoteShareText', () => {
       crowdNeutral: 20,
       totalVotes: 500,
       characters: [
-        { emoji: '💼', name: '엑셀형', prediction: 'bullish' },
-        { emoji: '🎲', name: '운형', prediction: 'bearish' },
+        { emoji: '💼', name: '밸류김', prediction: 'bullish' },
+        { emoji: '🎲', name: '코인토', prediction: 'bearish' },
       ],
     })
     expect(text).toContain('방구석 전문가')
@@ -55,7 +55,7 @@ describe('generateVoteShareText', () => {
       crowdBearish: 30,
       crowdNeutral: 20,
       totalVotes: 100,
-      characters: [{ emoji: '💼', name: '엑셀형', prediction: 'neutral' }],
+      characters: [{ emoji: '💼', name: '밸류김', prediction: 'neutral' }],
     })
     expect(text).not.toContain('AI 점쟁이')
   })
@@ -66,8 +66,8 @@ describe('generateResultShareText', () => {
     title: '삼성전자 실적 발표',
     crowdCorrect: true,
     characters: [
-      { emoji: '💼', name: '엑셀형', isCorrect: true },
-      { emoji: '🎲', name: '운형', isCorrect: false },
+      { emoji: '💼', name: '밸류김', isCorrect: true },
+      { emoji: '🎲', name: '코인토', isCorrect: false },
     ],
     myCorrect: true,
     streak: 3,

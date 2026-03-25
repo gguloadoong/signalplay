@@ -1,0 +1,180 @@
+.page {
+  padding: 0 16px 32px;
+}
+
+.headerBar {
+  padding: 12px 0 8px;
+}
+
+.back {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 4px 0;
+  font-weight: 500;
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px 20px;
+  background: var(--color-bg-secondary);
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.methodology {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-primary);
+  background: #e8f1fd;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.quote {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.statsRow {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.statBox {
+  flex: 1;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.statSub {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+}
+
+.statDivider {
+  width: 1px;
+  height: 48px;
+  background: var(--color-border);
+  margin: 0 16px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.bio {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.historyItem {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.historyTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.historyDate {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.historyPred {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.correct {
+  font-size: 11px;
+  color: var(--color-success);
+  margin-left: auto;
+}
+
+.wrong {
+  font-size: 11px;
+  color: var(--color-danger);
+  margin-left: auto;
+}
+
+.historyQ {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.historyReason {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-top: 8px;
+}

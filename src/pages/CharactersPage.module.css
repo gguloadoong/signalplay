@@ -1,0 +1,126 @@
+.page {
+  padding: 0 16px 24px;
+}
+
+.header {
+  padding: 20px 0 16px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s, transform 0.1s;
+}
+
+.card:active {
+  background: var(--color-bg-secondary);
+  transform: scale(0.99);
+}
+
+.rank {
+  font-size: 18px;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.avatar {
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.bio {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.methodology {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--color-primary);
+  background: #e8f1fd;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.stats {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rate {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.rateLabel {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+}
+
+.record {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  margin-top: 2px;
+}
+
+.arrow {
+  font-size: 20px;
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.disclaimer {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  margin-top: 20px;
+}

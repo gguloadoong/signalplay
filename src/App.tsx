@@ -7,6 +7,8 @@ import { VotePage } from '@/pages/VotePage'
 import './App.css'
 
 const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
+const CharactersPage = lazy(() => import('@/pages/CharactersPage').then((m) => ({ default: m.CharactersPage })))
+const CharacterProfilePage = lazy(() => import('@/pages/CharacterProfilePage').then((m) => ({ default: m.CharacterProfilePage })))
 const Onboarding = lazy(() => import('@/components/shared/Onboarding').then((m) => ({ default: m.Onboarding })))
 
 const ONBOARDING_KEY = 'signalplay-onboarded'
@@ -33,6 +35,8 @@ function App() {
           <Routes>
             <Route path="/" element={<VotePage />} />
             <Route path="/result" element={<ResultPage />} />
+            <Route path="/characters" element={<CharactersPage />} />
+            <Route path="/characters/:id" element={<CharacterProfilePage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
