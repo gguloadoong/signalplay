@@ -110,6 +110,13 @@ export function VotePage() {
 
   const characters = questionData.characters
 
+  const disagreeCallout = (() => {
+    const bullish = characters.find((c) => c.prediction === 'bullish')
+    const bearish = characters.find((c) => c.prediction === 'bearish')
+    if (bullish && bearish) return `💡 ${bullish.name}은 호재, ${bearish.name}은 악재를 예측했어요`
+    return null
+  })()
+
   return (
     <div className={styles.page}>
       <SuccessAnimation show={showSuccess} onComplete={handleAnimationComplete} />
@@ -176,6 +183,7 @@ export function VotePage() {
       {/* Character predictions */}
       <section className={styles.section}>
         <h3 className={styles.sectionTitle}>방구석 전문가들의 예측</h3>
+        {disagreeCallout && <p className={styles.disagreeCallout}>{disagreeCallout}</p>}
         <div className={styles.characters}>
           {characters.map((pred) => (
             <CharacterCard key={pred.character} prediction={pred} />
