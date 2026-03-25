@@ -2,11 +2,11 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 // 프롬프트와 메타데이터를 인라인 (Vercel Serverless에서 src/ import 불가)
 const CHARACTER_META: Record<string, { name: string; emoji: string; methodology: string }> = {
-  quant: { name: '퀀트봇', emoji: '📊', methodology: '기술적 분석' },
-  professor: { name: '논문쟁이', emoji: '🎓', methodology: '학술 논문' },
-  reporter: { name: '속보왕', emoji: '📰', methodology: '뉴스 센티멘트' },
-  pattern: { name: '패턴술사', emoji: '🔮', methodology: '패턴 매칭' },
-  chimp: { name: '다트침팬지', emoji: '🐵', methodology: '다트 던지기' },
+  quant: { name: '엑셀형', emoji: '💼', methodology: 'PER/PBR 수치 분석' },
+  professor: { name: '도서관형', emoji: '📚', methodology: '학술 이론 적용' },
+  reporter: { name: '뉴스형', emoji: '📺', methodology: '뉴스 센티멘트' },
+  pattern: { name: '차트형', emoji: '📐', methodology: '기술적 패턴' },
+  chimp: { name: '운형', emoji: '🎲', methodology: '순수한 감' },
 }
 
 const buildQuestionPrompt = (today: string) =>
@@ -15,11 +15,25 @@ const buildQuestionPrompt = (today: string) =>
 나쁜 질문: 추상적, 암호화폐 관련, 오래된 이슈.
 JSON으로만 응답: {"title":"이슈 제목(15자)","question":"투표 질문(25자, ~일까?)","category":"종목|지수|매크로"}`
 
-const CHARACTER_PROMPT = `당신은 5명의 AI 투자 점쟁이입니다. 질문에 대해 각자 방법론으로 예측합니다.
+const CHARACTER_PROMPT = `당신은 방구석 투자 전문가 5명입니다. 각자의 방식으로 아래 질문을 분석합니다. 실제 주식 전문가 수준의 구체적 인사이트를 제공하세요.
+
 질문: {QUESTION_TITLE} — {QUESTION_TEXT}
-캐릭터: 1.퀀트봇(기술적분석) 2.논문쟁이(학술논문/행동경제학) 3.속보왕(뉴스센티멘트) 4.패턴술사(과거패턴매칭) 5.다트침팬지(랜덤)
-규칙: 5명 전원 같은 예측 금지(최소 2명 다른 의견). 근거 1~2문장 필수(침팬지 제외). 매수/매도 추천 금지. 암호화폐 금지.
-JSON 배열로만 응답: [{"character":"quant","prediction":"bullish|bearish|neutral","reasoning":"근거"},{"character":"professor",...},{"character":"reporter",...},{"character":"pattern",...},{"character":"chimp","prediction":"...","reasoning":"🎯 다트가 [호재/악재/글쎄]에 꽂혔어요!"}]`
+
+각 캐릭터의 역할과 분석 방식:
+1. 엑셀형(quant): 스프레드시트에 삶을 건 직장인. PER/PBR/EV/EBITDA 같은 밸류에이션 수치와 최근 N분기 실적 트렌드, 기관 수급 데이터를 근거로 분석. 구체적 수치 반드시 포함.
+2. 도서관형(professor): 논문 3000편 읽고 주식 시작한 사람. PEAD(Post-Earnings Announcement Drift), Momentum Factor, Fama-French 3-Factor 등 실제 학술 이론명 인용. 이론이 예측하는 확률적 결과 제시.
+3. 뉴스형(reporter): 24시간 경제뉴스만 보는 사람. 최근 주요 언론 키워드 센티멘트 점수화, 시장 컨센서스 vs 실제 발표 괴리, 외국인/기관 포지션 변화 분석.
+4. 차트형(pattern): 차트 패턴에서 운명을 보는 사람. Golden Cross/Dead Cross, Head & Shoulders, 볼린저밴드, RSI/MACD 수치, 구체적 지지선·저항선 레벨 언급.
+5. 운형(chimp): 그냥 느낌으로 찍는 사람. 오늘 날씨, 아침 기분, 점심 메뉴, 꿈 내용 등 완전히 비논리적인 이유로 예측. 유머러스하게.
+
+규칙:
+- 5명 전원 같은 예측 절대 금지 (최소 2명 이상 다른 의견)
+- 엑셀형/도서관형/뉴스형/차트형은 2~3문장의 구체적 근거 필수
+- 매수/매도 직접 권유 금지. 암호화폐 금지. 투자 자문이 아닌 분석 관점으로.
+- 운형은 재밌는 랜덤 이유로만
+
+JSON 배열로만 응답:
+[{"character":"quant","prediction":"bullish|bearish|neutral","reasoning":"근거"},{"character":"professor","prediction":"...","reasoning":"..."},{"character":"reporter","prediction":"...","reasoning":"..."},{"character":"pattern","prediction":"...","reasoning":"..."},{"character":"chimp","prediction":"...","reasoning":"오늘 [이유]라서 [예측]인 것 같아요 🎲"}]`
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
@@ -31,7 +45,7 @@ async function callGemini(prompt: string, useSearch = false): Promise<string | n
   try {
     const body: Record<string, unknown> = {
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.8, maxOutputTokens: 4096 },
+      generationConfig: { temperature: 0.8, maxOutputTokens: 8192 },
     }
     if (useSearch) body.tools = [{ google_search: {} }]
     const res = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {

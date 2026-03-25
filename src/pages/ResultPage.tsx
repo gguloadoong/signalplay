@@ -78,7 +78,7 @@ export function ResultPage() {
       {/* Character results */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h3 className={styles.sectionTitle}>AI 점쟁이 결과</h3>
+          <h3 className={styles.sectionTitle}>방구석 전문가 결과</h3>
           <span className={styles.score}>{correctCount}/5 적중</span>
         </div>
         <div className={styles.characters}>
