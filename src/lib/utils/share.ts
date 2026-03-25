@@ -40,7 +40,7 @@ export function generateVoteShareText(data: VoteShareData): string {
   ]
 
   if (data.characters?.length) {
-    lines.push('AI 점쟁이:')
+    lines.push('방구석 전문가들의 예측:')
     for (const c of data.characters) {
       lines.push(`${c.emoji} ${c.name}: ${CHOICE_LABEL[c.prediction]}`)
     }
@@ -61,7 +61,7 @@ export function generateResultShareText(data: ResultShareData): string {
     `${data.title}`,
     `군중: ${data.crowdCorrect ? '✅ 적중!' : '❌ 빗나감'}`,
     '',
-    'AI 점쟁이 적중:',
+    '방구석 전문가 적중:',
   ]
 
   for (const c of data.characters) {
