@@ -16,6 +16,16 @@ const PREDICTION_COLORS: Record<VoteChoice, 'green' | 'red' | 'yellow'> = {
   neutral: 'yellow',
 }
 
+type CharacterType = CharacterPrediction['character']
+
+const CHARACTER_REACTIONS: Record<CharacterType, { correct: string; wrong: string }> = {
+  quant:     { correct: '모델 예측 신뢰구간 내 결과입니다. 데이터는 거짓말 안 해요.', wrong: '통계적 이상치 발생. 샘플 범위 재검토가 필요합니다.' },
+  professor: { correct: '실증 데이터가 이론을 지지했습니다. Fama(1970) 시장 효율성 가설 부합.', wrong: '흥미로운 반례입니다. 논문 한 편 더 읽어봐야겠어요.' },
+  reporter:  { correct: '속보! 센티멘트 분석 적중! 시장은 역시 분위기를 먹고 살아요 📢', wrong: '이런, 헤드라인이 시장을 못 따라갔네요. 다음 속보 기다려주세요 📢' },
+  pattern:   { correct: '골든크로스처럼 완벽한 신호였어요. 차트는 역시 진리입니다 📐', wrong: '데드크로스... 이번엔 패턴이 속았네요. 더 긴 기간을 봐야 했어요.' },
+  chimp:     { correct: 'ㅋㅋ 맞혔다!! 역시 운이 실력이에요 🎲🎉', wrong: '에이~ 이번엔 운이 없었나봐요. 다음엔 주사위 다시 굴려볼게요 🎲' },
+}
+
 interface Props {
   prediction: CharacterPrediction
   isCorrect?: boolean
@@ -86,6 +96,14 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
           >
             {adLoading ? '광고 로딩 중...' : '🎬 전체 분석 보기'}
           </button>
+        )}
+
+        {expanded && unlocked && showCorrect && isCorrect !== undefined && (
+          <p className={`${styles.reaction} ${isCorrect ? styles.reactionCorrect : styles.reactionWrong}`}>
+            {isCorrect
+              ? CHARACTER_REACTIONS[prediction.character].correct
+              : CHARACTER_REACTIONS[prediction.character].wrong}
+          </p>
         )}
       </div>
     </div>
