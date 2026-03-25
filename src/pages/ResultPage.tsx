@@ -8,7 +8,7 @@ import { EmptyState } from '@/components/shared/EmptyState'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, getStreak, getAccuracyPercent } from '@/lib/utils/userStats'
+import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 import { api } from '@/lib/api/client'
@@ -138,16 +138,27 @@ export function ResultPage() {
       </div>
 
       {/* 내 성적 배지 */}
-      {(getStreak() > 0 || getAccuracyPercent() !== null) && (
-        <div className={styles.statsRow}>
-          {getStreak() > 0 && (
-            <Badge size="small" variant="weak" color="blue">🔥 {getStreak()}일 연속</Badge>
-          )}
-          {getAccuracyPercent() !== null && (
-            <Badge size="small" variant="weak" color="green">{getAccuracyPercent()}% 적중</Badge>
-          )}
-        </div>
-      )}
+      {(() => {
+        const streak = getStreak()
+        const accuracy = getAccuracyPercent()
+        const alignment = getCharacterAlignment()
+        if (streak === 0 && accuracy === null && alignment === null) return null
+        return (
+          <div className={styles.statsRow}>
+            {streak > 0 && (
+              <Badge size="small" variant="weak" color="blue">🔥 {streak}일 연속</Badge>
+            )}
+            {accuracy !== null && (
+              <Badge size="small" variant="weak" color="green">{accuracy}% 적중</Badge>
+            )}
+            {alignment !== null && (
+              <Badge size="small" variant="weak" color="elephant">
+                {alignment.emoji} {alignment.name}파 {alignment.rate}%
+              </Badge>
+            )}
+          </div>
+        )
+      })()}
 
       {/* Crowd result */}
       <div className={styles.section}>

@@ -4,6 +4,7 @@ import {
   recordResult,
   getStreak,
   getAccuracyPercent,
+  getCharacterAlignment,
 } from '../userStats'
 
 // localStorage mock
@@ -85,5 +86,50 @@ describe('recordResult / getAccuracyPercent', () => {
     recordResult('q-003', true)
     recordResult('q-004', true)
     expect(getAccuracyPercent()).toBe(75)
+  })
+})
+
+describe('getCharacterAlignment', () => {
+  const VOTE_KEY = 'sp_vote_history'
+
+  function makeRecord(questionId: string, choice: 'bullish' | 'bearish', quantPred: string) {
+    return {
+      questionId,
+      date: '2026-03-20',
+      title: '테스트 질문',
+      choice,
+      characterPredictions: [
+        { character: 'quant', prediction: quantPred },
+        { character: 'chimp', prediction: 'neutral' },
+      ],
+    }
+  }
+
+  it('투표 3회 미만이면 null 반환', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      makeRecord('q-1', 'bullish', 'bullish'),
+      makeRecord('q-2', 'bullish', 'bullish'),
+    ])
+    expect(getCharacterAlignment()).toBeNull()
+  })
+
+  it('quant 3회 일치 → quant 반환', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      makeRecord('q-1', 'bullish', 'bullish'),
+      makeRecord('q-2', 'bullish', 'bullish'),
+      makeRecord('q-3', 'bullish', 'bullish'),
+    ])
+    const result = getCharacterAlignment()
+    expect(result?.character).toBe('quant')
+    expect(result?.rate).toBe(100)
+  })
+
+  it('characterPredictions 없는 기록은 집계에서 제외', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: '2026-03-20', title: '테스트', choice: 'bullish' },
+      { questionId: 'q-2', date: '2026-03-20', title: '테스트', choice: 'bullish' },
+      { questionId: 'q-3', date: '2026-03-20', title: '테스트', choice: 'bullish' },
+    ])
+    expect(getCharacterAlignment()).toBeNull()
   })
 })

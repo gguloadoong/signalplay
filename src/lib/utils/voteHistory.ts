@@ -6,9 +6,10 @@ export type VoteRecord = {
   date: string
   title: string
   choice: 'bullish' | 'bearish' | 'neutral'
+  characterPredictions?: Array<{ character: string; prediction: string }>
 }
 
-function getHistory(): VoteRecord[] {
+export function getHistory(): VoteRecord[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
