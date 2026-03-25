@@ -209,8 +209,8 @@ export function VotePage() {
         <h3 className={styles.sectionTitle}>방구석 전문가들의 예측</h3>
         {disagreeCallout && <p className={styles.disagreeCallout}>{disagreeCallout}</p>}
         <div className={styles.characters}>
-          {characters.map((pred) => (
-            <CharacterCard key={pred.character} prediction={pred} />
+          {characters.map((pred, i) => (
+            <CharacterCard key={pred.character} prediction={pred} defaultExpanded={i === 0} />
           ))}
         </div>
       </section>

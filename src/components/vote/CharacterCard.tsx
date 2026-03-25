@@ -30,10 +30,11 @@ interface Props {
   prediction: CharacterPrediction
   isCorrect?: boolean
   showCorrect?: boolean
+  defaultExpanded?: boolean
 }
 
-export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Props) {
-  const [expanded, setExpanded] = useState(false)
+export function CharacterCard({ prediction, isCorrect, showCorrect = false, defaultExpanded = false }: Props) {
+  const [expanded, setExpanded] = useState(defaultExpanded)
   const [unlocked, setUnlocked] = useState(false)
   const [adLoading, setAdLoading] = useState(false)
 
