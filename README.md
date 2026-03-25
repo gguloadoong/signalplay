@@ -1,6 +1,6 @@
 # ⚡ 시그널플레이 (SignalPlay)
 
-**AI 점쟁이 5명이 예측하고, 군중이 투표하고, 적중률로 승부하는 투자 예측 서비스**
+**방구석 전문가 5명이 예측하고, 군중이 투표하고, 적중률로 승부하는 투자 예측 서비스**
 
 > 앱인토스(토스 미니앱) 플랫폼용 WebView SPA
 
@@ -15,7 +15,7 @@
 | 기둥 | 설명 |
 |------|------|
 | **속도** | 어디보다 빠른 시장 소식 — Gemini 실시간 뉴스 기반 질문 생성 |
-| **캐릭터** | AI 점쟁이 5명 (퀀트봇/논문쟁이/속보왕/패턴술사/다트침팬지) — 각자 다른 이론으로 예측 |
+| **캐릭터** | 방구석 전문가 5명 (엑셀형/도서관형/뉴스형/차트형/운형) — 각자 다른 이론/알고리즘으로 예측 |
 | **군중** | 투표 후 공개되는 유저 집단 비율 — "나는 군중과 같나, 다른가?" |
 | **적중** | 캐릭터별·군중 적중률 트랙레코드 — 누가 진짜 잘 맞추나 |
 
@@ -49,6 +49,34 @@ pnpm build
 pnpm test
 ```
 
+## Supabase 설정 (선택, 투표 영속화)
+
+```bash
+# 1. Supabase CLI 로그인
+supabase login
+
+# 2. 프로젝트 연결
+supabase link --project-ref <PROJECT_REF>
+
+# 3. 스키마 적용
+supabase db push
+
+# 4. Vercel 환경변수 설정
+# SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ADMIN_SECRET
+```
+
+> Supabase 미설정 시에도 앱은 인메모리 폴백으로 정상 동작합니다.
+
+## 일일 결과 입력 (운영)
+
+```bash
+# 마감 후 실제 결과 입력 (bullish / bearish / neutral)
+curl -X POST https://signalplay.vercel.app/api/admin/set-result \
+  -H "Content-Type: application/json" \
+  -H "x-admin-secret: <ADMIN_SECRET>" \
+  -d '{"questionId": "<QUESTION_ID>", "outcome": "bullish"}'
+```
+
 ## 프로젝트 구조
 
 ```
@@ -62,8 +90,10 @@ src/
 │   └── mockData.ts  # 목데이터 (Supabase 설정 전)
 └── types/           # TypeScript 타입 정의
 
-api/                 # Vercel Serverless Functions (question, vote, result)
-supabase/            # DB 스키마 (daily_signals, user_predictions, user_stats)
+api/                 # Vercel Serverless Functions (question, vote, result, leaderboard, weekly-picks)
+api/admin/           # 관리자 API (set-result)
+api/cron/            # Cron 핸들러 (daily question pre-generation)
+supabase/            # DB 스키마 (daily_questions, user_votes, user_stats)
 .project/            # 프로젝트 문서 (PRD, 디자인 스펙, ADR 등)
 ```
 
