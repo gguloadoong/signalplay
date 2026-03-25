@@ -13,9 +13,9 @@ test.describe('투표 페이지', () => {
     // 질문이 표시될 때까지 대기
     await expect(page.getByRole('button', { name: /호재/ }).first()).toBeVisible({ timeout: 10000 })
 
-    // 캐릭터 예측이 표시되는지 확인
-    await expect(page.getByText('엑셀형').first()).toBeVisible()
-    await expect(page.getByText('운형').first()).toBeVisible()
+    // 캐릭터 예측이 표시되는지 확인 (이름 변경에 무관한 이모지 기반)
+    await expect(page.getByText('💼').first()).toBeVisible()
+    await expect(page.getByText('🎲').first()).toBeVisible()
 
     // 호재 투표
     await page.getByRole('button', { name: /호재/ }).first().click()
