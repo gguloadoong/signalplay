@@ -34,3 +34,4 @@
 | 2026-03-25 | vendor 청크 분리 (PR #75) — 초기 로드 20KB, vendor 180.5KB 캐시 분리. VotePage API 연결 (PR #81). 유닛 51개 유지. | QA 호크 |
 | 2026-03-25 | API client 테스트 추가 (PR #87) — 유닛 51→60개. 명칭 전면 교체 (PR #73/#85). | QA 호크 |
 | 2026-03-25 | JS 20KB→19.29KB, CSS 14.25→14.22KB (mockData 정리 PR #91). CrowdBar aria-hidden (PR #93). | QA 호크 |
+| 2026-03-25 | score.ts/signal.ts 삭제 (PR #107) — 유닛 60개 유지, JS 19.42KB (정당화). CEO 피드백 스프린트 PR #100/#103/#104/#106 제출. | QA 호크 |
