@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { showInterstitialAd } from '@/lib/bedrock'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
@@ -9,6 +9,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { getVote } from '@/lib/utils/voteHistory'
 import { recordResult, getStreak, getAccuracyPercent } from '@/lib/utils/userStats'
+import { generateResultShareText, shareText } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 import { api } from '@/lib/api/client'
 import type { VoteResult } from '@/types/vote'
@@ -26,6 +27,7 @@ const AD_SESSION_KEY = 'sp_interstitial_shown'
 export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
+  const [shareMsg, setShareMsg] = useState('')
 
   useEffect(() => {
     if (!sessionStorage.getItem(AD_SESSION_KEY)) {
@@ -47,6 +49,29 @@ export function ResultPage() {
   }, [])
 
   const myVote = result ? getVote(result.questionId) : null
+
+  const handleShare = useCallback(async () => {
+    if (!result) return
+    const crowdWon = result.crowdResult.bullish >= result.crowdResult.bearish &&
+      result.crowdResult.bullish >= result.crowdResult.neutral
+        ? result.actualOutcome === 'bullish'
+        : result.crowdResult.bearish >= result.crowdResult.neutral
+          ? result.actualOutcome === 'bearish'
+          : result.actualOutcome === 'neutral'
+    const vote = getVote(result.questionId)
+    const text = generateResultShareText({
+      title: result.title,
+      crowdCorrect: crowdWon,
+      characters: result.characters.map((c) => ({ emoji: c.emoji, name: c.name, isCorrect: c.isCorrect })),
+      myCorrect: vote ? vote.choice === result.actualOutcome : false,
+      streak: getStreak(),
+    })
+    const res = await shareText(text)
+    if (res === 'copied') {
+      setShareMsg('클립보드에 복사됨!')
+      setTimeout(() => setShareMsg(''), 2000)
+    }
+  }, [result])
 
   if (result === undefined) {
     return (
@@ -190,6 +215,16 @@ export function ResultPage() {
         </div>
       </div>
 
+      <div className={styles.actions}>
+        <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
+          오늘 투표하기 →
+        </Button>
+        <Button size="medium" variant="weak" color="primary" onClick={handleShare}>
+          결과 공유하기
+        </Button>
+      </div>
+
+      {shareMsg && <div className={styles.toast} aria-live="polite">{shareMsg}</div>}
       <Disclaimer />
     </div>
   )
