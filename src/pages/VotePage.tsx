@@ -131,7 +131,7 @@ export function VotePage() {
 
       {/* Character predictions */}
       <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>AI 점쟁이들의 예측</h3>
+        <h3 className={styles.sectionTitle}>방구석 전문가들의 예측</h3>
         <div className={styles.characters}>
           {MOCK_CHARACTER_PREDICTIONS.map((pred) => (
             <CharacterCard key={pred.character} prediction={pred} />
