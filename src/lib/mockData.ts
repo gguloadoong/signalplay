@@ -14,7 +14,7 @@ export const MOCK_TODAY_QUESTION: Question = {
   id: `question-${today}`,
   date: today,
   title: '삼성전자 1분기 실적 발표',
-  question: '이번 분기 실적, 삼성전자 주가에 호재일까?',
+  question: '이번 분기 실적, 삼성전자 주가 올라갈까 내려갈까?',
   category: '종목',
   totalVotes: 4821,
   deadline: todayDeadline(15, 30),
@@ -59,7 +59,7 @@ export const MOCK_CHARACTER_PREDICTIONS: CharacterPrediction[] = [
     name: '코인토',
     emoji: '🎲',
     prediction: 'neutral',
-    reasoning: '오늘 아침 지하철에서 아저씨가 경제신문 읽다가 졸았어요. 그게 무슨 의미인지는 모르겠지만... 글쎄요? 🎲',
+    reasoning: '오늘 아침 지하철에서 아저씨가 경제신문 읽다가 졸았어요. 나쁘지 않은 신호 아님? 모르겠다 🎲',
     methodology: '순수한 감',
   },
 ]
@@ -123,12 +123,12 @@ export const MOCK_VOTE_RESULT: VoteResult = {
       name: '코인토',
       emoji: '🎲',
       prediction: 'bullish',
-      reasoning: '오늘 점심에 된장찌개를 먹었는데 맛있었어요. 좋은 일이 생길 것 같은 느낌? 🎲',
+      reasoning: '오늘 점심에 된장찌개를 먹었는데 진짜 맛있었음. 이런 날은 주식도 올라가야 정상 아님? 🎲',
       methodology: '순수한 감',
       isCorrect: true,
     },
   ],
-  aiComment: '군중의 62%가 호재를 예상했고 실제로도 코스피 +1.1% 상승했습니다. 밸류김과 팩터박이 정확하게 맞혔고, 코인토도 이번엔 감으로 적중!',
+  aiComment: '62%가 올라갈 거라 찍었는데 진짜 코스피 +1.1% 올랐음 👏 밸류김·팩터박 빙고, 코인토도 감으로 맞혀버림 🎲🎯',
 }
 
 export const MOCK_CHARACTER_ACCURACY = [
