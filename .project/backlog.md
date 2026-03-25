@@ -41,6 +41,15 @@
 - [x] [FEATURE] 알고리즘 고도화 — 실제 전문가 수준 프롬프트 (PR #103)
 - [x] [FEATURE] 이번 주 추천픽 전문가 추천픽 탭 신설 (PR #104)
 
+## P2 — 접근성 스프린트 (2026-03-25)
+
+- [x] [UX] VotePage toast aria-live + 화살표 aria-hidden (PR #113)
+- [x] [UX] CharacterCard Space 키 WCAG 2.1.1 준수 (PR #115)
+- [x] [UX] SuccessAnimation role=alert + EmptyState emoji aria-hidden (PR #117)
+- [x] [UX] Onboarding role=dialog + aria-modal + dots 위치 공지 (PR #119)
+- [x] [PERFORMANCE] manifest.json + robots.txt — Lighthouse Best Practices/SEO (PR #111)
+- [x] [FEATURE] ResultPage 전면 광고 게이팅 세션 1회 (PR #109)
+
 ## P3 — 다음 스프린트
 
 - [ ] [FEATURE] 플래시 투표 (속보 기반, 1~2시간 한정)
