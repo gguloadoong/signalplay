@@ -14,7 +14,7 @@
 | JS 번들 (초기 로드) | 20KB (8KB gzip) | 커지면 정당화 필요 | P2 |
 | JS 번들 (vendor, 캐시됨) | 180.5KB (59.6KB gzip) | 커지면 정당화 필요 | P2 |
 | CSS 번들 | 14.25KB (3.54KB gzip) | 커지면 정당화 필요 | P3 |
-| 테스트 커버리지 | 유닛 51개 | 올라가기만 함 | P1 |
+| 테스트 커버리지 | 유닛 60개 | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
 | Lighthouse 성능 | 85점+ (TBT ≤300ms, 경고 0개) | 올라가기만 함 | P2 |
@@ -32,3 +32,4 @@
 | 2026-03-25 | JS 205→193KB (React.lazy 코드 스플리팅), Lighthouse 79점 첫 측정 (TBT 543ms) | QA 호크 |
 | 2026-03-25 | JS 193→191KB (WeeklyPicksSection lazy), Lighthouse 85점+ 달성 (TBT ≤300ms, 경고 0개) | QA 호크 |
 | 2026-03-25 | vendor 청크 분리 (PR #75) — 초기 로드 20KB, vendor 180.5KB 캐시 분리. VotePage API 연결 (PR #81). 유닛 51개 유지. | QA 호크 |
+| 2026-03-25 | API client 테스트 추가 (PR #87) — 유닛 51→60개. 명칭 전면 교체 (PR #73/#85). | QA 호크 |
