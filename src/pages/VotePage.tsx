@@ -7,6 +7,7 @@ import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
+import { WeeklyPicksSection } from '@/components/vote/WeeklyPicksSection'
 import { MOCK_TODAY_QUESTION, MOCK_CHARACTER_PREDICTIONS, MOCK_CROWD_RESULT } from '@/lib/mockData'
 import type { VoteChoice } from '@/types/vote'
 import styles from './VotePage.module.css'
@@ -139,6 +140,7 @@ export function VotePage() {
         </div>
       </section>
 
+      <WeeklyPicksSection />
       {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
       <Disclaimer />
     </div>
