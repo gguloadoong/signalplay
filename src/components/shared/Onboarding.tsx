@@ -29,13 +29,17 @@ export function Onboarding({ onComplete }: Props) {
   const isLast = current === SLIDES.length - 1
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
       <div className={styles.content}>
-        <span className={styles.emoji}>{slide.emoji}</span>
-        <h2 className={styles.title}>{slide.title}</h2>
+        <span className={styles.emoji} aria-hidden="true">{slide.emoji}</span>
+        <h2 id="onboarding-title" className={styles.title}>{slide.title}</h2>
         <p className={styles.description}>{slide.description}</p>
 
-        <div className={styles.dots}>
+        <div
+          className={styles.dots}
+          role="status"
+          aria-label={`슬라이드 ${current + 1} / ${SLIDES.length}`}
+        >
           {SLIDES.map((_, i) => (
             <span key={i} className={`${styles.dot} ${i === current ? styles.active : ''}`} />
           ))}
