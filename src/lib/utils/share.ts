@@ -40,10 +40,11 @@ export function generateVoteShareText(data: VoteShareData): string {
   ]
 
   if (data.characters?.length) {
-    lines.push('방구석 전문가들의 예측:')
-    for (const c of data.characters) {
-      lines.push(`${c.emoji} ${c.name}: ${CHOICE_LABEL[c.prediction]}`)
-    }
+    const counts = { bullish: 0, bearish: 0, neutral: 0 }
+    for (const c of data.characters) counts[c.prediction]++
+    const top = (Object.entries(counts) as [VoteChoice, number][]).sort((a, b) => b[1] - a[1])[0]
+    const [topChoice, topCount] = top
+    lines.push(`방구석 전문가 ${topCount}/${data.characters.length}명이 ${CHOICE_LABEL[topChoice]}를 예측했어요`)
     lines.push('')
   }
 
