@@ -24,7 +24,7 @@ export function saveVote(record: VoteRecord): void {
   try {
     const history = getHistory().filter((r) => r.questionId !== record.questionId)
     localStorage.setItem(STORAGE_KEY, JSON.stringify([record, ...history]))
-  } catch {}
+  } catch { /* localStorage 쓰기 실패 무시 (private/full storage) */ }
 }
 
 export function getVote(questionId: string): VoteRecord | null {
