@@ -44,4 +44,5 @@ body {
   flex: 1;
   padding-bottom: calc(56px + var(--safe-area-bottom));
   overflow-y: auto;
+  contain: layout;
 }
