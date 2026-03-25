@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/generate",
       "schedule": "50 23 * * *"
+    },
+    {
+      "path": "/api/cron/set-result",
+      "schedule": "0 7 * * *"
     }
   ]
 }
