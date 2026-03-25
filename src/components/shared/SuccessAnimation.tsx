@@ -22,7 +22,7 @@ export function SuccessAnimation({ show, onComplete }: Props) {
     <div className={styles.overlay} role="alert" onAnimationEnd={handleAnimationEnd}>
       <div className={styles.content}>
         <div className={styles.checkmark}>✓</div>
-        <p className={styles.text}>예측 완료!</p>
+        <p className={styles.text}>한 표 던짐! 🎯</p>
       </div>
     </div>
   )

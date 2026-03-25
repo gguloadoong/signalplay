@@ -1,9 +1,9 @@
 import type { VoteChoice } from '@/types/vote'
 
 const CHOICE_LABEL: Record<VoteChoice, string> = {
-  bullish: '📈 호재',
-  bearish: '📉 악재',
-  neutral: '🤷 글쎄',
+  bullish: '📈 올라갈 듯',
+  bearish: '📉 망할 듯',
+  neutral: '🤷 모르겠는데',
 }
 
 interface VoteShareData {
@@ -29,12 +29,12 @@ interface ResultShareData {
  */
 export function generateVoteShareText(data: VoteShareData): string {
   const lines = [
-    `⚡ 시그널플레이 — 오늘의 질문`,
+    `⚡ 오늘 주식 어디로 터질까`,
     '',
     `${data.title}`,
     `${data.question}`,
     '',
-    `토스 유저 ${data.totalVotes.toLocaleString()}명 투표:`,
+    `${data.totalVotes.toLocaleString()}명 참전:`,
     `${CHOICE_LABEL.bullish} ${data.crowdBullish}% | ${CHOICE_LABEL.neutral} ${data.crowdNeutral}% | ${CHOICE_LABEL.bearish} ${data.crowdBearish}%`,
     '',
   ]
@@ -48,7 +48,7 @@ export function generateVoteShareText(data: VoteShareData): string {
     lines.push('')
   }
 
-  lines.push('너는 어떻게 봐? 👉 signalplay.vercel.app')
+  lines.push('너는 뭐 찍을 거야? 👉 signalplay.vercel.app')
   return lines.join('\n')
 }
 
@@ -57,22 +57,22 @@ export function generateVoteShareText(data: VoteShareData): string {
  */
 export function generateResultShareText(data: ResultShareData): string {
   const lines = [
-    `🎯 시그널플레이 — 어제의 결과`,
+    `🎯 뚜껑 열었더니`,
     '',
     `${data.title}`,
-    `군중: ${data.crowdCorrect ? '✅ 적중!' : '❌ 빗나감'}`,
+    `다들: ${data.crowdCorrect ? '빙고! 🎯' : '다 같이 틀림 😭'}`,
     '',
-    '방구석 전문가 적중:',
+    '우리 집 전문가 성적:',
   ]
 
   for (const c of data.characters) {
-    lines.push(`${c.emoji} ${c.name}: ${c.isCorrect ? '✅' : '❌'}`)
+    lines.push(`${c.emoji} ${c.name}: ${c.isCorrect ? '빙고 🎯' : '아 아깝 😭'}`)
   }
 
   lines.push('')
-  lines.push(`나: ${data.myCorrect ? '✅ 맞혔다!' : '❌ 다음엔...'} | 🔥 ${data.streak}일 연속`)
+  lines.push(`나: ${data.myCorrect ? '맞혔다! 🎉' : '아 아깝 😭'} | 🔥 ${data.streak}일 연속`)
   lines.push('')
-  lines.push('나도 도전 👉 signalplay.vercel.app')
+  lines.push('너도 해봐 👉 signalplay.vercel.app')
   return lines.join('\n')
 }
 

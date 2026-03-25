@@ -20,9 +20,9 @@ const WeeklyPicksSection = lazy(() =>
 )
 
 const VOTE_OPTIONS: { value: VoteChoice; label: string; emoji: string }[] = [
-  { value: 'bullish', label: '호재', emoji: '📈' },
-  { value: 'neutral', label: '글쎄', emoji: '🤔' },
-  { value: 'bearish', label: '악재', emoji: '📉' },
+  { value: 'bullish', label: '올라갈 듯', emoji: '📈' },
+  { value: 'neutral', label: '모르겠는데', emoji: '🤷' },
+  { value: 'bearish', label: '망할 듯', emoji: '📉' },
 ]
 
 function formatDeadline(deadline: string): string {
@@ -98,7 +98,7 @@ export function VotePage() {
     })
     const result = await shareText(text)
     if (result === 'copied') {
-      setShareMsg('클립보드에 복사됨!')
+      setShareMsg('복사됨! 카톡에 붙여넣기 고고 📋')
       setTimeout(() => setShareMsg(''), 2000)
     }
   }, [questionData, crowd])
@@ -106,7 +106,7 @@ export function VotePage() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <EmptyState emoji="⏳" title="오늘의 질문 불러오는 중..." description="" />
+        <EmptyState emoji="⏳" title="잠깐만, 오늘 질문 가져오는 중 🏃" description="" />
       </div>
     )
   }
@@ -115,9 +115,9 @@ export function VotePage() {
     return (
       <div className={styles.page}>
         <EmptyState
-          emoji="⏳"
-          title="오늘의 질문 준비 중"
-          description="매일 오전 9시에 새로운 질문이 도착합니다"
+          emoji="☕"
+          title="오늘 질문 아직 안 왔어"
+          description="매일 오전 9시에 새 질문 투하됨 ☕"
         />
       </div>
     )
@@ -139,7 +139,7 @@ export function VotePage() {
       {hasResult && (
         <button className={styles.resultBanner} onClick={() => navigate('/result')}>
           <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
-          <span className={styles.resultText}>어제 질문 결과가 나왔어요!</span>
+          <span className={styles.resultText}>어제 뚜껑 열렸다 👀</span>
           <span aria-hidden="true">→</span>
         </button>
       )}
@@ -181,7 +181,7 @@ export function VotePage() {
       ) : (
         <div className={styles.votedSection}>
           <div className={styles.votedBadge}>
-            투표 완료 — 내 선택:{' '}
+            한 표 던짐 ✅ 나는:{' '}
             <b>{VOTE_OPTIONS.find((o) => o.value === voted)?.label}</b>
           </div>
           {voted && (() => {
@@ -195,18 +195,18 @@ export function VotePage() {
           })()}
           <CrowdBar result={crowd} animated />
           <Button size="medium" variant="weak" color="primary" onClick={handleShare} className={styles.shareBtn}>
-            공유하기 — "너는 어떻게 봐?"
+            친구한테 물어봐 💬
           </Button>
         </div>
       )}
 
       {!voted && (
-        <p className={styles.crowdHint}>군중 비율은 투표 후 공개됩니다</p>
+        <p className={styles.crowdHint}>다들 뭐 찍었는지는 투표 후 공개 👀</p>
       )}
 
       {/* Character predictions */}
       <section className={styles.section}>
-        <h3 className={styles.sectionTitle}>방구석 전문가들의 예측</h3>
+        <h3 className={styles.sectionTitle}>우리 집 전문가 5인의 의견 🧐</h3>
         {disagreeCallout && <p className={styles.disagreeCallout}>{disagreeCallout}</p>}
         <div className={styles.characters}>
           {characters.map((pred, i) => (

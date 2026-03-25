@@ -5,9 +5,9 @@ import type { CharacterPrediction, VoteChoice } from '@/types/vote'
 import styles from './CharacterCard.module.css'
 
 const PREDICTION_LABELS: Record<VoteChoice, string> = {
-  bullish: '호재',
-  bearish: '악재',
-  neutral: '글쎄',
+  bullish: '올라갈 듯 📈',
+  bearish: '망할 듯 📉',
+  neutral: '모르겠는데 🤷',
 }
 
 const PREDICTION_COLORS: Record<VoteChoice, 'green' | 'red' | 'yellow'> = {
