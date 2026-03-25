@@ -69,7 +69,13 @@ export function VotePage() {
     if (voted || !questionData) return
     setVoted(choice)
     setShowSuccess(true)
-    saveVote({ questionId: questionData.id, date: questionData.date, title: questionData.title, choice })
+    saveVote({
+      questionId: questionData.id,
+      date: questionData.date,
+      title: questionData.title,
+      choice,
+      characterPredictions: questionData.characters.map((c) => ({ character: c.character, prediction: c.prediction })),
+    })
     recordVote(questionData.date)
     const { data } = await api.vote({ questionId: questionData.id, vote: choice })
     if (data?.crowd) {

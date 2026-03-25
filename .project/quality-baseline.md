@@ -15,7 +15,7 @@
 | JS 번들 (vendor, 캐시됨) | 40.72KB (14.50KB gzip) | 커지면 정당화 필요 | P2 |
 | JS 번들 (tds, 캐시됨) | 1,063KB (341KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
 | CSS 번들 | 14.22KB (4.42KB gzip) | 커지면 정당화 필요 | P3 |
-| 테스트 커버리지 | 유닛 89개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
+| 테스트 커버리지 | 유닛 92개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) — PR #127로 복구 | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
 | Lighthouse 성능 | 85점+ (TBT ≤300ms, 경고 0개) | 올라가기만 함 | P2 |
@@ -41,3 +41,4 @@
 | 2026-03-25 | P1 래칫 위반 복구 — E2E 3→4개 온보딩 spec 추가 (PR #127). | QA 호크 |
 | 2026-03-26 | JS 19.29→23.26KB (기능 다수 추가: profiles, share, preview, reactions, deadline 등 정당화). 유닛 78→89개 래칫 상향. | QA 호크 |
 | 2026-03-26 | @toss/tds-mobile 2.3.0 + @emotion/react 도입 (PR #166). tds 청크 1,063KB (캐시됨, 앱인토스 심사 정당화). vendor 180.5→40.72KB. Tossface CDN 추가. | QA 호크 |
+| 2026-03-26 | getCharacterAlignment() 유닛 3개 추가 (PR #174) — 유닛 89→92개 래칫 상향. | QA 호크 |

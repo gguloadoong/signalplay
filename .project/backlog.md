@@ -85,10 +85,12 @@
 
 ## P2 — 서비스 기획 v2 스프린트 (2026-03-26)
 
-- [ ] [FEATURE] @toss/tds-mobile 전면 도입 + Tossface CDN (PR #167 리뷰 중)
+- [x] [FEATURE] @toss/tds-mobile 전면 도입 + Tossface CDN (PR #167 merged)
 - [ ] [FEATURE] 공유 카드 이미지 생성 — html-to-image (PR #173 리뷰 중)
-- [ ] [FEATURE] voteHistory 보관 기간 7 → 90일 (PR #172 리뷰 중)
+- [x] [FEATURE] voteHistory 보관 기간 7 → 90일 (PR #172 merged)
+- [ ] [CONTENT] 운형 reasoning 강화 — Gemini 프롬프트에 일상 에피소드 지시 추가
 - [ ] [FEATURE] 너의 투자 성향 — 누적 투표 기반 캐릭터 일치율 (PR #175 리뷰 중)
+
 
 ## P2 — 레트로 도출 (다음 스프린트)
 
