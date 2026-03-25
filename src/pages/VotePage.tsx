@@ -117,7 +117,7 @@ export function VotePage() {
       <button className={styles.resultBanner} onClick={() => navigate('/result')}>
         <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
         <span className={styles.resultText}>어제 질문 결과가 나왔어요!</span>
-        <span>→</span>
+        <span aria-hidden="true">→</span>
       </button>
 
       {/* Question card */}
@@ -186,7 +186,7 @@ export function VotePage() {
       <Suspense>
         <WeeklyPicksSection />
       </Suspense>
-      {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
+      {shareMsg && <div role="status" aria-live="polite" className={styles.toast}>{shareMsg}</div>}
       <Disclaimer />
     </div>
   )
