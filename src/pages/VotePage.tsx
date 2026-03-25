@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { lazy, Suspense, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
@@ -9,7 +9,10 @@ import { EmptyState } from '@/components/shared/EmptyState'
 import { SuccessAnimation } from '@/components/shared/SuccessAnimation'
 import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
-import { WeeklyPicksSection } from '@/components/vote/WeeklyPicksSection'
+
+const WeeklyPicksSection = lazy(() =>
+  import('@/components/vote/WeeklyPicksSection').then((m) => ({ default: m.WeeklyPicksSection }))
+)
 import { MOCK_TODAY_QUESTION, MOCK_CHARACTER_PREDICTIONS, MOCK_CROWD_RESULT } from '@/lib/mockData'
 import type { VoteChoice } from '@/types/vote'
 import styles from './VotePage.module.css'
@@ -150,7 +153,9 @@ export function VotePage() {
         </div>
       </section>
 
-      <WeeklyPicksSection />
+      <Suspense>
+        <WeeklyPicksSection />
+      </Suspense>
       {shareMsg && <div className={styles.toast}>{shareMsg}</div>}
       <Disclaimer />
     </div>
