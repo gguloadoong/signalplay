@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
+import { showRewardAd } from '@/lib/bedrock'
 import type { CharacterPrediction, VoteChoice } from '@/types/vote'
 import styles from './CharacterCard.module.css'
 
@@ -23,6 +24,20 @@ interface Props {
 
 export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Props) {
   const [expanded, setExpanded] = useState(false)
+  const [unlocked, setUnlocked] = useState(false)
+  const [adLoading, setAdLoading] = useState(false)
+
+  const handleUnlock = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (unlocked || adLoading) return
+    setAdLoading(true)
+    try {
+      const result = await showRewardAd()
+      if (result.completed) setUnlocked(true)
+    } finally {
+      setAdLoading(false)
+    }
+  }
 
   return (
     <div
@@ -57,7 +72,21 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
       </div>
 
       <div className={`${styles.reasoningWrap} ${expanded ? styles.expanded : ''}`}>
-        <p className={styles.reasoning}>{prediction.reasoning}</p>
+        <div className={`${styles.reasoningContent} ${expanded && !unlocked ? styles.gated : ''}`}>
+          <p className={styles.reasoning}>{prediction.reasoning}</p>
+          {expanded && !unlocked && <div className={styles.blurOverlay} />}
+        </div>
+
+        {expanded && !unlocked && (
+          <button
+            className={styles.unlockBtn}
+            onClick={handleUnlock}
+            disabled={adLoading}
+            aria-label="광고 시청 후 전체 분석 보기"
+          >
+            {adLoading ? '광고 로딩 중...' : '🎬 전체 분석 보기'}
+          </button>
+        )}
       </div>
     </div>
   )
