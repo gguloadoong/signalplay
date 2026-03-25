@@ -7,6 +7,7 @@
   align-items: center;
   gap: 8px;
   width: 100%;
+  min-height: 48px;
   padding: 12px 16px;
   background: #f0f7ff;
   border: none;
