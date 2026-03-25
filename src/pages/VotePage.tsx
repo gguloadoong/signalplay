@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { saveVote, getVote } from '@/lib/utils/voteHistory'
+import { recordVote } from '@/lib/utils/userStats'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -56,6 +57,7 @@ export function VotePage() {
     setVoted(choice)
     setShowSuccess(true)
     saveVote({ questionId: questionData.id, date: questionData.date, title: questionData.title, choice })
+    recordVote(questionData.date)
     const { data } = await api.vote({ questionId: questionData.id, vote: choice })
     if (data?.crowd) {
       setCrowd({ ...data.crowd })
