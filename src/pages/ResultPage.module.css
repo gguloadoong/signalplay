@@ -1,5 +1,47 @@
 .page { padding: 0 16px; }
 
+.outcomeHeader {
+  border-radius: 16px;
+  padding: 20px 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.outcomeHeaderHit {
+  background: #e6f9f0;
+}
+
+.outcomeHeaderMiss {
+  background: #fff0f0;
+}
+
+.outcomeHeaderTitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+}
+
+.outcomeHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.outcomeArrow {
+  color: var(--color-text-tertiary);
+}
+
+.outcomeVerdict {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
 .title {
   font-size: 22px;
   font-weight: 700;
