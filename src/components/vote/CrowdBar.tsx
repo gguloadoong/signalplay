@@ -12,13 +12,13 @@ export function CrowdBar({ result, animated = true }: Props) {
   return (
     <div className={styles.wrap}>
       <div className={styles.label}>
-        토스 유저 <b>{totalVotes.toLocaleString()}명</b> 투표
+        지금까지 <b>{totalVotes.toLocaleString()}명</b> 참전 ⚔️
       </div>
 
       <div
         className={styles.barWrap}
         role="img"
-        aria-label={`호재 ${bullish}%, 글쎄 ${neutral}%, 악재 ${bearish}%`}
+        aria-label={`올라갈 듯 ${bullish}%, 모르겠는데 ${neutral}%, 망할 듯 ${bearish}%`}
       >
         <div
           className={`${styles.segment} ${styles.bullish} ${animated ? styles.animated : ''}`}
@@ -40,15 +40,15 @@ export function CrowdBar({ result, animated = true }: Props) {
       <div className={styles.legend}>
         <span className={styles.legendItem}>
           <span className={`${styles.dot} ${styles.bullishDot}`} />
-          호재 {bullish}%
+          📈 {bullish}%
         </span>
         <span className={styles.legendItem}>
           <span className={`${styles.dot} ${styles.neutralDot}`} />
-          글쎄 {neutral}%
+          🤷 {neutral}%
         </span>
         <span className={styles.legendItem}>
           <span className={`${styles.dot} ${styles.bearishDot}`} />
-          악재 {bearish}%
+          📉 {bearish}%
         </span>
       </div>
     </div>

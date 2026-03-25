@@ -11,14 +11,14 @@ describe('generateVoteShareText', () => {
       crowdNeutral: 15,
       totalVotes: 1234,
     })
-    expect(text).toContain('시그널플레이')
+    expect(text).toContain('signalplay.vercel.app')
     expect(text).toContain('삼성전자 실적 발표')
     expect(text).toContain('1,234명')
     expect(text).toContain('60%')
     expect(text).toContain('signalplay.vercel.app')
   })
 
-  it('캐릭터 예측 포함 시 방구석 전문가 섹션 포함', () => {
+  it('캐릭터 예측 포함 시 전문가 섹션 포함', () => {
     const text = generateVoteShareText({
       title: '테스트',
       question: '테스트 질문',
@@ -31,7 +31,7 @@ describe('generateVoteShareText', () => {
         { emoji: '🎲', name: '운형', prediction: 'bearish' },
       ],
     })
-    expect(text).toContain('방구석 전문가')
+    expect(text).toContain('전문가')
     expect(text).toContain('💼 엑셀형')
     expect(text).toContain('🎲 운형')
   })
@@ -76,30 +76,29 @@ describe('generateResultShareText', () => {
 
   it('기본 형식으로 텍스트 생성', () => {
     const text = generateResultShareText(baseData)
-    expect(text).toContain('시그널플레이')
     expect(text).toContain('삼성전자 실적 발표')
     expect(text).toContain('signalplay.vercel.app')
   })
 
-  it('군중 적중 시 ✅ 표시', () => {
+  it('군중 적중 시 빙고 표시', () => {
     const text = generateResultShareText(baseData)
-    expect(text).toContain('✅ 적중!')
+    expect(text).toContain('빙고')
   })
 
-  it('군중 오답 시 ❌ 표시', () => {
+  it('군중 오답 시 틀림 표시', () => {
     const text = generateResultShareText({ ...baseData, crowdCorrect: false })
-    expect(text).toContain('❌ 빗나감')
+    expect(text).toContain('틀림')
   })
 
   it('내 예측 적중 + 연속 일수 포함', () => {
     const text = generateResultShareText(baseData)
-    expect(text).toContain('✅ 맞혔다!')
+    expect(text).toContain('맞혔다')
     expect(text).toContain('🔥 3일 연속')
   })
 
   it('"방구석 전문가" 명칭 사용 확인', () => {
     const text = generateResultShareText(baseData)
-    expect(text).toContain('방구석 전문가 적중:')
+    expect(text).toContain('전문가')
     expect(text).not.toContain('AI 점쟁이')
   })
 })

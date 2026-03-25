@@ -35,7 +35,7 @@ export function WeeklyPicksSection() {
   return (
     <section className={styles.section}>
       <div className={styles.header}>
-        <span className={styles.title}>이번 주 주목 동향</span>
+        <span className={styles.title}>요즘 핫한 거 👀</span>
         <span className={styles.disclaimer}>투자 자문 아님</span>
       </div>
       <div className={styles.scroll}>

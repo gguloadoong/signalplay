@@ -12,7 +12,7 @@ import { api } from '@/lib/api/client'
 import type { VoteResult } from '@/types/vote'
 import styles from './ResultPage.module.css'
 
-const OUTCOME_LABELS = { bullish: '호재', bearish: '악재', neutral: '글쎄' } as const
+const OUTCOME_LABELS = { bullish: '올라갔다 📈', bearish: '망했다 📉', neutral: '그냥 그랬다 🤷' } as const
 const OUTCOME_COLORS = {
   bullish: 'green',
   bearish: 'red',
@@ -35,7 +35,7 @@ export function ResultPage() {
   if (result === undefined) {
     return (
       <div className={styles.page}>
-        <EmptyState emoji="⏳" title="결과 불러오는 중..." description="" />
+        <EmptyState emoji="⏳" title="뚜껑 여는 중... 🫣" description="" />
       </div>
     )
   }
@@ -45,9 +45,9 @@ export function ResultPage() {
       <div className={styles.page}>
         <EmptyState
           emoji="🔮"
-          title="아직 결과가 없어요"
-          description="오늘의 투표에 참여하면 내일 결과를 확인할 수 있어요"
-          action={{ label: '투표하러 가기', onClick: () => navigate('/') }}
+          title="아직 뚜껑 전이야 🔮"
+          description="오늘 한 표 던지면 내일 결과 볼 수 있어"
+          action={{ label: '나도 한 표 ✋', onClick: () => navigate('/') }}
         />
       </div>
     )
@@ -64,13 +64,13 @@ export function ResultPage() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>🎯 어제의 결과</h1>
+      <h1 className={styles.title}>뚜껑 열었더니 🎯</h1>
 
       {/* Question recap */}
       <div className={styles.questionCard}>
         <p className={styles.questionText}>{result.title}</p>
         <div className={styles.outcomeRow}>
-          <span className={styles.outcomeLabel}>실제 결과</span>
+          <span className={styles.outcomeLabel}>실제로는</span>
           <Badge
             size="medium"
             variant="fill"
@@ -81,14 +81,14 @@ export function ResultPage() {
         </div>
         {myVote && (
           <div className={styles.outcomeRow}>
-            <span className={styles.outcomeLabel}>내 예측</span>
+            <span className={styles.outcomeLabel}>내가 찍은 건</span>
             <Badge
               size="medium"
               variant="weak"
               color={OUTCOME_COLORS[myVote.choice]}
             >
               {OUTCOME_LABELS[myVote.choice]}
-              {myVote.choice === result.actualOutcome ? ' ✅' : ' ❌'}
+              {myVote.choice === result.actualOutcome ? ' 빙고! 🎯' : ' 아 아깝 😭'}
             </Badge>
           </div>
         )}
@@ -97,13 +97,13 @@ export function ResultPage() {
       {/* Crowd result */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h3 className={styles.sectionTitle}>군중의 선택</h3>
+          <h3 className={styles.sectionTitle}>다들 뭐 찍었나 👥</h3>
           <Badge
             size="small"
             variant="fill"
             color={crowdCorrect ? 'green' : 'red'}
           >
-            {crowdCorrect ? '✅ 군중 정답' : '❌ 군중 오답'}
+            {crowdCorrect ? '빙고! 🎯' : '다 같이 틀림 😭'}
           </Badge>
         </div>
         <CrowdBar result={result.crowdResult} animated={false} />
@@ -112,8 +112,8 @@ export function ResultPage() {
       {/* Character results */}
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
-          <h3 className={styles.sectionTitle}>방구석 전문가 결과</h3>
-          <span className={styles.score}>{correctCount}/5 적중</span>
+          <h3 className={styles.sectionTitle}>우리 집 전문가 성적표 📋</h3>
+          <span className={styles.score}>{correctCount}/5 맞힘</span>
         </div>
         <div className={styles.characters}>
           {result.characters.map((char) => (
@@ -129,13 +129,13 @@ export function ResultPage() {
 
       {/* AI comment */}
       <div className={styles.aiComment}>
-        <span className={styles.aiLabel}>오늘의 총평</span>
+        <span className={styles.aiLabel}>한줄 정리 🤖</span>
         <p>{result.aiComment}</p>
       </div>
 
       {/* This month leaderboard */}
       <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>이번 달 적중률 순위</h3>
+        <h3 className={styles.sectionTitle}>이번 달 누가 제일 잘 맞혔냐 🏆</h3>
         <div className={styles.leaderboard}>
           {MOCK_CHARACTER_ACCURACY.map((c, i) => (
             <div key={c.character} className={styles.leaderRow}>
@@ -156,7 +156,7 @@ export function ResultPage() {
 
       <div className={styles.actions}>
         <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
-          오늘 투표하기 →
+          오늘 거 나도 한 표 ✋
         </Button>
       </div>
 

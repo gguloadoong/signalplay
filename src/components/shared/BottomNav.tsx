@@ -2,8 +2,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import styles from './BottomNav.module.css'
 
 const tabs = [
-  { path: '/', label: '투표', icon: '⚡', badge: false },
-  { path: '/result', label: '결과', icon: '🎯', badge: true },
+  { path: '/', label: '한 표', icon: '⚡', badge: false },
+  { path: '/result', label: '뚜껑', icon: '🎯', badge: true },
 ] as const
 
 export function BottomNav() {
