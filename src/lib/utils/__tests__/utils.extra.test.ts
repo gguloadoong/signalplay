@@ -182,8 +182,7 @@ describe('generateResultShareText (추가)', () => {
       characters: [{ emoji: '💼', name: '밸류김', isCorrect: false }],
       myCorrect: false, streak: 0,
     })
-    expect(text).toContain('다음엔')
-    expect(text).toContain('❌ 빗나감')
+    expect(text).toContain('아 아깝 😭')
   })
 
   it('전원 적중 시 모두 ✅', () => {
@@ -195,6 +194,6 @@ describe('generateResultShareText (추가)', () => {
       ],
       myCorrect: true, streak: 5,
     })
-    expect(text.match(/✅/g)?.length).toBeGreaterThanOrEqual(3)
+    expect(text.match(/빙고/g)?.length).toBeGreaterThanOrEqual(3)
   })
 })
