@@ -18,7 +18,7 @@ describe('generateVoteShareText', () => {
     expect(text).toContain('signalplay.vercel.app')
   })
 
-  it('캐릭터 예측 포함 시 방구석 전문가 섹션 포함', () => {
+  it('캐릭터 예측 포함 시 방구석 전문가 요약 포함', () => {
     const text = generateVoteShareText({
       title: '테스트',
       question: '테스트 질문',
@@ -32,8 +32,7 @@ describe('generateVoteShareText', () => {
       ],
     })
     expect(text).toContain('방구석 전문가')
-    expect(text).toContain('💼 엑셀형')
-    expect(text).toContain('🎲 운형')
+    expect(text).toContain('1/2')
   })
 
   it('캐릭터 없을 때 방구석 전문가 섹션 미포함', () => {
