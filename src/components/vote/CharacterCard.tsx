@@ -30,7 +30,6 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
       role="button"
       tabIndex={0}
       aria-expanded={expanded}
-      aria-label={`${prediction.name} 예측 ${expanded ? '접기' : '펼치기'}`}
       onClick={() => setExpanded((v) => !v)}
       onKeyDown={(e) => e.key === 'Enter' && setExpanded((v) => !v)}
     >
