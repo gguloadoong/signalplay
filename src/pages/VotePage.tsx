@@ -50,6 +50,7 @@ export function VotePage() {
   const [voted, setVoted] = useState<VoteChoice | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [shareMsg, setShareMsg] = useState('')
+  const [hasResult, setHasResult] = useState(false)
 
   useEffect(() => {
     api.getQuestion().then(({ data }) => {
@@ -58,6 +59,9 @@ export function VotePage() {
       const existing = getVote(q.id)
       if (existing) setVoted(existing.choice)
       setLoading(false)
+    })
+    api.getResult().then(({ data }) => {
+      setHasResult(!!data)
     })
   }, [])
 
@@ -131,12 +135,14 @@ export function VotePage() {
   return (
     <div className={styles.page}>
       <SuccessAnimation show={showSuccess} onComplete={handleAnimationComplete} />
-      {/* Result banner */}
-      <button className={styles.resultBanner} onClick={() => navigate('/result')}>
-        <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
-        <span className={styles.resultText}>어제 질문 결과가 나왔어요!</span>
-        <span aria-hidden="true">→</span>
-      </button>
+      {/* Result banner — result_ready 데이터 있을 때만 노출 */}
+      {hasResult && (
+        <button className={styles.resultBanner} onClick={() => navigate('/result')}>
+          <Badge size="xsmall" variant="fill" color="red">NEW</Badge>
+          <span className={styles.resultText}>어제 질문 결과가 나왔어요!</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      )}
 
       {/* Question card */}
       <div className={styles.questionCard}>
