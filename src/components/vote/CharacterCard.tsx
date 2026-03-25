@@ -57,9 +57,9 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false }: Pr
         </div>
       </div>
 
-      {expanded && (
+      <div className={`${styles.reasoningWrap} ${expanded ? styles.expanded : ''}`}>
         <p className={styles.reasoning}>{prediction.reasoning}</p>
-      )}
+      </div>
     </div>
   )
 }
