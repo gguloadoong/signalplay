@@ -41,5 +41,8 @@
 - [ ] [FEATURE] 캐릭터별 팔로우/구독
 - [ ] [FEATURE] 한줄 의견 (텍스트 코멘트)
 - [x] [UX] 온보딩 피벗 반영 — 4기둥 슬라이드 (#50 merged)
-- [ ] [PERFORMANCE] Lighthouse 90+ 목표
+- [x] [PERFORMANCE] Lighthouse CI 자동 측정 설정 (#56 merged)
+- [x] [UX] CharacterCard reasoning 미리보기 + 슬라이드 애니메이션 (#58 merged)
+- [x] [UX] 접근성 개선 — 색상 대비 + 폰트 크기 (#61 in review)
+- [ ] [PERFORMANCE] Lighthouse 점수 90+ 달성 (CI 측정 후 추가 최적화)
 - [x] [DOCS] README 피벗 반영 (da0e078 merged)
