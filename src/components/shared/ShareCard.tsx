@@ -1,16 +1,18 @@
 import type { VoteResult } from '@/types/vote'
 import type { VoteRecord } from '@/lib/utils/voteHistory'
+import type { LevelInfo } from '@/lib/utils/userStats'
 
 interface Props {
   result: VoteResult
   myVote: VoteRecord | null
   streak: number
   accuracyPercent: number | null
+  level?: LevelInfo | null
 }
 
 const OUTCOME_LABELS = { bullish: '올라갔다 📈', bearish: '망했다 📉', neutral: '그냥 그랬다 🤷' } as const
 
-export function ShareCard({ result, myVote, streak, accuracyPercent }: Props) {
+export function ShareCard({ result, myVote, streak, accuracyPercent, level }: Props) {
   const isCorrect = myVote?.choice === result.actualOutcome
   const correctCount = result.characters.filter((c) => c.isCorrect).length
 
@@ -91,8 +93,14 @@ export function ShareCard({ result, myVote, streak, accuracyPercent }: Props) {
       </div>
 
       {/* Stats */}
-      {(streak > 0 || accuracyPercent !== null) && (
-        <div style={{ display: 'flex', gap: 6 }}>
+      {(level || streak > 0 || accuracyPercent !== null) && (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {level && (
+            <span style={{
+              fontSize: 11, background: '#f0e8ff', color: '#7c3aed',
+              borderRadius: 6, padding: '3px 8px', fontWeight: 600,
+            }}>{level.emoji} Lv.{level.level} {level.label}</span>
+          )}
           {streak > 0 && (
             <span style={{
               fontSize: 11, background: '#e8f0ff', color: '#3182f6',

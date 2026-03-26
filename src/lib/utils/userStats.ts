@@ -8,6 +8,7 @@ interface UserStats {
   correct: number
   total: number
   lastScoredQuestionId: string | null
+  totalVotes: number
 }
 
 const DEFAULT_STATS: UserStats = {
@@ -16,6 +17,7 @@ const DEFAULT_STATS: UserStats = {
   correct: 0,
   total: 0,
   lastScoredQuestionId: null,
+  totalVotes: 0,
 }
 
 function getStats(): UserStats {
@@ -33,7 +35,7 @@ function saveStats(stats: UserStats): void {
   } catch { /* storage full — silent fail */ }
 }
 
-/** 투표 시 호출: 스트릭 업데이트 */
+/** 투표 시 호출: 스트릭 + 누적 투표 수 업데이트 */
 export function recordVote(date: string): void {
   const stats = getStats()
   if (stats.lastVoteDate === date) return // 오늘 이미 업데이트됨
@@ -44,7 +46,7 @@ export function recordVote(date: string): void {
 
   const newStreak = stats.lastVoteDate === yesterdayStr ? stats.streak + 1 : 1
 
-  saveStats({ ...stats, streak: newStreak, lastVoteDate: date })
+  saveStats({ ...stats, streak: newStreak, lastVoteDate: date, totalVotes: (stats.totalVotes ?? 0) + 1 })
 }
 
 /** ResultPage에서 결과 확인 시 호출: 적중률 업데이트 (중복 방지) */
@@ -78,6 +80,37 @@ const CHARACTER_NAMES: Record<string, { name: string; emoji: string }> = {
   reporter:  { name: '뉴스최', emoji: '📺' },
   pattern:   { name: '봉준선', emoji: '📐' },
   chimp:     { name: '코인토', emoji: '🎲' },
+}
+
+export interface LevelInfo {
+  level: number
+  label: string
+  emoji: string
+  nextAt: number | null  // 다음 레벨까지 필요한 총 투표 수 (Lv.5면 null)
+}
+
+const LEVELS: LevelInfo[] = [
+  { level: 1, label: '시장 구경꾼',   emoji: '👀', nextAt: 10  },
+  { level: 2, label: '초보 분석가',   emoji: '📊', nextAt: 30  },
+  { level: 3, label: '시장 감시자',   emoji: '🔭', nextAt: 100 },
+  { level: 4, label: '프로 예측가',   emoji: '🎯', nextAt: 365 },
+  { level: 5, label: '시그널 마스터', emoji: '🏆', nextAt: null },
+]
+
+/** 누적 투표 수 기반 레벨 — 1회 미만이면 null */
+export function getLevel(): LevelInfo | null {
+  const votes = getStats().totalVotes ?? 0
+  if (votes < 1) return null
+  if (votes >= 365) return LEVELS[4]
+  if (votes >= 100) return LEVELS[3]
+  if (votes >= 30)  return LEVELS[2]
+  if (votes >= 10)  return LEVELS[1]
+  return LEVELS[0]
+}
+
+/** 누적 총 투표 수 */
+export function getTotalVotes(): number {
+  return getStats().totalVotes ?? 0
 }
 
 /** 누적 투표 기반 가장 일치하는 캐릭터 — 3회 미만 투표 시 null */
