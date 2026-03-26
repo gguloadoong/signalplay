@@ -126,17 +126,20 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false, defa
             </p>
           )}
 
-          {voted && onReact && (
+          {voted && (prediction.emojiReactions || onReact) && (
             <div className={styles.emojiReactions} onClick={(e) => e.stopPropagation()}>
               {REACTIONS.map((r) => {
                 const count = prediction.emojiReactions?.[r] ?? 0
                 const isMe = myReaction === r
+                if (!onReact && count === 0) return null
                 return (
                   <button
                     key={r}
                     className={`${styles.reactionBtn} ${isMe ? styles.reactionBtnActive : ''}`}
-                    onClick={() => onReact(r)}
+                    onClick={() => onReact?.(r)}
+                    disabled={!onReact}
                     aria-label={REACTION_LABELS[r]}
+                    style={!onReact ? { cursor: 'default' } : undefined}
                   >
                     {r} {count > 0 && <span className={styles.reactionCount}>{count}</span>}
                   </button>
