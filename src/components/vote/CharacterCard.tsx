@@ -114,9 +114,9 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false, defa
 
           {unlocked && showCorrect && isCorrect !== undefined && (
             <p className={`${styles.reaction} ${isCorrect ? styles.reactionCorrect : styles.reactionWrong}`}>
-              {isCorrect
+              {prediction.reaction ?? (isCorrect
                 ? CHARACTER_REACTIONS[prediction.character].correct
-                : CHARACTER_REACTIONS[prediction.character].wrong}
+                : CHARACTER_REACTIONS[prediction.character].wrong)}
             </p>
           )}
         </div>
