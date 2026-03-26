@@ -200,7 +200,7 @@ export function ResultPage() {
 
       <div className={styles.actions}>
         <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
-          오늘 투표하기 →
+          {myVote ? (isCorrect ? '오늘도 적중 노려봐! 🎯' : '오늘 만회할 차례 💪') : '오늘 투표하기 →'}
         </Button>
       </div>
 
@@ -262,7 +262,7 @@ export function ResultPage() {
 
       <div className={styles.actions}>
         <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>
-          오늘 투표하기 →
+          {myVote ? (isCorrect ? '오늘도 적중 노려봐! 🎯' : '오늘 만회할 차례 💪') : '오늘 투표하기 →'}
         </Button>
         <Button size="medium" variant="weak" color="primary" onClick={handleShare}>
           결과 공유하기
