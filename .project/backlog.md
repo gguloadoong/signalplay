@@ -83,6 +83,10 @@
 ## P2 — 참여 강화 스프린트 (2026-03-26)
 
 - [x] [FEATURE] 캐릭터 예측 이모지 반응 — 🔥😱🤔 투표 후 반응 달기 (PR #197)
+- [x] [BUG] 이모지 반응 변경 시 이전 카운트 미감소 (PR #199)
+- [x] [REFACTOR] isCrowdCorrect 유틸 추출 + 테스트 6개 추가 (PR #201)
+- [x] [FEATURE] 보안 헤더 추가 — 앱인토스 심사 대비 (PR #203)
+- [x] [REFACTOR] formatDeadline format.ts 추출 + 테스트 3개 (PR #205)
 
 ## P3 — 다음 스프린트
 
