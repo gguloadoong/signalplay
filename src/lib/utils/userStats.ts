@@ -185,3 +185,24 @@ export function getCharacterAlignment(): { character: string; name: string; emoj
   const meta = CHARACTER_NAMES[best.character]
   return meta ? { character: best.character, name: meta.name, emoji: meta.emoji, rate: best.rate } : null
 }
+
+export interface WeeklyStats {
+  participated: number  // 이번 주 투표 횟수
+  correct: number       // 이번 주 적중 수 (isCorrect === true)
+  resolved: number      // 이번 주 결과 확인된 수
+}
+
+/** 최근 7일 투표 요약 — 2회 미만이면 null */
+export function getWeeklyStats(): WeeklyStats | null {
+  const cutoff = new Date()
+  cutoff.setDate(cutoff.getDate() - 7)
+  const cutoffStr = cutoff.toISOString().split('T')[0]
+
+  const week = getHistory().filter((r) => r.date >= cutoffStr)
+  if (week.length < 2) return null
+
+  const resolved = week.filter((r) => r.isCorrect !== undefined).length
+  const correct = week.filter((r) => r.isCorrect === true).length
+
+  return { participated: week.length, correct, resolved }
+}

@@ -11,7 +11,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment, getLevel, getBadges } from '@/lib/utils/userStats'
+import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
@@ -163,7 +163,7 @@ export function ResultPage() {
         return (
           <div className={styles.statsRow}>
             {level && (
-              <Badge size="small" variant="weak" color="purple">{level.emoji} Lv.{level.level} {level.label}</Badge>
+              <Badge size="small" variant="weak" color="blue">{level.emoji} Lv.{level.level} {level.label}</Badge>
             )}
             {streak > 0 && (
               <Badge size="small" variant="weak" color="blue">🔥 {streak}일 연속</Badge>
@@ -229,13 +229,42 @@ export function ResultPage() {
         <p>{result.aiComment}</p>
       </div>
 
+      {/* 이번 주 요약 */}
+      {(() => {
+        const weekly = getWeeklyStats()
+        if (!weekly) return null
+        const pct = weekly.resolved > 0 ? Math.round((weekly.correct / weekly.resolved) * 100) : null
+        return (
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>이번 주 내 성적 📅</h3>
+            <div className={styles.weeklyRow}>
+              <div className={styles.weeklyItem}>
+                <span className={styles.weeklyValue}>{weekly.participated}</span>
+                <span className={styles.weeklyLabel}>번 참여</span>
+              </div>
+              {weekly.resolved > 0 && (
+                <div className={styles.weeklyItem}>
+                  <span className={styles.weeklyValue}>{weekly.correct}/{weekly.resolved}</span>
+                  <span className={styles.weeklyLabel}>적중</span>
+                </div>
+              )}
+              {pct !== null && (
+                <div className={styles.weeklyItem}>
+                  <span className={styles.weeklyValue}>{pct}%</span>
+                  <span className={styles.weeklyLabel}>적중률</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      })()}
+
       {/* This month leaderboard */}
       {(() => {
         const myAccuracy = getAccuracyPercent()
         const combined = myAccuracy !== null
           ? [...leaderboard, { character: 'me', name: '나', emoji: '🙋', correct: 0, total: 0, rate: myAccuracy }].sort((a, b) => b.rate - a.rate)
           : leaderboard
-        const myRank = combined.findIndex((c) => c.character === 'me')
         const beatenCount = leaderboard.filter((c) => c.rate < (myAccuracy ?? 0)).length
         return (
           <div className={styles.section}>
