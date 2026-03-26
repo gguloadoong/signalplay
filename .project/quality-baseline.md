@@ -15,7 +15,7 @@
 | JS 번들 (router, 캐시됨) | 47.18KB (16.73KB gzip) — react+react-dom+react-router-dom 통합 | 커지면 정당화 필요 | P2 |
 | JS 번들 (tds, 캐시됨) | 1,061KB (341KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
 | CSS 번들 | 16.06KB (4.82KB gzip) — Tossface @font-face 번들링 (PR #181 정당화) | 커지면 정당화 필요 | P3 |
-| 테스트 커버리지 | 유닛 101개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
+| 테스트 커버리지 | 유닛 108개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) — PR #127로 복구 | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
 | Lighthouse 성능 | 85점+ (TBT ≤300ms, 경고 0개) | 올라가기만 함 | P2 |
@@ -47,3 +47,4 @@
 | 2026-03-26 | 캐릭터 드라마 (PR #187/#189), 리더보드 실데이터 (PR #195). JS 24.28→25.80KB (+1.5KB 정당화). tds 1,058→1,061KB (소폭). 유닛 92개 유지. | QA 호크 |
 | 2026-03-26 | 이모지 반응 (PR #197/#199), isCrowdCorrect 추출+테스트 (PR #201). 유닛 92→98개 래칫 상향. | QA 호크 |
 | 2026-03-26 | 보안 헤더 (PR #203), formatDeadline 추출+테스트 (PR #205). 유닛 98→101개. | QA 호크 |
+| 2026-03-26 | 레벨 시스템 (PR #209) — getLevel()/getTotalVotes(), ResultPage+ShareCard 레벨 배지. 유닛 101→108개. | QA 호크 |

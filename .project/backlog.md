@@ -89,6 +89,10 @@
 - [x] [REFACTOR] formatDeadline format.ts 추출 + 테스트 3개 (PR #205)
 - [x] [FEATURE] ResultPage CharacterCard 이모지 반응 카운트 읽기전용 노출 (PR #207)
 
+## P2 — 레벨 스프린트 (2026-03-26)
+
+- [x] [FEATURE] 레벨 시스템 — 누적 투표 수 기반 5단계 레벨 (PR #209)
+
 ## P3 — 다음 스프린트
 
 - [ ] [FEATURE] 플래시 투표 (속보 기반, 1~2시간 한정)
