@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { saveVote, getVote } from '../voteHistory'
+import { saveVote, getVote, updateVoteResult } from '../voteHistory'
 import type { VoteRecord } from '../voteHistory'
 
 const STORAGE_KEY = 'sp_vote_history'
@@ -65,5 +65,31 @@ describe('getVote', () => {
   it('localStorage 손상 시 null 반환 (에러 무시)', () => {
     localStorageMock.setItem(STORAGE_KEY, 'invalid-json')
     expect(getVote('any')).toBeNull()
+  })
+})
+
+describe('updateVoteResult', () => {
+  it('투표 저장 후 isCorrect 업데이트', () => {
+    saveVote(mockRecord)
+    updateVoteResult(mockRecord.questionId, true)
+    expect(getVote(mockRecord.questionId)?.isCorrect).toBe(true)
+  })
+
+  it('오답 업데이트', () => {
+    saveVote(mockRecord)
+    updateVoteResult(mockRecord.questionId, false)
+    expect(getVote(mockRecord.questionId)?.isCorrect).toBe(false)
+  })
+
+  it('이미 isCorrect가 있으면 덮어쓰지 않음 (중복 방지)', () => {
+    saveVote({ ...mockRecord, isCorrect: true })
+    updateVoteResult(mockRecord.questionId, false) // 중복 호출
+    expect(getVote(mockRecord.questionId)?.isCorrect).toBe(true) // 변경 없음
+  })
+
+  it('존재하지 않는 questionId는 무시', () => {
+    saveVote(mockRecord)
+    updateVoteResult('nonexistent', true)
+    expect(getVote(mockRecord.questionId)?.isCorrect).toBeUndefined()
   })
 })

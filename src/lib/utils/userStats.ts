@@ -1,4 +1,4 @@
-import { getHistory } from './voteHistory'
+import { getHistory, updateVoteResult } from './voteHistory'
 
 const STATS_KEY = 'sp_user_stats'
 
@@ -67,6 +67,7 @@ export function recordResult(questionId: string, isCorrect: boolean): void {
     correctStreak: newCorrectStreak,
     maxCorrectStreak: Math.max(stats.maxCorrectStreak ?? 0, newCorrectStreak),
   })
+  updateVoteResult(questionId, isCorrect)
 }
 
 /** 현재 스트릭 조회 */
