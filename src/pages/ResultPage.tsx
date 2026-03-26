@@ -226,22 +226,35 @@ export function ResultPage() {
       </div>
 
       {/* This month leaderboard */}
-      <div className={styles.section}>
-        <h3 className={styles.sectionTitle}>이번 달 누가 제일 잘 맞혔냐 🏆</h3>
-        <div className={styles.leaderboard}>
-          {leaderboard.map((c, i) => (
-            <div key={c.character} className={styles.leaderRow}>
-              <span className={styles.leaderRank}>{i + 1}</span>
-              <span className={styles.leaderEmoji}>{c.emoji}</span>
-              <span className={styles.leaderName}>{c.name}</span>
-              <div className={styles.leaderBarWrap}>
-                <div className={styles.leaderBar} style={{ width: `${c.rate}%` }} />
-              </div>
-              <span className={styles.leaderRate}>{c.rate}%</span>
+      {(() => {
+        const myAccuracy = getAccuracyPercent()
+        const combined = myAccuracy !== null
+          ? [...leaderboard, { character: 'me', name: '나', emoji: '🙋', correct: 0, total: 0, rate: myAccuracy }].sort((a, b) => b.rate - a.rate)
+          : leaderboard
+        const myRank = combined.findIndex((c) => c.character === 'me')
+        const beatenCount = leaderboard.filter((c) => c.rate < (myAccuracy ?? 0)).length
+        return (
+          <div className={styles.section}>
+            <h3 className={styles.sectionTitle}>이번 달 누가 제일 잘 맞혔냐 🏆</h3>
+            {myAccuracy !== null && beatenCount > 0 && (
+              <p className={styles.syncMsg}>🎉 {beatenCount}명의 전문가를 이겼어요!</p>
+            )}
+            <div className={styles.leaderboard}>
+              {combined.map((c, i) => (
+                <div key={c.character} className={`${styles.leaderRow} ${c.character === 'me' ? styles.leaderRowMe : ''}`}>
+                  <span className={styles.leaderRank}>{i + 1}</span>
+                  <span className={styles.leaderEmoji}>{c.emoji}</span>
+                  <span className={styles.leaderName}>{c.name}</span>
+                  <div className={styles.leaderBarWrap}>
+                    <div className={styles.leaderBar} style={{ width: `${c.rate}%` }} />
+                  </div>
+                  <span className={styles.leaderRate}>{c.rate}%</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        )
+      })()}
 
       <div className={styles.actions}>
         <Button size="medium" variant="fill" color="primary" onClick={() => navigate('/')}>

@@ -134,6 +134,13 @@
   color: var(--color-text-secondary);
 }
 
+.syncMsg {
+  font-size: 13px;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
 /* Leaderboard */
 .leaderboard {
   display: flex;
@@ -145,6 +152,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.leaderRowMe {
+  background: rgba(49, 130, 246, 0.08);
+  border: 1.5px solid rgba(49, 130, 246, 0.3);
+  border-radius: 8px;
+  padding: 4px 6px;
+  margin: 0 -6px;
 }
 
 .leaderRank {
