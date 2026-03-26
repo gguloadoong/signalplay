@@ -78,6 +78,7 @@
 ## P1 — 서비스 본질 스프린트 (2026-03-26)
 
 - [x] [FEATURE] 캐릭터 장 중 드라마 — 낮 코멘트 cron + 결과 반응 + 투표 후 타임라인 (PR #187)
+- [x] [FEATURE] ResultPage 캐릭터 결과 반응 대사 — close_reactions DB 연동 (PR #189)
 
 ## P3 — 다음 스프린트
 
