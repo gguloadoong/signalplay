@@ -87,6 +87,7 @@
 - [x] [REFACTOR] isCrowdCorrect 유틸 추출 + 테스트 6개 추가 (PR #201)
 - [x] [FEATURE] 보안 헤더 추가 — 앱인토스 심사 대비 (PR #203)
 - [x] [REFACTOR] formatDeadline format.ts 추출 + 테스트 3개 (PR #205)
+- [x] [FEATURE] ResultPage CharacterCard 이모지 반응 카운트 읽기전용 노출 (PR #207)
 
 ## P3 — 다음 스프린트
 
