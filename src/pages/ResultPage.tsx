@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toPng } from 'html-to-image'
 import { showInterstitialAd } from '@/lib/bedrock'
+import { useWebToast } from '@toss/tds-mobile'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
@@ -29,8 +30,8 @@ const AD_SESSION_KEY = 'sp_interstitial_shown'
 export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
-  const [shareMsg, setShareMsg] = useState('')
   const shareCardRef = useRef<HTMLDivElement>(null)
+  const { openToast } = useWebToast()
 
   useEffect(() => {
     if (!sessionStorage.getItem(AD_SESSION_KEY)) {
@@ -87,8 +88,7 @@ export function ResultPage() {
     })
     const res = await shareText(text)
     if (res === 'copied') {
-      setShareMsg('클립보드에 복사됨!')
-      setTimeout(() => setShareMsg(''), 2000)
+      openToast('클립보드에 복사됨!', { duration: 2000 })
     }
   }, [result])
 
@@ -234,10 +234,7 @@ export function ResultPage() {
               <span className={styles.leaderEmoji}>{c.emoji}</span>
               <span className={styles.leaderName}>{c.name}</span>
               <div className={styles.leaderBarWrap}>
-                <div
-                  className={styles.leaderBar}
-                  style={{ width: `${c.rate}%` }}
-                />
+                <div className={styles.leaderBar} style={{ width: `${c.rate}%` }} />
               </div>
               <span className={styles.leaderRate}>{c.rate}%</span>
             </div>
@@ -254,7 +251,6 @@ export function ResultPage() {
         </Button>
       </div>
 
-      {shareMsg && <div className={styles.toast} aria-live="polite">{shareMsg}</div>}
       <Disclaimer />
 
       {/* 공유 이미지 생성용 — 화면 밖에 렌더링 */}
