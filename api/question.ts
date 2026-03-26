@@ -108,6 +108,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const today = new Date().toISOString().split('T')[0]
   if (cache?.date === today) return res.status(200).json(cache.data)
 
+  // 0. Supabase 캐시 확인 — 오늘 데이터가 이미 있으면 즉시 반환
+  const supabase = getSupabase()
+  if (supabase) {
+    const { data: existing } = await supabase
+      .from('daily_questions')
+      .select('*')
+      .eq('date', today)
+      .single()
+    if (existing) {
+      const { data: voteData } = await supabase
+        .from('user_votes')
+        .select('prediction')
+        .eq('question_id', existing.id)
+      const totalVotes = voteData?.length ?? 0
+      const cached = {
+        id: existing.id,
+        date: existing.date,
+        title: existing.title,
+        question: existing.question,
+        category: existing.category,
+        characters: existing.character_predictions ?? [],
+        totalVotes,
+        deadline: existing.deadline,
+        isActive: new Date() < new Date(existing.deadline),
+      }
+      cache = { date: today, data: cached }
+      return res.status(200).json(cached)
+    }
+  }
+
   // 1. Generate question (Google Search Grounding으로 실시간 뉴스 기반)
   const qRaw = await callGemini(buildQuestionPrompt(today), true)
   let question = qRaw ? parseJson(qRaw) as { title: string; question: string; category: string } | null : null
@@ -162,7 +192,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   cache = { date: today, data: response }
 
   // Supabase upsert — 환경변수 설정 시 활성화
-  const supabase = getSupabase()
   if (supabase) {
     await supabase.from('daily_questions').upsert({
       id: response.id,
