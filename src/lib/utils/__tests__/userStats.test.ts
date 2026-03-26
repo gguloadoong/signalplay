@@ -12,6 +12,7 @@ import {
   getTotalVotes,
   getBadges,
   getWeeklyStats,
+  getPrevWeekStats,
 } from '../userStats'
 
 // localStorage mock
@@ -325,5 +326,42 @@ describe('recordContrarianWin / 역발상 배지', () => {
   it('역발상 없으면 배지 미노출', () => {
     const badges = getBadges()
     expect(badges.some((b) => b.id === 'contrarian_1')).toBe(false)
+  })
+})
+
+describe('getPrevWeekStats', () => {
+  const VOTE_KEY = 'sp_vote_history'
+  const eightDaysAgo = new Date(Date.now() - 8 * 86400000).toISOString().split('T')[0]
+  const nineDaysAgo = new Date(Date.now() - 9 * 86400000).toISOString().split('T')[0]
+  const fifteenDaysAgo = new Date(Date.now() - 15 * 86400000).toISOString().split('T')[0]
+  const today = new Date().toISOString().split('T')[0]
+
+  it('7~14일 전 기록 2개 미만이면 null', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: eightDaysAgo, title: 'T', choice: 'bullish' },
+    ])
+    expect(getPrevWeekStats()).toBeNull()
+  })
+
+  it('7~14일 전 기록 2개 이상 → 집계 반환', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: eightDaysAgo, title: 'T', choice: 'bullish', isCorrect: true },
+      { questionId: 'q-2', date: nineDaysAgo, title: 'T', choice: 'bearish', isCorrect: false },
+    ])
+    const stats = getPrevWeekStats()
+    expect(stats?.participated).toBe(2)
+    expect(stats?.correct).toBe(1)
+    expect(stats?.resolved).toBe(2)
+  })
+
+  it('이번 주 기록은 이전 주 집계에서 제외', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-today', date: today, title: 'T', choice: 'bullish', isCorrect: true },
+      { questionId: 'q-1', date: eightDaysAgo, title: 'T', choice: 'bullish', isCorrect: true },
+      { questionId: 'q-2', date: nineDaysAgo, title: 'T', choice: 'bearish', isCorrect: true },
+      { questionId: 'q-old', date: fifteenDaysAgo, title: 'T', choice: 'bullish', isCorrect: true },
+    ])
+    const stats = getPrevWeekStats()
+    expect(stats?.participated).toBe(2)
   })
 })
