@@ -14,6 +14,8 @@ import { getVote } from '@/lib/utils/voteHistory'
 import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
+
+type LeaderboardEntry = { character: string; name: string; emoji: string; correct: number; total: number; rate: number }
 import { api } from '@/lib/api/client'
 import type { VoteResult } from '@/types/vote'
 import styles from './ResultPage.module.css'
@@ -30,6 +32,7 @@ const AD_SESSION_KEY = 'sp_interstitial_shown'
 export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(MOCK_CHARACTER_ACCURACY)
   const shareCardRef = useRef<HTMLDivElement>(null)
   const { openToast } = useWebToast()
 
@@ -49,6 +52,9 @@ export function ResultPage() {
         const vote = getVote(r.questionId)
         if (vote) recordResult(r.questionId, vote.choice === r.actualOutcome)
       }
+    })
+    api.getLeaderboard().then(({ data }) => {
+      if (data && data.length > 0) setLeaderboard(data)
     })
   }, [])
 
@@ -228,7 +234,7 @@ export function ResultPage() {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>이번 달 누가 제일 잘 맞혔냐 🏆</h3>
         <div className={styles.leaderboard}>
-          {MOCK_CHARACTER_ACCURACY.map((c, i) => (
+          {leaderboard.map((c, i) => (
             <div key={c.character} className={styles.leaderRow}>
               <span className={styles.leaderRank}>{i + 1}</span>
               <span className={styles.leaderEmoji}>{c.emoji}</span>
