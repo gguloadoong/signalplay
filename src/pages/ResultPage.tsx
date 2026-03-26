@@ -279,6 +279,7 @@ export function ResultPage() {
           streak={getStreak()}
           accuracyPercent={getAccuracyPercent()}
           level={getLevel()}
+          badges={getBadges()}
         />
       </div>
     </div>
