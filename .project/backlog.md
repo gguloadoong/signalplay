@@ -65,6 +65,14 @@
 - [x] [FEATURE] 캐릭터 적중률 리더보드 Supabase 실데이터 연동 (PR #165)
 - [x] [FEATURE] ResultPage 결과 공유 버튼 추가 (PR #159)
 
+## P1 — TDS 전면 교체 스프린트 (2026-03-26)
+
+- [x] [BUG] api/question.ts Supabase read-first — Gemini 호출 전 오늘 데이터 확인 (PR #179)
+- [x] [FEATURE] Tossface CDN → npm 패키지 (github:toss/tossface) (PR #181)
+- [x] [UX] VotePage/ResultPage 커스텀 toast → TDS useWebToast (PR #181)
+- [x] [UX] CharacterCard 잠금 버튼 → TDS Button (PR #181)
+- [x] [PROCESS] 보안 패치 — @vercel/node 5.6.20 + typescript-eslint 8.57.2 (PR #181)
+
 ## P3 — 다음 스프린트
 
 - [ ] [FEATURE] 플래시 투표 (속보 기반, 1~2시간 한정)

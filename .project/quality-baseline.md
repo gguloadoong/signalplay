@@ -10,11 +10,11 @@
 | pnpm build | ✅ 통과 | 항상 통과 | P0 |
 | pnpm lint | ✅ 0 에러 | 항상 0 | P0 |
 | TypeScript 에러 | 0개 | 항상 0 | P0 |
-| npm audit high+ | 0개 | 항상 0 | P0 |
+| npm audit high+ | 0개 (moderate 1개 — typescript-eslint 하위 picomatch, upstream 픽스 대기) | 항상 0 | P0 |
 | JS 번들 (초기 로드) | 24.28KB (9.58KB gzip) | 커지면 정당화 필요 | P2 |
 | JS 번들 (router, 캐시됨) | 47.18KB (16.73KB gzip) — react+react-dom+react-router-dom 통합 | 커지면 정당화 필요 | P2 |
 | JS 번들 (tds, 캐시됨) | 1,056KB (339KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
-| CSS 번들 | 14.22KB (4.42KB gzip) | 커지면 정당화 필요 | P3 |
+| CSS 번들 | 16.06KB (4.82KB gzip) — Tossface @font-face 번들링 (PR #181 정당화) | 커지면 정당화 필요 | P3 |
 | 테스트 커버리지 | 유닛 92개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
 | E2E 테스트 | 4개 (Playwright) — PR #127로 복구 | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
@@ -43,3 +43,4 @@
 | 2026-03-26 | @toss/tds-mobile 2.3.0 + @emotion/react 도입 (PR #166). tds 청크 1,063KB (캐시됨, 앱인토스 심사 정당화). vendor 180.5→40.72KB. Tossface CDN 추가. | QA 호크 |
 | 2026-03-26 | getCharacterAlignment() 유닛 3개 추가 (PR #174) — 유닛 89→92개 래칫 상향. | QA 호크 |
 | 2026-03-26 | html-to-image 추가 (PR #173), 서비스 기획 v2 기능 5개 머지. router 청크 40.72→47.18KB (react+router 통합, html-to-image 정당화). tds 1,063→1,056KB (소폭 감소). | QA 호크 |
+| 2026-03-26 | Supabase read-first (PR #179). TDS 전면 교체 (PR #181): Tossface npm, useWebToast, Button. tds 1,056→1,058KB (+2KB 정당화). CSS 14.22→16.06KB (Tossface @font-face 번들링 정당화). 보안 high 2→0개. | QA 호크 |
