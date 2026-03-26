@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useWebToast } from '@toss/tds-mobile'
+import { useWebToast, useBottomSheet } from '@toss/tds-mobile'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { saveVote, getVote } from '@/lib/utils/voteHistory'
@@ -35,6 +35,8 @@ function formatDeadline(deadline: string): string {
   return `${minutes}분 후 마감`
 }
 
+const FIRST_VOTE_KEY = 'sp_first_vote_explained'
+
 const CATEGORY_COLOR: Record<string, 'blue' | 'green' | 'yellow'> = {
   종목: 'blue',
   지수: 'green',
@@ -52,6 +54,7 @@ export function VotePage() {
   const [showSuccess, setShowSuccess] = useState(false)
   const [hasResult, setHasResult] = useState(false)
   const { openToast } = useWebToast()
+  const { openOneButtonSheet } = useBottomSheet()
 
   useEffect(() => {
     api.getQuestion().then(({ data }) => {
@@ -82,7 +85,15 @@ export function VotePage() {
     if (data?.crowd) {
       setCrowd({ ...data.crowd })
     }
-  }, [voted, questionData])
+    // 첫 투표 후 앱 설명 바텀시트 (1회만)
+    if (!localStorage.getItem(FIRST_VOTE_KEY)) {
+      localStorage.setItem(FIRST_VOTE_KEY, 'true')
+      openOneButtonSheet({
+        header: '🎉 첫 투표 완료!',
+        button: '알겠어, 내일 또 올게 👍',
+      })
+    }
+  }, [voted, questionData, openOneButtonSheet])
 
   const handleAnimationComplete = useCallback(() => {
     setShowSuccess(false)

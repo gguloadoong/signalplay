@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { BottomNav } from '@/components/shared/BottomNav'
 import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
@@ -9,26 +9,11 @@ import './App.css'
 const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
 const CharactersPage = lazy(() => import('@/pages/CharactersPage').then((m) => ({ default: m.CharactersPage })))
 const CharacterProfilePage = lazy(() => import('@/pages/CharacterProfilePage').then((m) => ({ default: m.CharacterProfilePage })))
-const Onboarding = lazy(() => import('@/components/shared/Onboarding').then((m) => ({ default: m.Onboarding })))
-
-const ONBOARDING_KEY = 'signalplay-onboarded'
 
 function App() {
-  const [showOnboarding, setShowOnboarding] = useState(
-    () => !localStorage.getItem(ONBOARDING_KEY),
-  )
-
-  const handleOnboardingComplete = () => {
-    localStorage.setItem(ONBOARDING_KEY, 'true')
-    setShowOnboarding(false)
-  }
-
   return (
     <ErrorBoundary>
     <div className="app">
-      <Suspense>
-        {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
-      </Suspense>
       <main className="app-content">
         <PageTransition>
         <Suspense>
