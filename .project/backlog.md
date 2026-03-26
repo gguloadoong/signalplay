@@ -75,6 +75,10 @@
 - [x] [UX] 온보딩 슬라이드 제거 → 질문 직접 노출 + 첫 투표 후 TDS 바텀시트 (PR #183)
 - [x] [UX] EmptyState action + CharacterProfilePage 뒤로가기 → TDS Button (PR #185)
 
+## P1 — 서비스 본질 스프린트 (2026-03-26)
+
+- [x] [FEATURE] 캐릭터 장 중 드라마 — 낮 코멘트 cron + 결과 반응 + 투표 후 타임라인 (PR #187)
+
 ## P3 — 다음 스프린트
 
 - [ ] [FEATURE] 플래시 투표 (속보 기반, 1~2시간 한정)
