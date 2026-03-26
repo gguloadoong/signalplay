@@ -24,6 +24,21 @@ test.describe('투표 페이지', () => {
     await expect(page.getByText(/%/).first()).toBeVisible({ timeout: 3000 })
   })
 
+  test('투표 후 레벨 힌트 노출 — Lv. 텍스트 확인', async ({ page }) => {
+    await page.goto('/')
+
+    const skipBtn = page.getByText('건너뛰기')
+    if (await skipBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await skipBtn.click()
+    }
+
+    await expect(page.getByRole('button', { name: /호재/ }).first()).toBeVisible({ timeout: 10000 })
+    await page.getByRole('button', { name: /호재/ }).first().click()
+
+    // 투표 후 레벨 힌트(Lv.) 또는 전문가 동의 문구 노출 확인
+    await expect(page.getByText(/Lv\.|방구석 전문가/).first()).toBeVisible({ timeout: 3000 })
+  })
+
   test('하단 탭 전환 (투표 ↔ 결과)', async ({ page }) => {
     await page.goto('/')
 
