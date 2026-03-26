@@ -238,17 +238,28 @@ export interface WeeklyStats {
   resolved: number      // 이번 주 결과 확인된 수
 }
 
+function statsForRange(fromDaysAgo: number, toDaysAgo: number): WeeklyStats | null {
+  const from = new Date(); from.setDate(from.getDate() - fromDaysAgo)
+  const to = new Date(); to.setDate(to.getDate() - toDaysAgo)
+  const fromStr = from.toISOString().split('T')[0]
+  const toStr = to.toISOString().split('T')[0]
+
+  const slice = getHistory().filter((r) => r.date >= fromStr && r.date <= toStr)
+  if (slice.length < 2) return null
+
+  return {
+    participated: slice.length,
+    correct: slice.filter((r) => r.isCorrect === true).length,
+    resolved: slice.filter((r) => r.isCorrect !== undefined).length,
+  }
+}
+
 /** 최근 7일 투표 요약 — 2회 미만이면 null */
 export function getWeeklyStats(): WeeklyStats | null {
-  const cutoff = new Date()
-  cutoff.setDate(cutoff.getDate() - 7)
-  const cutoffStr = cutoff.toISOString().split('T')[0]
+  return statsForRange(7, 0)
+}
 
-  const week = getHistory().filter((r) => r.date >= cutoffStr)
-  if (week.length < 2) return null
-
-  const resolved = week.filter((r) => r.isCorrect !== undefined).length
-  const correct = week.filter((r) => r.isCorrect === true).length
-
-  return { participated: week.length, correct, resolved }
+/** 7~14일 전 투표 요약 — 직전 주 성적 비교용, 2회 미만이면 null */
+export function getPrevWeekStats(): WeeklyStats | null {
+  return statsForRange(14, 7)
 }

@@ -11,7 +11,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, recordCrowdResult, recordContrarianWin, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
+import { recordResult, recordCrowdResult, recordContrarianWin, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats, getPrevWeekStats } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
@@ -242,6 +242,9 @@ export function ResultPage() {
         const weekly = getWeeklyStats()
         if (!weekly) return null
         const pct = weekly.resolved > 0 ? Math.round((weekly.correct / weekly.resolved) * 100) : null
+        const prev = getPrevWeekStats()
+        const prevPct = prev && prev.resolved > 0 ? Math.round((prev.correct / prev.resolved) * 100) : null
+        const delta = pct !== null && prevPct !== null ? pct - prevPct : null
         return (
           <div className={styles.section}>
             <h3 className={styles.sectionTitle}>이번 주 내 성적 📅</h3>
@@ -263,6 +266,11 @@ export function ResultPage() {
                 </div>
               )}
             </div>
+            {delta !== null && (
+              <p className={`${styles.weeklyTrend} ${delta > 0 ? styles.weeklyTrendUp : delta < 0 ? styles.weeklyTrendDown : ''}`}>
+                {delta > 0 ? `↑ 지난 주보다 +${delta}%p` : delta < 0 ? `↓ 지난 주보다 ${delta}%p` : '→ 지난 주와 동일'}
+              </p>
+            )}
           </div>
         )
       })()}

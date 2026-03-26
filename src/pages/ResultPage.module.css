@@ -256,3 +256,17 @@
   border-radius: 6px;
   background: var(--color-background-secondary, #f9f9f9);
 }
+
+.weeklyTrend {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-secondary, #888);
+  margin-top: 4px;
+}
+
+.weeklyTrendUp {
+  color: #2ecc71;
+}
+
+.weeklyTrendDown {
+  color: #e74c3c;
+}
