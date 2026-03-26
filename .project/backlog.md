@@ -73,6 +73,7 @@
 - [x] [UX] CharacterCard 잠금 버튼 → TDS Button (PR #181)
 - [x] [PROCESS] 보안 패치 — @vercel/node 5.6.20 + typescript-eslint 8.57.2 (PR #181)
 - [x] [UX] 온보딩 슬라이드 제거 → 질문 직접 노출 + 첫 투표 후 TDS 바텀시트 (PR #183)
+- [x] [UX] EmptyState action + CharacterProfilePage 뒤로가기 → TDS Button (PR #185)
 
 ## P3 — 다음 스프린트
 
