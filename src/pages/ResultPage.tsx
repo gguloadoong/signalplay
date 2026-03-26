@@ -13,7 +13,7 @@ import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
 import { recordResult, recordCrowdResult, recordContrarianWin, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats, getPrevWeekStats } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
-import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
+import { MOCK_VOTE_RESULT } from '@/lib/mockData'
 
 type LeaderboardEntry = { character: string; name: string; emoji: string; correct: number; total: number; rate: number }
 import { api } from '@/lib/api/client'
@@ -32,7 +32,7 @@ const AD_SESSION_KEY = 'sp_interstitial_shown'
 export function ResultPage() {
   const navigate = useNavigate()
   const [result, setResult] = useState<VoteResult | null | undefined>(undefined)
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(MOCK_CHARACTER_ACCURACY)
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const shareCardRef = useRef<HTMLDivElement>(null)
   const { openToast } = useWebToast()
 
@@ -284,6 +284,7 @@ export function ResultPage() {
           ...(crowdAccuracy !== null ? [{ character: 'crowd', name: '군중', emoji: '👥', correct: 0, total: 0, rate: crowdAccuracy }] : []),
         ]
         const combined = [...leaderboard, ...extras].sort((a, b) => b.rate - a.rate)
+        if (combined.length === 0) return null
         const beatenCount = leaderboard.filter((c) => c.rate < (myAccuracy ?? 0)).length
         return (
           <div className={styles.section}>
