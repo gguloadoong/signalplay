@@ -117,12 +117,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .eq('date', today)
       .single()
     if (existing) {
-      const { data: voteData } = await supabase
-        .from('user_votes')
-        .select('prediction')
-        .eq('question_id', existing.id)
-      const totalVotes = voteData?.length ?? 0
-      const total = existing.total_votes || totalVotes || 1
+      const total = existing.total_votes || 1
       const crowdBullish = Math.round(((existing.crowd_bullish ?? 0) / total) * 100)
       const crowdBearish = Math.round(((existing.crowd_bearish ?? 0) / total) * 100)
       const crowdNeutral = 100 - crowdBullish - crowdBearish
@@ -133,8 +128,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         question: existing.question,
         category: existing.category,
         characters: existing.character_predictions ?? [],
-        totalVotes: existing.total_votes ?? totalVotes,
-        crowd: { bullish: crowdBullish, bearish: crowdBearish, neutral: crowdNeutral, totalVotes: existing.total_votes ?? totalVotes },
+        totalVotes: existing.total_votes ?? 0,
+        crowd: { bullish: crowdBullish, bearish: crowdBearish, neutral: crowdNeutral, totalVotes: existing.total_votes ?? 0 },
         deadline: existing.deadline,
         isActive: new Date() < new Date(existing.deadline),
       }
