@@ -9,6 +9,8 @@ interface UserStats {
   total: number
   lastScoredQuestionId: string | null
   totalVotes: number
+  correctStreak: number
+  maxCorrectStreak: number
 }
 
 const DEFAULT_STATS: UserStats = {
@@ -18,6 +20,8 @@ const DEFAULT_STATS: UserStats = {
   total: 0,
   lastScoredQuestionId: null,
   totalVotes: 0,
+  correctStreak: 0,
+  maxCorrectStreak: 0,
 }
 
 function getStats(): UserStats {
@@ -49,16 +53,19 @@ export function recordVote(date: string): void {
   saveStats({ ...stats, streak: newStreak, lastVoteDate: date, totalVotes: (stats.totalVotes ?? 0) + 1 })
 }
 
-/** ResultPage에서 결과 확인 시 호출: 적중률 업데이트 (중복 방지) */
+/** ResultPage에서 결과 확인 시 호출: 적중률 + 연속 적중 업데이트 (중복 방지) */
 export function recordResult(questionId: string, isCorrect: boolean): void {
   const stats = getStats()
   if (stats.lastScoredQuestionId === questionId) return // 이미 집계됨
 
+  const newCorrectStreak = isCorrect ? (stats.correctStreak ?? 0) + 1 : 0
   saveStats({
     ...stats,
     correct: stats.correct + (isCorrect ? 1 : 0),
     total: stats.total + 1,
     lastScoredQuestionId: questionId,
+    correctStreak: newCorrectStreak,
+    maxCorrectStreak: Math.max(stats.maxCorrectStreak ?? 0, newCorrectStreak),
   })
 }
 
@@ -111,6 +118,45 @@ export function getLevel(): LevelInfo | null {
 /** 누적 총 투표 수 */
 export function getTotalVotes(): number {
   return getStats().totalVotes ?? 0
+}
+
+export interface BadgeInfo {
+  id: string
+  emoji: string
+  label: string
+}
+
+const BADGE_DEFINITIONS: Array<BadgeInfo & { earned: (s: UserStats) => boolean }> = [
+  {
+    id: 'correct_streak_3',
+    emoji: '🎯',
+    label: '예측의 신',
+    earned: (s) => (s.maxCorrectStreak ?? 0) >= 3,
+  },
+  {
+    id: 'correct_streak_5',
+    emoji: '💎',
+    label: '퍼펙트 위크',
+    earned: (s) => (s.maxCorrectStreak ?? 0) >= 5,
+  },
+  {
+    id: 'accuracy_70',
+    emoji: '📊',
+    label: '전문가 킬러',
+    earned: (s) => s.total >= 5 && s.correct / s.total >= 0.7,
+  },
+  {
+    id: 'vote_streak_7',
+    emoji: '🔥',
+    label: '불타는 스트릭',
+    earned: (s) => (s.streak ?? 0) >= 7,
+  },
+]
+
+/** 획득한 배지 목록 */
+export function getBadges(): BadgeInfo[] {
+  const stats = getStats()
+  return BADGE_DEFINITIONS.filter((b) => b.earned(stats)).map(({ id, emoji, label }) => ({ id, emoji, label }))
 }
 
 /** 누적 투표 기반 가장 일치하는 캐릭터 — 3회 미만 투표 시 null */
