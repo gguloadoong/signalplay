@@ -5,7 +5,7 @@ import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { formatDeadline } from '@/lib/utils/format'
 import { saveVote, getVote } from '@/lib/utils/voteHistory'
-import { recordVote } from '@/lib/utils/userStats'
+import { recordVote, getLevel, getTotalVotes } from '@/lib/utils/userStats'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
 import { Disclaimer } from '@/components/shared/Disclaimer'
 import { EmptyState } from '@/components/shared/EmptyState'
@@ -243,6 +243,17 @@ export function VotePage() {
               ? '방구석 전문가 전원과 같은 선택이에요! 🎯'
               : `방구석 전문가 ${characters.length}명 중 ${syncCount}명이 같은 선택을 했어요`
             return <p className={styles.syncMsg}>{msg}</p>
+          })()}
+          {voted && (() => {
+            const level = getLevel()
+            if (!level) return null
+            if (level.nextAt === null) return (
+              <p className={styles.levelHint}>{level.emoji} Lv.{level.level} {level.label} 달성! 🏆</p>
+            )
+            const remaining = level.nextAt - getTotalVotes()
+            return (
+              <p className={styles.levelHint}>{level.emoji} Lv.{level.level} {level.label} — 다음 레벨까지 {remaining}번 더!</p>
+            )
           })()}
           <CrowdBar result={crowd} animated />
 
