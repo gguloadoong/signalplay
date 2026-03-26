@@ -29,12 +29,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const closeReactions = (data.close_reactions ?? []) as Array<{ character: string; comment: string }>
   for (const r of closeReactions) reactionsMap[r.character] = r.comment
 
-  // 캐릭터별 isCorrect + reaction 병합
+  // 캐릭터별 isCorrect + reaction + emojiReactions 병합
+  const emojiReactionsMap: Record<string, Record<string, number>> = data.character_reactions ?? {}
   const characters = (data.character_predictions ?? []).map(
     (c: { character: string; name: string; emoji: string; methodology: string; prediction: string; reasoning: string }) => ({
       ...c,
       isCorrect: c.prediction === data.actual_outcome,
       ...(reactionsMap[c.character] ? { reaction: reactionsMap[c.character] } : {}),
+      emojiReactions: emojiReactionsMap[c.character] ?? {},
     })
   )
 

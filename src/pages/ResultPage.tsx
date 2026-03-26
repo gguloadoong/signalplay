@@ -209,6 +209,7 @@ export function ResultPage() {
               prediction={char}
               isCorrect={char.isCorrect}
               showCorrect
+              voted
             />
           ))}
         </div>
