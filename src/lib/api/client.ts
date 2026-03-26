@@ -52,7 +52,7 @@ export const api = {
     correct: number; total: number; rate: number
   }>>('/leaderboard'),
 
-  react: (body: { questionId: string; character: string; reaction: string }) =>
+  react: (body: { questionId: string; character: string; reaction: string; prevReaction?: string }) =>
     request<{ reactions: Record<string, number> }>('/react', { method: 'POST', body: JSON.stringify(body) }),
 
   getUpdates: (questionId: string) => request<{

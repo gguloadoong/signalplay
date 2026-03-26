@@ -120,21 +120,24 @@ export function VotePage() {
     setMyReactions(updated)
     localStorage.setItem(`sp_reactions_${questionData.id}`, JSON.stringify(updated))
 
-    // 옵티미스틱 업데이트: 캐릭터 emojiReactions 카운트 증가
-    setQuestionData((prev) => {
-      if (!prev) return prev
+    // 옵티미스틱 업데이트: 이전 반응 감소 + 새 반응 증가
+    setQuestionData((q) => {
+      if (!q) return q
       return {
-        ...prev,
-        characters: prev.characters.map((c) => {
+        ...q,
+        characters: q.characters.map((c) => {
           if (c.character !== character) return c
           const reactions = { ...(c.emojiReactions ?? {}) }
+          if (prev && reactions[prev] && reactions[prev] > 0) {
+            reactions[prev] = reactions[prev] - 1
+          }
           reactions[reaction] = (reactions[reaction] ?? 0) + 1
           return { ...c, emojiReactions: reactions }
         }),
       }
     })
 
-    await api.react({ questionId: questionData.id, character, reaction })
+    await api.react({ questionId: questionData.id, character, reaction, prevReaction: prev })
   }, [questionData, myReactions])
 
   const handleShare = useCallback(async () => {
