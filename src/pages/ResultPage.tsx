@@ -11,7 +11,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, recordCrowdResult, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
+import { recordResult, recordCrowdResult, recordContrarianWin, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
@@ -52,6 +52,13 @@ export function ResultPage() {
         const vote = getVote(r.questionId)
         if (vote) recordResult(r.questionId, vote.choice === r.actualOutcome)
         recordCrowdResult(r.questionId, isCrowdCorrect(r.crowdResult, r.actualOutcome))
+        if (vote) {
+          const crowdMajority = (['bullish', 'bearish', 'neutral'] as const)
+            .reduce((a, b) => r.crowdResult[a] >= r.crowdResult[b] ? a : b)
+          if (vote.choice !== crowdMajority && vote.choice === r.actualOutcome) {
+            recordContrarianWin(r.questionId)
+          }
+        }
       }
     })
     api.getLeaderboard().then(({ data }) => {

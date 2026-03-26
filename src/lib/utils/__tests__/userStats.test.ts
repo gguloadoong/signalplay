@@ -3,6 +3,7 @@ import {
   recordVote,
   recordResult,
   recordCrowdResult,
+  recordContrarianWin,
   getStreak,
   getAccuracyPercent,
   getCrowdAccuracyPercent,
@@ -303,5 +304,26 @@ describe('recordCrowdResult / getCrowdAccuracyPercent', () => {
     recordCrowdResult('q-1', false) // 중복 — 무시
     recordCrowdResult('q-2', true)
     expect(getCrowdAccuracyPercent()).toBe(100)
+  })
+})
+
+describe('recordContrarianWin / 역발상 배지', () => {
+  it('recordContrarianWin 1회 → 🦅 역발상의 고수 배지 획득', () => {
+    recordContrarianWin('q-1')
+    const badges = getBadges()
+    expect(badges.some((b) => b.id === 'contrarian_1')).toBe(true)
+  })
+
+  it('동일 questionId 중복 호출 무시', () => {
+    recordContrarianWin('q-1')
+    recordContrarianWin('q-1') // 중복 — 무시
+    const stats = getBadges()
+    // contrarianWins=1만 카운트
+    expect(stats.filter((b) => b.id === 'contrarian_1').length).toBe(1)
+  })
+
+  it('역발상 없으면 배지 미노출', () => {
+    const badges = getBadges()
+    expect(badges.some((b) => b.id === 'contrarian_1')).toBe(false)
   })
 })

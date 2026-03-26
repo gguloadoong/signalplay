@@ -14,6 +14,8 @@ interface UserStats {
   crowdCorrect: number
   crowdTotal: number
   lastCrowdQuestionId: string | null
+  contrarianWins: number
+  lastContrarianQuestionId: string | null
 }
 
 const DEFAULT_STATS: UserStats = {
@@ -28,6 +30,8 @@ const DEFAULT_STATS: UserStats = {
   crowdCorrect: 0,
   crowdTotal: 0,
   lastCrowdQuestionId: null,
+  contrarianWins: 0,
+  lastContrarianQuestionId: null,
 }
 
 function getStats(): UserStats {
@@ -107,6 +111,17 @@ export function getCrowdAccuracyPercent(): number | null {
   return Math.round(((crowdCorrect ?? 0) / crowdTotal) * 100)
 }
 
+/** 군중 다수결과 반대로 투표해 적중 시 호출 (중복 방지) */
+export function recordContrarianWin(questionId: string): void {
+  const stats = getStats()
+  if (stats.lastContrarianQuestionId === questionId) return
+  saveStats({
+    ...stats,
+    contrarianWins: (stats.contrarianWins ?? 0) + 1,
+    lastContrarianQuestionId: questionId,
+  })
+}
+
 const CHARACTER_NAMES: Record<string, { name: string; emoji: string }> = {
   quant:     { name: '밸류김', emoji: '💼' },
   professor: { name: '팩터박', emoji: '📚' },
@@ -176,6 +191,12 @@ const BADGE_DEFINITIONS: Array<BadgeInfo & { earned: (s: UserStats) => boolean }
     emoji: '🔥',
     label: '불타는 스트릭',
     earned: (s) => (s.streak ?? 0) >= 7,
+  },
+  {
+    id: 'contrarian_1',
+    emoji: '🦅',
+    label: '역발상의 고수',
+    earned: (s) => (s.contrarianWins ?? 0) >= 1,
   },
 ]
 
