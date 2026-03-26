@@ -7,10 +7,11 @@ type Reaction = typeof VALID_REACTIONS[number]
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
-  const { questionId, character, reaction } = req.body as {
+  const { questionId, character, reaction, prevReaction } = req.body as {
     questionId?: string
     character?: string
     reaction?: string
+    prevReaction?: string
   }
 
   if (!questionId || !character || !reaction) {
@@ -35,6 +36,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const allReactions: Record<string, Record<string, number>> = row.character_reactions ?? {}
   const charReactions = { ...(allReactions[character] ?? {}) }
+
+  // 이전 반응 감소
+  if (prevReaction && charReactions[prevReaction] && charReactions[prevReaction] > 0) {
+    charReactions[prevReaction] = charReactions[prevReaction] - 1
+  }
+
   charReactions[reaction] = (charReactions[reaction] ?? 0) + 1
 
   const updated = { ...allReactions, [character]: charReactions }
