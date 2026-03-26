@@ -118,7 +118,7 @@ export function VotePage() {
     if (result === 'copied') {
       openToast('복사됨! 카톡에 붙여넣기 고고 📋', { duration: 2000 })
     }
-  }, [questionData, crowd])
+  }, [questionData, crowd, openToast])
 
   if (loading) {
     return (

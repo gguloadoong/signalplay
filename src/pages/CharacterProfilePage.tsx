@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { getCharacterById } from '@/lib/characters'
 import { EmptyState } from '@/components/shared/EmptyState'
+import { TdsButton as Button } from '@/components/shared/TdsButton'
 import styles from './CharacterProfilePage.module.css'
 
 const PREDICTION_LABELS = {
@@ -29,9 +30,9 @@ export function CharacterProfilePage() {
     <div className={styles.page}>
       {/* 헤더 */}
       <div className={styles.headerBar}>
-        <button className={styles.back} onClick={() => navigate('/characters')}>
+        <Button size="small" variant="weak" color="primary" onClick={() => navigate('/characters')}>
           ‹ 뒤로
-        </button>
+        </Button>
       </div>
 
       {/* 프로필 카드 */}

@@ -1,3 +1,4 @@
+import { TdsButton as Button } from '@/components/shared/TdsButton'
 import styles from './EmptyState.module.css'
 
 interface Props {
@@ -14,9 +15,9 @@ export function EmptyState({ emoji, title, description, action }: Props) {
       <h3 className={styles.title}>{title}</h3>
       <p className={styles.description}>{description}</p>
       {action && (
-        <button className={styles.button} onClick={action.onClick}>
+        <Button size="medium" variant="fill" color="primary" onClick={action.onClick}>
           {action.label}
-        </button>
+        </Button>
       )}
     </div>
   )
