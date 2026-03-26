@@ -7,6 +7,7 @@ import {
   getCharacterAlignment,
   getLevel,
   getTotalVotes,
+  getBadges,
 } from '../userStats'
 
 // localStorage mock
@@ -133,6 +134,61 @@ describe('getLevel / getTotalVotes', () => {
     expect(getLevel()?.level).toBe(5)
     expect(getLevel()?.label).toBe('시그널 마스터')
     expect(getLevel()?.nextAt).toBeNull()
+  })
+})
+
+describe('getBadges / correctStreak', () => {
+  it('기록 없으면 배지 없음', () => {
+    expect(getBadges()).toHaveLength(0)
+  })
+
+  it('연속 적중 3회 → 예측의 신 배지', () => {
+    recordResult('q-1', true)
+    recordResult('q-2', true)
+    recordResult('q-3', true)
+    const badges = getBadges()
+    expect(badges.some((b) => b.id === 'correct_streak_3')).toBe(true)
+    expect(badges.some((b) => b.label === '예측의 신')).toBe(true)
+  })
+
+  it('연속 적중 5회 → 퍼펙트 위크 배지도 획득', () => {
+    recordResult('q-1', true)
+    recordResult('q-2', true)
+    recordResult('q-3', true)
+    recordResult('q-4', true)
+    recordResult('q-5', true)
+    const badges = getBadges()
+    expect(badges.some((b) => b.id === 'correct_streak_5')).toBe(true)
+    expect(badges.some((b) => b.id === 'correct_streak_3')).toBe(true)
+  })
+
+  it('오답으로 correctStreak 리셋 → 배지 없음', () => {
+    recordResult('q-1', true)
+    recordResult('q-2', true)
+    recordResult('q-3', false) // 리셋
+    expect(getBadges().some((b) => b.id === 'correct_streak_3')).toBe(false)
+  })
+
+  it('maxCorrectStreak는 리셋 후에도 배지 유지', () => {
+    recordResult('q-1', true)
+    recordResult('q-2', true)
+    recordResult('q-3', true) // maxCorrectStreak = 3
+    recordResult('q-4', false) // correctStreak 리셋, maxCorrectStreak 유지
+    expect(getBadges().some((b) => b.id === 'correct_streak_3')).toBe(true)
+  })
+
+  it('적중률 70%+ + 5회 → 전문가 킬러 배지', () => {
+    recordResult('q-1', true)
+    recordResult('q-2', true)
+    recordResult('q-3', true)
+    recordResult('q-4', true)
+    recordResult('q-5', false) // 4/5 = 80%
+    expect(getBadges().some((b) => b.id === 'accuracy_70')).toBe(true)
+  })
+
+  it('7일 연속 투표 → 불타는 스트릭 배지', () => {
+    store['sp_user_stats'] = JSON.stringify({ streak: 7, lastVoteDate: '2026-03-26', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 7, correctStreak: 0, maxCorrectStreak: 0 })
+    expect(getBadges().some((b) => b.id === 'vote_streak_7')).toBe(true)
   })
 })
 
