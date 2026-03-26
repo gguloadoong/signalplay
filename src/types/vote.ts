@@ -19,6 +19,7 @@ export interface CharacterPrediction {
   reasoning: string
   methodology: string
   reaction?: string
+  emojiReactions?: Record<string, number>
 }
 
 export interface CrowdResult {

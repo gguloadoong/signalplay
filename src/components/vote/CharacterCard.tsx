@@ -32,9 +32,15 @@ interface Props {
   isCorrect?: boolean
   showCorrect?: boolean
   defaultExpanded?: boolean
+  voted?: boolean
+  myReaction?: string
+  onReact?: (reaction: string) => void
 }
 
-export function CharacterCard({ prediction, isCorrect, showCorrect = false, defaultExpanded = false }: Props) {
+const REACTIONS = ['🔥', '😱', '🤔'] as const
+const REACTION_LABELS: Record<string, string> = { '🔥': '믿어', '😱': '말도안돼', '🤔': '글쎄' }
+
+export function CharacterCard({ prediction, isCorrect, showCorrect = false, defaultExpanded = false, voted = false, myReaction, onReact }: Props) {
   const [expanded, setExpanded] = useState(defaultExpanded)
   const [unlocked, setUnlocked] = useState(false)
   const [adLoading, setAdLoading] = useState(false)
@@ -118,6 +124,25 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false, defa
                 ? CHARACTER_REACTIONS[prediction.character].correct
                 : CHARACTER_REACTIONS[prediction.character].wrong)}
             </p>
+          )}
+
+          {voted && onReact && (
+            <div className={styles.emojiReactions} onClick={(e) => e.stopPropagation()}>
+              {REACTIONS.map((r) => {
+                const count = prediction.emojiReactions?.[r] ?? 0
+                const isMe = myReaction === r
+                return (
+                  <button
+                    key={r}
+                    className={`${styles.reactionBtn} ${isMe ? styles.reactionBtnActive : ''}`}
+                    onClick={() => onReact(r)}
+                    aria-label={REACTION_LABELS[r]}
+                  >
+                    {r} {count > 0 && <span className={styles.reactionCount}>{count}</span>}
+                  </button>
+                )
+              })}
+            </div>
           )}
         </div>
       )}

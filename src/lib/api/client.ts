@@ -52,6 +52,9 @@ export const api = {
     correct: number; total: number; rate: number
   }>>('/leaderboard'),
 
+  react: (body: { questionId: string; character: string; reaction: string }) =>
+    request<{ reactions: Record<string, number> }>('/react', { method: 'POST', body: JSON.stringify(body) }),
+
   getUpdates: (questionId: string) => request<{
     midday_comments: Array<{ character: string; name: string; emoji: string; comment: string }> | null
     close_reactions: Array<{ character: string; name: string; emoji: string; comment: string; isCorrect: boolean }> | null

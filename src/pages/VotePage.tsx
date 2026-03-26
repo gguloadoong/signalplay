@@ -57,6 +57,7 @@ export function VotePage() {
     midday_comments: Array<{ character: string; name: string; emoji: string; comment: string }> | null
     close_reactions: Array<{ character: string; name: string; emoji: string; comment: string; isCorrect: boolean }> | null
   } | null>(null)
+  const [myReactions, setMyReactions] = useState<Record<string, string>>({})
   const { openToast } = useWebToast()
   const { openOneButtonSheet } = useBottomSheet()
 
@@ -70,6 +71,8 @@ export function VotePage() {
         if (q.crowd) setCrowd(q.crowd)
         api.getUpdates(q.id).then(({ data: upd }) => { if (upd) setUpdates(upd) })
       }
+      const saved = localStorage.getItem(`sp_reactions_${q.id}`)
+      if (saved) setMyReactions(JSON.parse(saved) as Record<string, string>)
       setLoading(false)
     })
     api.getResult().then(({ data }) => {
@@ -107,6 +110,32 @@ export function VotePage() {
   const handleAnimationComplete = useCallback(() => {
     setShowSuccess(false)
   }, [])
+
+  const handleReact = useCallback(async (character: string, reaction: string) => {
+    if (!questionData) return
+    const prev = myReactions[character]
+    if (prev === reaction) return // 같은 반응 재클릭 무시
+
+    const updated = { ...myReactions, [character]: reaction }
+    setMyReactions(updated)
+    localStorage.setItem(`sp_reactions_${questionData.id}`, JSON.stringify(updated))
+
+    // 옵티미스틱 업데이트: 캐릭터 emojiReactions 카운트 증가
+    setQuestionData((prev) => {
+      if (!prev) return prev
+      return {
+        ...prev,
+        characters: prev.characters.map((c) => {
+          if (c.character !== character) return c
+          const reactions = { ...(c.emojiReactions ?? {}) }
+          reactions[reaction] = (reactions[reaction] ?? 0) + 1
+          return { ...c, emojiReactions: reactions }
+        }),
+      }
+    })
+
+    await api.react({ questionId: questionData.id, character, reaction })
+  }, [questionData, myReactions])
 
   const handleShare = useCallback(async () => {
     if (!questionData) return
@@ -275,7 +304,14 @@ export function VotePage() {
         {disagreeCallout && <p className={styles.disagreeCallout}>{disagreeCallout}</p>}
         <div className={styles.characters}>
           {characters.map((pred, i) => (
-            <CharacterCard key={pred.character} prediction={pred} defaultExpanded={i === 0} />
+            <CharacterCard
+              key={pred.character}
+              prediction={pred}
+              defaultExpanded={i === 0}
+              voted={!!voted}
+              myReaction={myReactions[pred.character]}
+              onReact={(reaction) => handleReact(pred.character, reaction)}
+            />
           ))}
         </div>
       </section>

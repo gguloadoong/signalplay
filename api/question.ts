@@ -121,13 +121,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const crowdBullish = Math.round(((existing.crowd_bullish ?? 0) / total) * 100)
       const crowdBearish = Math.round(((existing.crowd_bearish ?? 0) / total) * 100)
       const crowdNeutral = 100 - crowdBullish - crowdBearish
+      const reactions: Record<string, Record<string, number>> = existing.character_reactions ?? {}
       const cached = {
         id: existing.id,
         date: existing.date,
         title: existing.title,
         question: existing.question,
         category: existing.category,
-        characters: existing.character_predictions ?? [],
+        characters: (existing.character_predictions ?? []).map((c: { character: string }) => ({
+          ...c,
+          emojiReactions: reactions[c.character] ?? {},
+        })),
         totalVotes: existing.total_votes ?? 0,
         crowd: { bullish: crowdBullish, bearish: crowdBearish, neutral: crowdNeutral, totalVotes: existing.total_votes ?? 0 },
         deadline: existing.deadline,
