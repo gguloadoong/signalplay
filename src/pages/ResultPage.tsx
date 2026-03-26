@@ -11,7 +11,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
+import { recordResult, recordCrowdResult, getStreak, getAccuracyPercent, getCrowdAccuracyPercent, getCharacterAlignment, getLevel, getBadges, getWeeklyStats } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
@@ -51,6 +51,7 @@ export function ResultPage() {
       if (r) {
         const vote = getVote(r.questionId)
         if (vote) recordResult(r.questionId, vote.choice === r.actualOutcome)
+        recordCrowdResult(r.questionId, isCrowdCorrect(r.crowdResult, r.actualOutcome))
       }
     })
     api.getLeaderboard().then(({ data }) => {
@@ -262,9 +263,12 @@ export function ResultPage() {
       {/* This month leaderboard */}
       {(() => {
         const myAccuracy = getAccuracyPercent()
-        const combined = myAccuracy !== null
-          ? [...leaderboard, { character: 'me', name: '나', emoji: '🙋', correct: 0, total: 0, rate: myAccuracy }].sort((a, b) => b.rate - a.rate)
-          : leaderboard
+        const crowdAccuracy = getCrowdAccuracyPercent()
+        const extras = [
+          ...(myAccuracy !== null ? [{ character: 'me', name: '나', emoji: '🙋', correct: 0, total: 0, rate: myAccuracy }] : []),
+          ...(crowdAccuracy !== null ? [{ character: 'crowd', name: '군중', emoji: '👥', correct: 0, total: 0, rate: crowdAccuracy }] : []),
+        ]
+        const combined = [...leaderboard, ...extras].sort((a, b) => b.rate - a.rate)
         const beatenCount = leaderboard.filter((c) => c.rate < (myAccuracy ?? 0)).length
         return (
           <div className={styles.section}>
@@ -274,7 +278,7 @@ export function ResultPage() {
             )}
             <div className={styles.leaderboard}>
               {combined.map((c, i) => (
-                <div key={c.character} className={`${styles.leaderRow} ${c.character === 'me' ? styles.leaderRowMe : ''}`}>
+                <div key={c.character} className={`${styles.leaderRow} ${c.character === 'me' ? styles.leaderRowMe : ''} ${c.character === 'crowd' ? styles.leaderRowCrowd : ''}`}>
                   <span className={styles.leaderRank}>{i + 1}</span>
                   <span className={styles.leaderEmoji}>{c.emoji}</span>
                   <span className={styles.leaderName}>{c.name}</span>

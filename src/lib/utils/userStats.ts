@@ -11,6 +11,9 @@ interface UserStats {
   totalVotes: number
   correctStreak: number
   maxCorrectStreak: number
+  crowdCorrect: number
+  crowdTotal: number
+  lastCrowdQuestionId: string | null
 }
 
 const DEFAULT_STATS: UserStats = {
@@ -22,6 +25,9 @@ const DEFAULT_STATS: UserStats = {
   totalVotes: 0,
   correctStreak: 0,
   maxCorrectStreak: 0,
+  crowdCorrect: 0,
+  crowdTotal: 0,
+  lastCrowdQuestionId: null,
 }
 
 function getStats(): UserStats {
@@ -80,6 +86,25 @@ export function getAccuracyPercent(): number | null {
   const { correct, total } = getStats()
   if (total === 0) return null
   return Math.round((correct / total) * 100)
+}
+
+/** ResultPage에서 결과 확인 시 호출: 군중 적중률 추적 (중복 방지) */
+export function recordCrowdResult(questionId: string, isCorrect: boolean): void {
+  const stats = getStats()
+  if (stats.lastCrowdQuestionId === questionId) return
+  saveStats({
+    ...stats,
+    crowdCorrect: (stats.crowdCorrect ?? 0) + (isCorrect ? 1 : 0),
+    crowdTotal: (stats.crowdTotal ?? 0) + 1,
+    lastCrowdQuestionId: questionId,
+  })
+}
+
+/** 군중 적중률 (0~100 정수) — 2회 미만이면 null */
+export function getCrowdAccuracyPercent(): number | null {
+  const { crowdCorrect, crowdTotal } = getStats()
+  if ((crowdTotal ?? 0) < 2) return null
+  return Math.round(((crowdCorrect ?? 0) / crowdTotal) * 100)
 }
 
 const CHARACTER_NAMES: Record<string, { name: string; emoji: string }> = {
