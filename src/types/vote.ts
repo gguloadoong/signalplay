@@ -18,6 +18,7 @@ export interface CharacterPrediction {
   prediction: VoteChoice
   reasoning: string
   methodology: string
+  reaction?: string
 }
 
 export interface CrowdResult {
