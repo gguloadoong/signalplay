@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
+import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { showRewardAd } from '@/lib/bedrock'
 import type { CharacterPrediction, VoteChoice } from '@/types/vote'
 import styles from './CharacterCard.module.css'
@@ -98,14 +99,17 @@ export function CharacterCard({ prediction, isCorrect, showCorrect = false, defa
           </div>
 
           {!unlocked && (
-            <button
-              className={styles.unlockBtn}
+            <Button
+              size="medium"
+              variant="weak"
+              color="primary"
+              display="full"
               onClick={handleUnlock}
               disabled={adLoading}
               aria-label="광고 시청 후 전체 분석 보기"
             >
               {adLoading ? '광고 로딩 중...' : '🎬 전체 분석 보기'}
-            </button>
+            </Button>
           )}
 
           {unlocked && showCorrect && isCorrect !== undefined && (

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useWebToast } from '@toss/tds-mobile'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
 import { saveVote, getVote } from '@/lib/utils/voteHistory'
@@ -49,8 +50,8 @@ export function VotePage() {
   const [loading, setLoading] = useState(true)
   const [voted, setVoted] = useState<VoteChoice | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
-  const [shareMsg, setShareMsg] = useState('')
   const [hasResult, setHasResult] = useState(false)
+  const { openToast } = useWebToast()
 
   useEffect(() => {
     api.getQuestion().then(({ data }) => {
@@ -104,8 +105,7 @@ export function VotePage() {
     })
     const result = await shareText(text)
     if (result === 'copied') {
-      setShareMsg('복사됨! 카톡에 붙여넣기 고고 📋')
-      setTimeout(() => setShareMsg(''), 2000)
+      openToast('복사됨! 카톡에 붙여넣기 고고 📋', { duration: 2000 })
     }
   }, [questionData, crowd])
 
@@ -224,7 +224,6 @@ export function VotePage() {
       <Suspense>
         <WeeklyPicksSection />
       </Suspense>
-      {shareMsg && <div role="status" aria-live="polite" className={styles.toast}>{shareMsg}</div>}
       <Disclaimer />
     </div>
   )
