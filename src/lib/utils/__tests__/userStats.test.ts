@@ -8,6 +8,7 @@ import {
   getLevel,
   getTotalVotes,
   getBadges,
+  getWeeklyStats,
 } from '../userStats'
 
 // localStorage mock
@@ -234,5 +235,51 @@ describe('getCharacterAlignment', () => {
       { questionId: 'q-3', date: '2026-03-20', title: '테스트', choice: 'bullish' },
     ])
     expect(getCharacterAlignment()).toBeNull()
+  })
+})
+
+describe('getWeeklyStats', () => {
+  const VOTE_KEY = 'sp_vote_history'
+  const today = new Date().toISOString().split('T')[0]
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0]
+  const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0]
+  const eightDaysAgo = new Date(Date.now() - 8 * 86400000).toISOString().split('T')[0]
+
+  it('기록 2개 미만이면 null 반환', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: today, title: '테스트', choice: 'bullish' },
+    ])
+    expect(getWeeklyStats()).toBeNull()
+  })
+
+  it('이번 주 2개 참여 → participated=2', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: today, title: '테스트', choice: 'bullish' },
+      { questionId: 'q-2', date: yesterday, title: '테스트', choice: 'bearish' },
+    ])
+    const stats = getWeeklyStats()
+    expect(stats?.participated).toBe(2)
+  })
+
+  it('isCorrect 집계 — 2적중/3결과', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: today, title: 'T', choice: 'bullish', isCorrect: true },
+      { questionId: 'q-2', date: yesterday, title: 'T', choice: 'bearish', isCorrect: false },
+      { questionId: 'q-3', date: twoDaysAgo, title: 'T', choice: 'neutral', isCorrect: true },
+    ])
+    const stats = getWeeklyStats()
+    expect(stats?.correct).toBe(2)
+    expect(stats?.resolved).toBe(3)
+  })
+
+  it('8일 전 기록은 이번 주 집계에서 제외', () => {
+    store[VOTE_KEY] = JSON.stringify([
+      { questionId: 'q-1', date: today, title: 'T', choice: 'bullish', isCorrect: true },
+      { questionId: 'q-2', date: yesterday, title: 'T', choice: 'bearish', isCorrect: true },
+      { questionId: 'q-old', date: eightDaysAgo, title: 'T', choice: 'bullish', isCorrect: true },
+    ])
+    const stats = getWeeklyStats()
+    expect(stats?.participated).toBe(2)
+    expect(stats?.correct).toBe(2)
   })
 })
