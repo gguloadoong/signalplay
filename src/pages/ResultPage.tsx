@@ -12,7 +12,7 @@ import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
 import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment } from '@/lib/utils/userStats'
-import { generateResultShareText, shareText } from '@/lib/utils/share'
+import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
 type LeaderboardEntry = { character: string; name: string; emoji: string; correct: number; total: number; rate: number }
@@ -79,12 +79,7 @@ export function ResultPage() {
     }
 
     // 텍스트 폴백
-    const crowdWon = result.crowdResult.bullish >= result.crowdResult.bearish &&
-      result.crowdResult.bullish >= result.crowdResult.neutral
-        ? result.actualOutcome === 'bullish'
-        : result.crowdResult.bearish >= result.crowdResult.neutral
-          ? result.actualOutcome === 'bearish'
-          : result.actualOutcome === 'neutral'
+    const crowdWon = isCrowdCorrect(result.crowdResult, result.actualOutcome)
     const text = generateResultShareText({
       title: result.title,
       crowdCorrect: crowdWon,
@@ -119,12 +114,7 @@ export function ResultPage() {
     )
   }
 
-  const crowdCorrect = result.crowdResult.bullish >= result.crowdResult.bearish &&
-    result.crowdResult.bullish >= result.crowdResult.neutral
-      ? result.actualOutcome === 'bullish'
-      : result.crowdResult.bearish >= result.crowdResult.neutral
-        ? result.actualOutcome === 'bearish'
-        : result.actualOutcome === 'neutral'
+  const crowdCorrect = isCrowdCorrect(result.crowdResult, result.actualOutcome)
 
   const correctCount = result.characters.filter((c) => c.isCorrect).length
 

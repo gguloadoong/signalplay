@@ -1,4 +1,17 @@
-import type { VoteChoice } from '@/types/vote'
+import type { VoteChoice, CrowdResult } from '@/types/vote'
+
+/**
+ * 군중이 예측한 결과(다수 선택)가 실제 결과와 일치하는지 판단
+ */
+export function isCrowdCorrect(crowd: Pick<CrowdResult, 'bullish' | 'bearish' | 'neutral'>, actual: VoteChoice): boolean {
+  if (crowd.bullish >= crowd.bearish && crowd.bullish >= crowd.neutral) {
+    return actual === 'bullish'
+  }
+  if (crowd.bearish >= crowd.neutral) {
+    return actual === 'bearish'
+  }
+  return actual === 'neutral'
+}
 
 const CHOICE_LABEL: Record<VoteChoice, string> = {
   bullish: '📈 올라갈 듯',

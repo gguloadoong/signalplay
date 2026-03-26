@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { generateVoteShareText, generateResultShareText, shareText } from '../share'
+import { generateVoteShareText, generateResultShareText, shareText, isCrowdCorrect } from '../share'
 
 describe('generateVoteShareText', () => {
   it('기본 형식으로 텍스트 생성', () => {
@@ -150,5 +150,31 @@ describe('shareText', () => {
   it('navigator.share 없음 + clipboard 없음 → failed 반환', async () => {
     const result = await shareText('테스트')
     expect(result).toBe('failed')
+  })
+})
+
+describe('isCrowdCorrect', () => {
+  it('bullish 다수 + 실제 bullish → true', () => {
+    expect(isCrowdCorrect({ bullish: 60, bearish: 25, neutral: 15 }, 'bullish')).toBe(true)
+  })
+
+  it('bullish 다수 + 실제 bearish → false', () => {
+    expect(isCrowdCorrect({ bullish: 60, bearish: 25, neutral: 15 }, 'bearish')).toBe(false)
+  })
+
+  it('bearish 다수 + 실제 bearish → true', () => {
+    expect(isCrowdCorrect({ bullish: 20, bearish: 55, neutral: 25 }, 'bearish')).toBe(true)
+  })
+
+  it('neutral 다수 + 실제 neutral → true', () => {
+    expect(isCrowdCorrect({ bullish: 30, bearish: 30, neutral: 40 }, 'neutral')).toBe(true)
+  })
+
+  it('동점(bullish = bearish > neutral) → bullish 선택 → 실제 bullish → true', () => {
+    expect(isCrowdCorrect({ bullish: 40, bearish: 40, neutral: 20 }, 'bullish')).toBe(true)
+  })
+
+  it('동점(bullish = bearish > neutral) → bullish 선택 → 실제 bearish → false', () => {
+    expect(isCrowdCorrect({ bullish: 40, bearish: 40, neutral: 20 }, 'bearish')).toBe(false)
   })
 })
