@@ -43,7 +43,7 @@ const CATEGORY_COLOR: Record<string, 'blue' | 'green' | 'yellow'> = {
   매크로: 'yellow',
 }
 
-type QuestionData = Question & { characters: CharacterPrediction[] }
+type QuestionData = Question & { characters: CharacterPrediction[]; crowd?: CrowdResult }
 
 export function VotePage() {
   const navigate = useNavigate()
@@ -67,6 +67,7 @@ export function VotePage() {
       const existing = getVote(q.id)
       if (existing) {
         setVoted(existing.choice)
+        if (q.crowd) setCrowd(q.crowd)
         api.getUpdates(q.id).then(({ data: upd }) => { if (upd) setUpdates(upd) })
       }
       setLoading(false)

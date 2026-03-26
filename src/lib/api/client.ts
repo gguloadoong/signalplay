@@ -36,6 +36,7 @@ export const api = {
     totalVotes: number
     deadline: string
     isActive: boolean
+    crowd?: import('@/types/vote').CrowdResult
   }>('/question'),
 
   vote: (body: { questionId: string; vote: string; userId?: string }) =>
