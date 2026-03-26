@@ -2,8 +2,10 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import {
   recordVote,
   recordResult,
+  recordCrowdResult,
   getStreak,
   getAccuracyPercent,
+  getCrowdAccuracyPercent,
   getCharacterAlignment,
   getLevel,
   getTotalVotes,
@@ -281,5 +283,25 @@ describe('getWeeklyStats', () => {
     const stats = getWeeklyStats()
     expect(stats?.participated).toBe(2)
     expect(stats?.correct).toBe(2)
+  })
+})
+
+describe('recordCrowdResult / getCrowdAccuracyPercent', () => {
+  it('2회 미만이면 null 반환', () => {
+    recordCrowdResult('q-1', true)
+    expect(getCrowdAccuracyPercent()).toBeNull()
+  })
+
+  it('2회 이상부터 적중률 계산', () => {
+    recordCrowdResult('q-1', true)
+    recordCrowdResult('q-2', false)
+    expect(getCrowdAccuracyPercent()).toBe(50)
+  })
+
+  it('동일 questionId 중복 호출 무시', () => {
+    recordCrowdResult('q-1', true)
+    recordCrowdResult('q-1', false) // 중복 — 무시
+    recordCrowdResult('q-2', true)
+    expect(getCrowdAccuracyPercent()).toBe(100)
   })
 })
