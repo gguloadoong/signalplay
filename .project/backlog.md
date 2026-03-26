@@ -20,7 +20,7 @@
 ## P2 — 이번 스프린트
 
 - [x] [FEATURE] 공유 카드 — 텍스트 공유 (#40 merged) / 이미지 생성은 P3로 이동
-- [ ] [FEATURE] 캐릭터 적중률 리더보드 (월간 집계) — Supabase 설정 후 진행
+- [x] [FEATURE] 캐릭터 적중률 리더보드 (월간 집계) — Supabase 설정 후 진행 (PR #165, #195)
 - [x] [UX] 투표 완료 후 성공 애니메이션 (#44 merged)
 - [x] [CONTENT] 방구석 전문가 리브랜딩 + 인사이트 고도화 (#52 merged)
 - [x] [FEATURE] P0 보안 취약점 패치 — undici/minimatch/ajv (#48 merged)
