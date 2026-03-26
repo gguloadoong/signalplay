@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useWebToast, useBottomSheet } from '@toss/tds-mobile'
 import { TdsButton as Button } from '@/components/shared/TdsButton'
 import { generateVoteShareText, shareText } from '@/lib/utils/share'
+import { formatDeadline } from '@/lib/utils/format'
 import { saveVote, getVote } from '@/lib/utils/voteHistory'
 import { recordVote } from '@/lib/utils/userStats'
 import { TdsBadge as Badge } from '@/components/shared/TdsBadge'
@@ -26,14 +27,6 @@ const VOTE_OPTIONS: { value: VoteChoice; label: string; emoji: string }[] = [
   { value: 'bearish', label: '망할 듯', emoji: '📉' },
 ]
 
-function formatDeadline(deadline: string): string {
-  const diff = new Date(deadline).getTime() - Date.now()
-  if (diff <= 0) return '투표 마감'
-  const hours = Math.floor(diff / 3600000)
-  if (hours >= 1) return `${hours}시간 후 마감`
-  const minutes = Math.floor(diff / 60000)
-  return `${minutes}분 후 마감`
-}
 
 const FIRST_VOTE_KEY = 'sp_first_vote_explained'
 

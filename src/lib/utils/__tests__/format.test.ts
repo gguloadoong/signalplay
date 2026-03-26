@@ -4,6 +4,7 @@ import {
   formatTimeRemaining,
   formatDate,
   formatPercent,
+  formatDeadline,
 } from '../format'
 
 describe('formatScore', () => {
@@ -77,5 +78,25 @@ describe('formatPercent', () => {
 
   it('0 → 0%', () => {
     expect(formatPercent(0)).toBe('0%')
+  })
+})
+
+describe('formatDeadline', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it('2시간 후 → 2시간 후 마감', () => {
+    vi.setSystemTime(new Date('2026-03-26T10:00:00Z'))
+    expect(formatDeadline('2026-03-26T12:00:00Z')).toBe('2시간 후 마감')
+  })
+
+  it('30분 후 → 30분 후 마감', () => {
+    vi.setSystemTime(new Date('2026-03-26T10:00:00Z'))
+    expect(formatDeadline('2026-03-26T10:30:00Z')).toBe('30분 후 마감')
+  })
+
+  it('이미 지난 시간 → 투표 마감', () => {
+    vi.setSystemTime(new Date('2026-03-26T10:00:00Z'))
+    expect(formatDeadline('2026-03-26T09:00:00Z')).toBe('투표 마감')
   })
 })
