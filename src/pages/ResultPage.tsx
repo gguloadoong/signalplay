@@ -11,7 +11,7 @@ import { CharacterCard } from '@/components/vote/CharacterCard'
 import { CrowdBar } from '@/components/vote/CrowdBar'
 import { ShareCard } from '@/components/shared/ShareCard'
 import { getVote } from '@/lib/utils/voteHistory'
-import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment } from '@/lib/utils/userStats'
+import { recordResult, getStreak, getAccuracyPercent, getCharacterAlignment, getLevel } from '@/lib/utils/userStats'
 import { generateResultShareText, shareText, isCrowdCorrect } from '@/lib/utils/share'
 import { MOCK_VOTE_RESULT, MOCK_CHARACTER_ACCURACY } from '@/lib/mockData'
 
@@ -157,9 +157,13 @@ export function ResultPage() {
         const streak = getStreak()
         const accuracy = getAccuracyPercent()
         const alignment = getCharacterAlignment()
-        if (streak === 0 && accuracy === null && alignment === null) return null
+        const level = getLevel()
+        if (streak === 0 && accuracy === null && alignment === null && !level) return null
         return (
           <div className={styles.statsRow}>
+            {level && (
+              <Badge size="small" variant="weak" color="purple">{level.emoji} Lv.{level.level} {level.label}</Badge>
+            )}
             {streak > 0 && (
               <Badge size="small" variant="weak" color="blue">🔥 {streak}일 연속</Badge>
             )}
@@ -257,6 +261,7 @@ export function ResultPage() {
           myVote={myVote}
           streak={getStreak()}
           accuracyPercent={getAccuracyPercent()}
+          level={getLevel()}
         />
       </div>
     </div>

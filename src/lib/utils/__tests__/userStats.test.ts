@@ -5,6 +5,8 @@ import {
   getStreak,
   getAccuracyPercent,
   getCharacterAlignment,
+  getLevel,
+  getTotalVotes,
 } from '../userStats'
 
 // localStorage mock
@@ -86,6 +88,51 @@ describe('recordResult / getAccuracyPercent', () => {
     recordResult('q-003', true)
     recordResult('q-004', true)
     expect(getAccuracyPercent()).toBe(75)
+  })
+})
+
+describe('getLevel / getTotalVotes', () => {
+  it('투표 없으면 null', () => {
+    expect(getLevel()).toBeNull()
+    expect(getTotalVotes()).toBe(0)
+  })
+
+  it('1회 → Lv.1 시장 구경꾼', () => {
+    recordVote('2026-03-01')
+    expect(getLevel()?.level).toBe(1)
+    expect(getLevel()?.label).toBe('시장 구경꾼')
+  })
+
+  it('9회 → 여전히 Lv.1', () => {
+    store['sp_user_stats'] = JSON.stringify({ streak: 1, lastVoteDate: '2026-01-01', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 9 })
+    expect(getLevel()?.level).toBe(1)
+    expect(getTotalVotes()).toBe(9)
+  })
+
+  it('10회 → Lv.2 초보 분석가', () => {
+    store['sp_user_stats'] = JSON.stringify({ streak: 1, lastVoteDate: '2026-01-01', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 10 })
+    expect(getLevel()?.level).toBe(2)
+    expect(getLevel()?.label).toBe('초보 분석가')
+  })
+
+  it('30회 → Lv.3 시장 감시자', () => {
+    store['sp_user_stats'] = JSON.stringify({ streak: 1, lastVoteDate: '2026-01-01', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 30 })
+    expect(getLevel()?.level).toBe(3)
+    expect(getLevel()?.label).toBe('시장 감시자')
+  })
+
+  it('100회 → Lv.4 프로 예측가, nextAt=365', () => {
+    store['sp_user_stats'] = JSON.stringify({ streak: 1, lastVoteDate: '2026-01-01', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 100 })
+    expect(getLevel()?.level).toBe(4)
+    expect(getLevel()?.nextAt).toBe(365)
+  })
+
+  it('365회 → Lv.5 시그널 마스터, nextAt=null', () => {
+    const key = 'sp_user_stats'
+    store[key] = JSON.stringify({ streak: 1, lastVoteDate: '2026-01-01', correct: 0, total: 0, lastScoredQuestionId: null, totalVotes: 365 })
+    expect(getLevel()?.level).toBe(5)
+    expect(getLevel()?.label).toBe('시그널 마스터')
+    expect(getLevel()?.nextAt).toBeNull()
   })
 })
 
