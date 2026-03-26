@@ -15,7 +15,7 @@
 | JS 번들 (router, 캐시됨) | 47.18KB (16.73KB gzip) — react+react-dom+react-router-dom 통합 | 커지면 정당화 필요 | P2 |
 | JS 번들 (tds, 캐시됨) | 1,061KB (341KB gzip) — @toss/tds-mobile+@emotion, 앱인토스 심사 필수 | 고정값 (TDS 업데이트 시만 변경) | P2 |
 | CSS 번들 | 16.06KB (4.82KB gzip) — Tossface @font-face 번들링 (PR #181 정당화) | 커지면 정당화 필요 | P3 |
-| 테스트 커버리지 | 유닛 115개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
+| 테스트 커버리지 | 유닛 119개 (2026-03-26 갱신) | 올라가기만 함 | P1 |
 | E2E 테스트 | 5개 (Playwright) — PR #220 레벨 힌트 테스트 추가 | 올라가기만 함 | P1 |
 | 화면 깨짐 | 0건 | 항상 0 | P0 |
 | Lighthouse 성능 | 85점+ (TBT ≤300ms, 경고 0개) | 올라가기만 함 | P2 |
@@ -51,3 +51,4 @@
 | 2026-03-26 | 리더보드 '나' 행 (PR #212) — 캐릭터와 직접 순위 비교, leaderRowMe 하이라이트. | QA 호크 |
 | 2026-03-26 | 배지 시스템 MVP (PR #214) — 🎯💎📊🔥 4개 배지, correctStreak 추적. 유닛 108→115개. | QA 호크 |
 | 2026-03-26 | ShareCard 배지 노출 (PR #216). VotePage 레벨 힌트 (PR #218). E2E 4→5개 (PR #220). | QA 호크 |
+| 2026-03-26 | ResultPage 맥락 CTA (PR #222). VoteRecord isCorrect 저장+테스트 (PR #224). 유닛 115→119개. | QA 호크 |
