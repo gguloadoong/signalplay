@@ -122,6 +122,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .select('prediction')
         .eq('question_id', existing.id)
       const totalVotes = voteData?.length ?? 0
+      const total = existing.total_votes || totalVotes || 1
+      const crowdBullish = Math.round(((existing.crowd_bullish ?? 0) / total) * 100)
+      const crowdBearish = Math.round(((existing.crowd_bearish ?? 0) / total) * 100)
+      const crowdNeutral = 100 - crowdBullish - crowdBearish
       const cached = {
         id: existing.id,
         date: existing.date,
@@ -129,7 +133,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         question: existing.question,
         category: existing.category,
         characters: existing.character_predictions ?? [],
-        totalVotes,
+        totalVotes: existing.total_votes ?? totalVotes,
+        crowd: { bullish: crowdBullish, bearish: crowdBearish, neutral: crowdNeutral, totalVotes: existing.total_votes ?? totalVotes },
         deadline: existing.deadline,
         isActive: new Date() < new Date(existing.deadline),
       }
