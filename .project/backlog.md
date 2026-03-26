@@ -130,3 +130,9 @@
 - [x] [FEATURE] 내 투표 기록 로컬 스토리지 뷰 — Supabase 없이 적중률 표시 (#65 PR open)
 - [x] [PROCESS] api/question.ts `API_CONFIG` 상수 분리 — merge conflict 방지 (da9deee)
 - [x] [UX] `--font-size-caption: 12px` CSS 변수 도입 — 소폰트 단일 제어 (7e27956)
+
+## P2 — 사용자 성과 고도화 스프린트 (2026-03-26)
+
+- [x] [FEATURE] 주간 리포트 카드 — getWeeklyStats(), ResultPage 이번 주 요약 (PR #226)
+- [x] [FEATURE] 군중 적중률 추적 — recordCrowdResult(), 리더보드 군중 👥 행 (PR #228)
+- [x] [FEATURE] 역발상 배지 🦅 — 군중 반대 적중 시 획득 (PR #230)
