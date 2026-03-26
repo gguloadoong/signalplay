@@ -38,3 +38,15 @@ export function formatDate(dateStr: string): string {
 export function formatPercent(value: number): string {
   return `${Math.round(value)}%`
 }
+
+/**
+ * 투표 마감까지 남은 시간 — "N시간 후 마감" / "N분 후 마감" / "투표 마감"
+ */
+export function formatDeadline(deadline: string): string {
+  const diff = new Date(deadline).getTime() - Date.now()
+  if (diff <= 0) return '투표 마감'
+  const hours = Math.floor(diff / 3600000)
+  if (hours >= 1) return `${hours}시간 후 마감`
+  const minutes = Math.floor(diff / 60000)
+  return `${minutes}분 후 마감`
+}
