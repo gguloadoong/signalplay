@@ -90,7 +90,7 @@ export function ResultPage() {
     if (res === 'copied') {
       openToast('클립보드에 복사됨!', { duration: 2000 })
     }
-  }, [result])
+  }, [result, openToast])
 
   if (result === undefined) {
     return (
