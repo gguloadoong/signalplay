@@ -53,6 +53,10 @@ export function VotePage() {
   const [voted, setVoted] = useState<VoteChoice | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
   const [hasResult, setHasResult] = useState(false)
+  const [updates, setUpdates] = useState<{
+    midday_comments: Array<{ character: string; name: string; emoji: string; comment: string }> | null
+    close_reactions: Array<{ character: string; name: string; emoji: string; comment: string; isCorrect: boolean }> | null
+  } | null>(null)
   const { openToast } = useWebToast()
   const { openOneButtonSheet } = useBottomSheet()
 
@@ -61,7 +65,10 @@ export function VotePage() {
       const q = data ?? ({ ...MOCK_TODAY_QUESTION, characters: MOCK_CHARACTER_PREDICTIONS } as QuestionData)
       setQuestionData(q)
       const existing = getVote(q.id)
-      if (existing) setVoted(existing.choice)
+      if (existing) {
+        setVoted(existing.choice)
+        api.getUpdates(q.id).then(({ data: upd }) => { if (upd) setUpdates(upd) })
+      }
       setLoading(false)
     })
     api.getResult().then(({ data }) => {
@@ -85,6 +92,7 @@ export function VotePage() {
     if (data?.crowd) {
       setCrowd({ ...data.crowd })
     }
+    api.getUpdates(questionData.id).then(({ data: upd }) => { if (upd) setUpdates(upd) })
     // 첫 투표 후 앱 설명 바텀시트 (1회만)
     if (!localStorage.getItem(FIRST_VOTE_KEY)) {
       localStorage.setItem(FIRST_VOTE_KEY, 'true')
@@ -211,6 +219,45 @@ export function VotePage() {
             return <p className={styles.syncMsg}>{msg}</p>
           })()}
           <CrowdBar result={crowd} animated />
+
+          {/* 캐릭터 드라마 타임라인 */}
+          {updates?.midday_comments && (
+            <div className={styles.dramaSection}>
+              <p className={styles.dramaLabel}>☀️ 낮 12시 — 전문가들 근황</p>
+              <div className={styles.dramaList}>
+                {updates.midday_comments.map((c) => (
+                  <div key={c.character} className={styles.dramaItem}>
+                    <span className={styles.dramaEmoji}>{c.emoji}</span>
+                    <div>
+                      <span className={styles.dramaName}>{c.name}</span>
+                      <p className={styles.dramaComment}>"{c.comment}"</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {updates?.close_reactions ? (
+            <div className={styles.dramaSection}>
+              <p className={styles.dramaLabel}>🏁 결과 반응</p>
+              <div className={styles.dramaList}>
+                {updates.close_reactions.map((c) => (
+                  <div key={c.character} className={styles.dramaItem}>
+                    <span className={styles.dramaEmoji}>{c.emoji}</span>
+                    <div>
+                      <span className={styles.dramaName}>{c.name}</span>
+                      <span className={styles.dramaResult}>{c.isCorrect ? ' ✅' : ' ❌'}</span>
+                      <p className={styles.dramaComment}>"{c.comment}"</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className={styles.resultWait}>🔔 오후 3:30 장 마감 후 결과 공개</p>
+          )}
+
           <Button size="medium" variant="weak" color="primary" onClick={handleShare} className={styles.shareBtn}>
             친구한테 물어봐 💬
           </Button>

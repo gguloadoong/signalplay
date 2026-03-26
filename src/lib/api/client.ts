@@ -50,4 +50,9 @@ export const api = {
     character: string; name: string; emoji: string
     correct: number; total: number; rate: number
   }>>('/leaderboard'),
+
+  getUpdates: (questionId: string) => request<{
+    midday_comments: Array<{ character: string; name: string; emoji: string; comment: string }> | null
+    close_reactions: Array<{ character: string; name: string; emoji: string; comment: string; isCorrect: boolean }> | null
+  }>(`/updates?questionId=${questionId}`),
 }

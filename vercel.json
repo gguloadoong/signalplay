@@ -23,8 +23,12 @@
       "schedule": "50 23 * * *"
     },
     {
+      "path": "/api/cron/midday",
+      "schedule": "0 3 * * 1-5"
+    },
+    {
       "path": "/api/cron/set-result",
-      "schedule": "0 7 * * *"
+      "schedule": "0 7 * * 1-5"
     }
   ]
 }

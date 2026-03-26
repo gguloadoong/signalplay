@@ -133,3 +133,63 @@
   flex-direction: column;
   gap: 8px;
 }
+
+/* 캐릭터 드라마 타임라인 */
+.dramaSection {
+  margin-top: 16px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.dramaLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+}
+
+.dramaList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dramaItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.dramaEmoji {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.dramaName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.dramaResult {
+  font-size: 12px;
+}
+
+.dramaComment {
+  font-size: 13px;
+  color: var(--color-text);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.resultWait {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
