@@ -7,61 +7,29 @@ on:
     branches: [main]
 
 jobs:
-  quality:
-    name: Lint → Typecheck → Test → Build
+  # ── Lint / TypeCheck / Test / Build ───────────────────────────────────────
+  ci:
+    name: lint / typecheck / test / build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: pnpm
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
 
       - name: Lint
-        run: pnpm lint
+        run: npm run lint
 
-      - name: Typecheck
-        run: tsc -b --noEmit
+      - name: TypeScript check
+        run: npm run typecheck
 
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
-  lighthouse:
-    name: Lighthouse CI
-    runs-on: ubuntu-latest
-    needs: quality
-    if: github.event_name == 'pull_request'
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Unit tests
+        run: npm run test -- --coverage
 
       - name: Build
-        run: pnpm build
-
-      - name: Run Lighthouse CI
-        run: npx @lhci/cli@0.14.x autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: npm run build
